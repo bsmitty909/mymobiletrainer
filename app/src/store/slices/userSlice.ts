@@ -25,14 +25,15 @@ const userSlice = createSlice({
       action: PayloadAction<{ name: string; experienceLevel: ExperienceLevel }>
     ) => {
       const { name, experienceLevel } = action.payload;
+      const now = Date.now();
       state.currentUser = {
-        id: `user-${Date.now()}`,
+        id: `user-${now}`,
         name,
         experienceLevel,
         currentWeek: 0,
         currentDay: 1,
-        createdAt: new Date(),
-        lastActive: new Date(),
+        createdAt: now,
+        lastActive: now,
       };
       state.loading = false;
       state.error = null;
@@ -58,7 +59,7 @@ const userSlice = createSlice({
       if (state.currentUser) {
         state.currentUser.currentWeek = action.payload.week;
         state.currentUser.currentDay = action.payload.day;
-        state.currentUser.lastActive = new Date();
+        state.currentUser.lastActive = Date.now();
       }
     },
 

@@ -1,52 +1,81 @@
 /**
- * Database Initialization
+ * Database Service (Simplified for MVP)
  * 
- * Sets up WatermelonDB with SQLite adapter for local-first storage.
- * Provides reactive, performant data access for the app.
+ * Using AsyncStorage for MVP. WatermelonDB will be added when React 19 support is available.
+ * This provides simple key-value storage for user data, workouts, and progress.
  */
 
-import { Database } from '@nozbe/watermelondb';
-import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
-import schema from './schema';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Import models (will be created)
-import User from './User';
-import BodyWeight from './BodyWeight';
-import Exercise from './Exercise';
-import ExerciseVariant from './ExerciseVariant';
-import MaxLift from './MaxLift';
-import PersonalRecord from './PersonalRecord';
-import WorkoutSession from './WorkoutSession';
-import ExerciseLog from './ExerciseLog';
-import SetLog from './SetLog';
-import UserPreferences from './UserPreferences';
+export class DatabaseService {
+  // Storage keys
+  private static readonly KEYS = {
+    USER: '@mmt_user',
+    USER_PROFILE: '@mmt_user_profile',
+    MAX_LIFTS: '@mmt_max_lifts',
+    WORKOUT_SESSIONS: '@mmt_workout_sessions',
+    BODY_WEIGHTS: '@mmt_body_weights',
+    PERSONAL_RECORDS: '@mmt_personal_records',
+    PREFERENCES: '@mmt_preferences',
+  };
 
-// SQLite adapter configuration
-const adapter = new SQLiteAdapter({
-  schema,
-  // Optional: migrations for schema updates
-  // migrations,
-  jsi: true, // Use JSI for better performance (requires Expo 48+)
-  onSetUpError: (error) => {
-    console.error('Database setup error:', error);
-  },
-});
+  // Generic get/set methods
+  static async get<T>(key: string): Promise<T | null> {
+    try {
+      const value = await AsyncStorage.getItem(key);
+      return value ? JSON.parse(value) : null;
+    } catch (error) {
+      console.error('Error getting data:', error);
+      return null;
+    }
+  }
 
-// Initialize database with all models
-export const database = new Database({
-  adapter,
-  modelClasses: [
-    User,
-    BodyWeight,
-    Exercise,
-    ExerciseVariant,
-    MaxLift,
-    PersonalRecord,
-    WorkoutSession,
-    ExerciseLog,
-    SetLog,
-    UserPreferences,
-  ],
-});
+  static async set<T>(key: string, value: T): Promise<void> {
+    try {
+      await AsyncStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.error('Error setting data:', error);
+    }
+  }
 
-export default database;
+  static async remove(key: string): Promise<void> {
+    try {
+      await AsyncStorage.removeItem(key);
+    } catch (error) {
+      console.error('Error removing data:', error);
+    }
+  }
+
+  // Specific data access methods
+  static getUser() {
+    return this.get(this.KEYS.USER);
+  }
+
+  static setUser(user: any) {
+    return this.set(this.KEYS.USER, user);
+  }
+
+  static getMaxLifts() {
+    return this.get(this.KEYS.MAX_LIFTS);
+  }
+
+  static setMaxLifts(maxLifts: any) {
+    return this.set(this.KEYS.MAX_LIFTS, maxLifts);
+  }
+
+  static async getWorkoutSessions() {
+    return this.get(this.KEYS.WORKOUT_SESSIONS) || [];
+  }
+
+  static async addWorkoutSession(session: any) {
+    const sessions = await this.getWorkoutSessions() || [];
+    sessions.push(session);
+    return this.set(this.KEYS.WORKOUT_SESSIONS, sessions);
+  }
+
+  static clearAllData() {
+    return AsyncStorage.clear();
+  }
+}
+
+export default DatabaseService;

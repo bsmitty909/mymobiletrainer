@@ -15,8 +15,8 @@ export interface User {
   experienceLevel: ExperienceLevel;
   currentWeek: number;
   currentDay: number;
-  createdAt: Date;
-  lastActive: Date;
+  createdAt: number; // timestamp
+  lastActive: number; // timestamp
 }
 
 export interface UserProfile {
