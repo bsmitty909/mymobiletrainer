@@ -7,12 +7,59 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Text, Card, Button } from 'react-native-paper';
-import { useAppSelector } from '../../store/store';
+import { useAppSelector, useAppDispatch } from '../../store/store';
+import { startSession } from '../../store/slices/workoutSlice';
 
-export default function WorkoutDashboardScreen() {
+export default function WorkoutDashboardScreen({ navigation }: any) {
+  const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.currentUser);
   const currentWeek = user?.currentWeek || 1;
   const currentDay = user?.currentDay || 1;
+
+  // Mock workout data - TODO: Replace with actual program data
+  const mockWorkoutData = {
+    exercises: [
+      { exerciseId: 'bench-press', suggestedWeight: 215, sets: [1, 2, 3, 4], targetReps: { min: 1, max: 6 } },
+      { exerciseId: 'lat-pulldown', suggestedWeight: 250, sets: [1, 2, 3, 4], targetReps: { min: 10, max: 12 } },
+      { exerciseId: 'dumbbell-incline-press', suggestedWeight: 85, sets: [1, 2, 3], targetReps: { min: 10, max: 12 } },
+      { exerciseId: 'machine-low-row', suggestedWeight: 200, sets: [1, 2, 3], targetReps: 'REP_OUT' },
+      { exerciseId: 'dumbbell-chest-fly', suggestedWeight: 40, sets: [1, 2], targetReps: 'REP_OUT' },
+    ],
+  };
+
+  const handleViewDetails = () => {
+    navigation.navigate('WorkoutDetail', {
+      weekNumber: currentWeek,
+      dayNumber: currentDay,
+      workoutData: mockWorkoutData,
+    });
+  };
+
+  const handleStartWorkout = () => {
+    // Create a sample workout session
+    const mockSession = {
+      id: `session-${Date.now()}`,
+      userId: user?.id || 'test-user',
+      weekNumber: currentWeek,
+      dayNumber: currentDay,
+      startedAt: Date.now(),
+      status: 'not_started' as const,
+      exercises: mockWorkoutData.exercises.map((ex, idx) => ({
+        id: `ex-${Date.now()}-${idx}`,
+        sessionId: `session-${Date.now()}`,
+        exerciseId: ex.exerciseId,
+        order: idx + 1,
+        suggestedWeight: ex.suggestedWeight,
+        sets: [],
+      })),
+    };
+
+    // Dispatch to Redux
+    dispatch(startSession(mockSession));
+    
+    // Navigate to active workout
+    navigation.navigate('ActiveWorkout');
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -44,7 +91,7 @@ export default function WorkoutDashboardScreen() {
 
           <Button
             mode="contained"
-            onPress={() => {}}
+            onPress={handleStartWorkout}
             style={styles.startButton}
             contentStyle={styles.startButtonContent}
           >

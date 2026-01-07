@@ -8,9 +8,9 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { PaperProvider, MD3LightTheme, MD3DarkTheme } from 'react-native-paper';
-import { store } from './src/store/store';
+import { store, RootState } from './src/store/store';
 import MainNavigator from './src/navigation/MainNavigator';
 
 // Custom theme based on design system from plans
@@ -36,14 +36,23 @@ const darkTheme = {
   },
 };
 
+function AppContent() {
+  const themeMode = useSelector((state: RootState) => state.ui.theme);
+  const currentTheme = themeMode === 'dark' ? darkTheme : lightTheme;
+
+  return (
+    <PaperProvider theme={currentTheme}>
+      <MainNavigator />
+      <StatusBar style={themeMode === 'dark' ? 'light' : 'dark'} />
+    </PaperProvider>
+  );
+}
+
 export default function App() {
   return (
     <Provider store={store}>
       <SafeAreaProvider>
-        <PaperProvider theme={lightTheme}>
-          <MainNavigator />
-          <StatusBar style="auto" />
-        </PaperProvider>
+        <AppContent />
       </SafeAreaProvider>
     </Provider>
   );

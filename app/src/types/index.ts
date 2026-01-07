@@ -140,9 +140,9 @@ export interface WorkoutSession {
   userId: string;
   weekNumber: number;
   dayNumber: number;
-  startedAt: Date;
-  completedAt?: Date;
-  pausedAt?: Date;
+  startedAt: number; // timestamp
+  completedAt?: number; // timestamp
+  pausedAt?: number; // timestamp
   status: WorkoutStatus;
   exercises: ExerciseLog[];
   notes?: string;
@@ -158,8 +158,8 @@ export interface ExerciseLog {
   actualWeight?: number;
   order: number;
   sets: SetLog[];
-  startedAt?: Date;
-  completedAt?: Date;
+  startedAt?: number; // timestamp
+  completedAt?: number; // timestamp
 }
 
 export interface SetLog {
@@ -170,7 +170,7 @@ export interface SetLog {
   reps: number;
   targetReps: RepTarget;
   restSeconds: number;
-  completedAt: Date;
+  completedAt: number; // timestamp
   perceivedEffort?: number; // RPE scale 1-10
   notes?: string;
 }
@@ -185,7 +185,7 @@ export interface MaxLift {
   exerciseId: string;
   weight: number;
   reps: number;
-  dateAchieved: Date;
+  dateAchieved: number; // timestamp
   verified: boolean; // True if from max determination week
   workoutSessionId?: string;
 }
@@ -197,7 +197,7 @@ export interface PersonalRecord {
   recordType: 'max_weight' | 'max_reps' | 'volume';
   value: number;
   previousValue?: number;
-  achievedAt: Date;
+  achievedAt: number; // timestamp
   workoutSessionId: string;
 }
 

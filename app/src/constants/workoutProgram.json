@@ -1,0 +1,707 @@
+{
+  "programId": "30-minute-body-v1",
+  "programName": "30 Minute Body",
+  "description": "Progressive strength training based on Lance McCullough's proven methodology",
+  "phases": [
+    {
+      "id": "max-determination",
+      "name": "Max Determination Week",
+      "description": "Establish your baseline strength for personalized programming",
+      "targetExperience": "all",
+      "weeks": [
+        {
+          "weekNumber": 0,
+          "title": "Max Determination Week",
+          "goals": "Establish maximum strength levels. Keep great form and be honest in your logging.",
+          "weekType": "max",
+          "days": [
+            {
+              "dayNumber": 1,
+              "name": "Chest & Back",
+              "muscleGroups": ["chest", "back"],
+              "exercises": [
+                {
+                  "exerciseId": "bench-press",
+                  "order": 1,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 6, "max": 6 }, "restSeconds": 30, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 5 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 1, "max": 4 }, "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 85, "roundTo": 5 }, "setType": "max" },
+                    { "setNumber": 3, "repRange": { "min": 1, "max": 4 }, "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 5 }, "setType": "max" },
+                    { "setNumber": 4, "repRange": { "min": 1, "max": 4 }, "restSeconds": 180, "weightFormula": { "baseType": "userMax", "percentage": 95, "roundTo": 5 }, "setType": "max" },
+                    { "setNumber": 5, "repRange": { "min": 1, "max": 4 }, "restSeconds": 180, "weightFormula": { "baseType": "userMax", "percentage": 100, "roundTo": 5 }, "setType": "max" },
+                    { "setNumber": 6, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 5 }, "setType": "downset" },
+                    { "setNumber": 7, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 5 }, "setType": "downset" }
+                  ],
+                  "alternates": ["machine-press"]
+                },
+                {
+                  "exerciseId": "dumbbell-incline-press",
+                  "order": 2,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 6, "max": 6 }, "restSeconds": 30, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 2.5 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 1, "max": 4 }, "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 85, "roundTo": 2.5 }, "setType": "max" },
+                    { "setNumber": 3, "repRange": { "min": 1, "max": 4 }, "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 2.5 }, "setType": "max" },
+                    { "setNumber": 4, "repRange": { "min": 1, "max": 4 }, "restSeconds": 180, "weightFormula": { "baseType": "userMax", "percentage": 95, "roundTo": 2.5 }, "setType": "max" },
+                    { "setNumber": 5, "repRange": { "min": 1, "max": 4 }, "restSeconds": 180, "weightFormula": { "baseType": "userMax", "percentage": 100, "roundTo": 2.5 }, "setType": "max" },
+                    { "setNumber": 6, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 2.5 }, "setType": "downset" }
+                  ]
+                },
+                {
+                  "exerciseId": "lat-pulldown",
+                  "order": 3,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 6, "max": 6 }, "restSeconds": 30, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 5 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 1, "max": 4 }, "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 85, "roundTo": 5 }, "setType": "max" },
+                    { "setNumber": 3, "repRange": { "min": 1, "max": 4 }, "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 5 }, "setType": "max" },
+                    { "setNumber": 4, "repRange": { "min": 1, "max": 4 }, "restSeconds": 180, "weightFormula": { "baseType": "userMax", "percentage": 95, "roundTo": 5 }, "setType": "max" },
+                    { "setNumber": 5, "repRange": { "min": 1, "max": 4 }, "restSeconds": 180, "weightFormula": { "baseType": "userMax", "percentage": 100, "roundTo": 5 }, "setType": "max" },
+                    { "setNumber": 6, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 5 }, "setType": "downset" }
+                  ]
+                },
+                {
+                  "exerciseId": "machine-low-row",
+                  "order": 4,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "lat-pulldown", "percentage": 50, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "lat-pulldown", "percentage": 50, "roundTo": 5 }, "setType": "working" }
+                  ]
+                }
+              ]
+            },
+            {
+              "dayNumber": 2,
+              "name": "Legs",
+              "muscleGroups": ["legs"],
+              "exercises": [
+                {
+                  "exerciseId": "leg-press",
+                  "order": 1,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 10, "max": 10 }, "restSeconds": 60, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 10 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 1, "max": 4 }, "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 85, "roundTo": 10 }, "setType": "max" },
+                    { "setNumber": 3, "repRange": { "min": 1, "max": 4 }, "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 10 }, "setType": "max" },
+                    { "setNumber": 4, "repRange": { "min": 1, "max": 4 }, "restSeconds": 180, "weightFormula": { "baseType": "userMax", "percentage": 95, "roundTo": 10 }, "setType": "max" },
+                    { "setNumber": 5, "repRange": { "min": 1, "max": 4 }, "restSeconds": 180, "weightFormula": { "baseType": "userMax", "percentage": 100, "roundTo": 10 }, "setType": "max" },
+                    { "setNumber": 6, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 10 }, "setType": "downset" }
+                  ]
+                },
+                {
+                  "exerciseId": "leg-extension",
+                  "order": 2,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "leg-press", "percentage": 30, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "leg-press", "percentage": 30, "roundTo": 5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "leg-curl",
+                  "order": 3,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "leg-press", "percentage": 25, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "leg-press", "percentage": 25, "roundTo": 5 }, "setType": "working" }
+                  ]
+                }
+              ]
+            },
+            {
+              "dayNumber": 3,
+              "name": "Shoulders & Arms",
+              "muscleGroups": ["shoulders", "biceps", "triceps"],
+              "exercises": [
+                {
+                  "exerciseId": "shoulder-press",
+                  "order": 1,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 6, "max": 6 }, "restSeconds": 30, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 2.5 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 1, "max": 4 }, "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 85, "roundTo": 2.5 }, "setType": "max" },
+                    { "setNumber": 3, "repRange": { "min": 1, "max": 4 }, "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 2.5 }, "setType": "max" },
+                    { "setNumber": 4, "repRange": { "min": 1, "max": 4 }, "restSeconds": 180, "weightFormula": { "baseType": "userMax", "percentage": 95, "roundTo": 2.5 }, "setType": "max" },
+                    { "setNumber": 5, "repRange": { "min": 1, "max": 4 }, "restSeconds": 180, "weightFormula": { "baseType": "userMax", "percentage": 100, "roundTo": 2.5 }, "setType": "max" },
+                    { "setNumber": 6, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 2.5 }, "setType": "downset" }
+                  ]
+                },
+                {
+                  "exerciseId": "dumbbell-lateral-raise",
+                  "order": 2,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 30, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 30, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "bicep-cable-curl",
+                  "order": 3,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 50, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 50, "roundTo": 5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "tricep-pushdown",
+                  "order": 4,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 50, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 50, "roundTo": 5 }, "setType": "working" }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "progressive-weeks",
+      "name": "Progressive Training",
+      "description": "Structured strength building with adaptive programming",
+      "targetExperience": "all",
+      "weeks": [
+        {
+          "weekNumber": 1,
+          "title": "Week 1 - Building Intensity",
+          "goals": "Jump into the workout. Give it all you got and push to your limits every time.",
+          "weekType": "intensity",
+          "days": [
+            {
+              "dayNumber": 1,
+              "name": "Chest & Back",
+              "muscleGroups": ["chest", "back"],
+              "exercises": [
+                {
+                  "exerciseId": "bench-press",
+                  "order": 1,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 6, "max": 6 }, "restSeconds": 30, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 5 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 1, "max": 6 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 85, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 3, "repRange": { "min": 1, "max": 6 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 4, "repRange": "REP_OUT", "restSeconds": 180, "weightFormula": { "baseType": "userMax", "percentage": 95, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 5, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 5 }, "setType": "downset" },
+                    { "setNumber": 6, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 5 }, "setType": "downset" }
+                  ],
+                  "alternates": ["machine-press", "dumbbell-incline-press"]
+                },
+                {
+                  "exerciseId": "dumbbell-chest-fly",
+                  "order": 2,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 15, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "dumbbell-incline-press", "percentage": 25, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": { "min": 15, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "dumbbell-incline-press", "percentage": 25, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "lat-pulldown",
+                  "order": 3,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 6, "max": 6 }, "restSeconds": 30, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 5 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 1, "max": 6 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 85, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 3, "repRange": { "min": 1, "max": 6 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 4, "repRange": "REP_OUT", "restSeconds": 180, "weightFormula": { "baseType": "userMax", "percentage": 95, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 5, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 5 }, "setType": "downset" },
+                    { "setNumber": 6, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 5 }, "setType": "downset" }
+                  ]
+                },
+                {
+                  "exerciseId": "machine-low-row",
+                  "order": 4,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "lat-pulldown", "percentage": 50, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "lat-pulldown", "percentage": 50, "roundTo": 5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "machine-high-row",
+                  "order": 5,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "lat-pulldown", "percentage": 50, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "lat-pulldown", "percentage": 50, "roundTo": 5 }, "setType": "working" }
+                  ]
+                }
+              ]
+            },
+            {
+              "dayNumber": 2,
+              "name": "Legs",
+              "muscleGroups": ["legs"],
+              "exercises": [
+                {
+                  "exerciseId": "leg-press",
+                  "order": 1,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 10, "max": 10 }, "restSeconds": 60, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 10 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 1, "max": 6 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 85, "roundTo": 10 }, "setType": "working" },
+                    { "setNumber": 3, "repRange": { "min": 1, "max": 6 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 10 }, "setType": "working" },
+                    { "setNumber": 4, "repRange": "REP_OUT", "restSeconds": 180, "weightFormula": { "baseType": "userMax", "percentage": 95, "roundTo": 10 }, "setType": "working" },
+                    { "setNumber": 5, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 10 }, "setType": "downset" },
+                    { "setNumber": 6, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 10 }, "setType": "downset" }
+                  ]
+                },
+                {
+                  "exerciseId": "leg-extension",
+                  "order": 2,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "leg-press", "percentage": 30, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "leg-press", "percentage": 30, "roundTo": 5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "leg-curl",
+                  "order": 3,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "leg-press", "percentage": 25, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "leg-press", "percentage": 25, "roundTo": 5 }, "setType": "working" }
+                  ]
+                }
+              ]
+            },
+            {
+              "dayNumber": 3,
+              "name": "Shoulders & Arms",
+              "muscleGroups": ["shoulders", "biceps", "triceps"],
+              "exercises": [
+                {
+                  "exerciseId": "shoulder-press",
+                  "order": 1,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 6, "max": 6 }, "restSeconds": 30, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 2.5 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 1, "max": 6 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 85, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 3, "repRange": { "min": 1, "max": 6 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 4, "repRange": "REP_OUT", "restSeconds": 180, "weightFormula": { "baseType": "userMax", "percentage": 95, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 5, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 2.5 }, "setType": "downset" }
+                  ]
+                },
+                {
+                  "exerciseId": "dumbbell-lateral-raise",
+                  "order": 2,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 30, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 30, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "bicep-cable-curl",
+                  "order": 3,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 50, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 50, "roundTo": 5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "tricep-pushdown",
+                  "order": 4,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 50, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 50, "roundTo": 5 }, "setType": "working" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "weekNumber": 2,
+          "title": "Week 2 - Volume Focus",
+          "goals": "Increase training volume with moderate weights and higher reps.",
+          "weekType": "percentage",
+          "days": [
+            {
+              "dayNumber": 1,
+              "name": "Chest & Back",
+              "muscleGroups": ["chest", "back"],
+              "exercises": [
+                {
+                  "exerciseId": "bench-press",
+                  "order": 1,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 10, "max": 10 }, "restSeconds": 30, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 5 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 3, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 4, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 5, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 5 }, "setType": "downset" }
+                  ],
+                  "alternates": ["machine-press"]
+                },
+                {
+                  "exerciseId": "dumbbell-incline-press",
+                  "order": 2,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 3, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "dumbbell-chest-fly",
+                  "order": 3,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "dumbbell-incline-press", "percentage": 25, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "dumbbell-incline-press", "percentage": 25, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "lat-pulldown",
+                  "order": 4,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 10, "max": 10 }, "restSeconds": 30, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 5 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 3, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 4, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 5 }, "setType": "downset" }
+                  ]
+                },
+                {
+                  "exerciseId": "machine-low-row",
+                  "order": 5,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "lat-pulldown", "percentage": 50, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "lat-pulldown", "percentage": 50, "roundTo": 5 }, "setType": "working" }
+                  ]
+                }
+              ]
+            },
+            {
+              "dayNumber": 2,
+              "name": "Legs",
+              "muscleGroups": ["legs"],
+              "exercises": [
+                {
+                  "exerciseId": "leg-press",
+                  "order": 1,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 10, "max": 10 }, "restSeconds": 30, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 10 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 10 }, "setType": "working" },
+                    { "setNumber": 3, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 10 }, "setType": "working" },
+                    { "setNumber": 4, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 10 }, "setType": "working" },
+                    { "setNumber": 5, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 10 }, "setType": "downset" }
+                  ]
+                },
+                {
+                  "exerciseId": "leg-extension",
+                  "order": 2,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "leg-press", "percentage": 30, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "leg-press", "percentage": 30, "roundTo": 5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "leg-curl",
+                  "order": 3,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "leg-press", "percentage": 25, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "leg-press", "percentage": 25, "roundTo": 5 }, "setType": "working" }
+                  ]
+                }
+              ]
+            },
+            {
+              "dayNumber": 3,
+              "name": "Shoulders & Arms",
+              "muscleGroups": ["shoulders", "biceps", "triceps"],
+              "exercises": [
+                {
+                  "exerciseId": "shoulder-press",
+                  "order": 1,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 10, "max": 10 }, "restSeconds": 30, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 2.5 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 3, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 4, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 2.5 }, "setType": "downset" }
+                  ]
+                },
+                {
+                  "exerciseId": "dumbbell-lateral-raise",
+                  "order": 2,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 30, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 30, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "rear-delt-fly",
+                  "order": 3,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 30, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 30, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "bicep-cable-curl",
+                  "order": 4,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 50, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 50, "roundTo": 5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "tricep-pushdown",
+                  "order": 5,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 50, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 50, "roundTo": 5 }, "setType": "working" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "weekNumber": 3,
+          "title": "Week 3 - High Volume",
+          "goals": "Continue to attempt new maxes and go for max repetitions.",
+          "weekType": "percentage",
+          "days": [
+            {
+              "dayNumber": 1,
+              "name": "Chest & Back",
+              "muscleGroups": ["chest", "back"],
+              "exercises": [
+                {
+                  "exerciseId": "bench-press",
+                  "order": 1,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 10, "max": 10 }, "restSeconds": 30, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 5 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 3, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 4, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 5, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 5 }, "setType": "downset" },
+                    { "setNumber": 6, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 5 }, "setType": "downset" }
+                  ],
+                  "alternates": ["machine-press"]
+                },
+                {
+                  "exerciseId": "dumbbell-incline-press",
+                  "order": 2,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 3, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "dumbbell-chest-fly",
+                  "order": 3,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "dumbbell-incline-press", "percentage": 25, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "dumbbell-incline-press", "percentage": 25, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "lat-pulldown",
+                  "order": 4,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 10, "max": 10 }, "restSeconds": 30, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 5 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 3, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 4, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 5, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 5 }, "setType": "downset" }
+                  ]
+                },
+                {
+                  "exerciseId": "machine-low-row",
+                  "order": 5,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "lat-pulldown", "percentage": 50, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "lat-pulldown", "percentage": 50, "roundTo": 5 }, "setType": "working" }
+                  ]
+                }
+              ]
+            },
+            {
+              "dayNumber": 3,
+              "name": "Shoulders & Arms",
+              "muscleGroups": ["shoulders", "biceps", "triceps"],
+              "exercises": [
+                {
+                  "exerciseId": "shoulder-press",
+                  "order": 1,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 10, "max": 10 }, "restSeconds": 30, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 2.5 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 3, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 4, "repRange": { "min": 10, "max": 15 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 75, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "dumbbell-lateral-raise",
+                  "order": 2,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 30, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 30, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "rear-delt-fly",
+                  "order": 3,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 30, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 30, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "alternating-dumbbell-curl",
+                  "order": 4,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 45, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 45, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "tricep-overhead-extension",
+                  "order": 5,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 45, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 45, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "weekNumber": 4,
+          "title": "Week 4 - Mixed Protocol",
+          "goals": "Combine intensity and volume for balanced strength development.",
+          "weekType": "mixed",
+          "days": [
+            {
+              "dayNumber": 1,
+              "name": "Chest & Back",
+              "muscleGroups": ["chest", "back"],
+              "exercises": [
+                {
+                  "exerciseId": "bench-press",
+                  "order": 1,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 8, "max": 8 }, "restSeconds": 30, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 5 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 6, "max": 12 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 3, "repRange": { "min": 6, "max": 12 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 4, "repRange": { "min": 6, "max": 12 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 5, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 5 }, "setType": "downset" }
+                  ],
+                  "alternates": ["machine-press"]
+                },
+                {
+                  "exerciseId": "dumbbell-incline-press",
+                  "order": 2,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 6, "max": 12 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": { "min": 6, "max": 12 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 3, "repRange": { "min": 6, "max": 12 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "dumbbell-chest-fly",
+                  "order": 3,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "dumbbell-incline-press", "percentage": 25, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "dumbbell-incline-press", "percentage": 25, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "lat-pulldown",
+                  "order": 4,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 8, "max": 8 }, "restSeconds": 30, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 5 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 6, "max": 12 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 3, "repRange": { "min": 6, "max": 12 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 4, "repRange": { "min": 6, "max": 12 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 5, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 5 }, "setType": "downset" }
+                  ]
+                },
+                {
+                  "exerciseId": "machine-low-row",
+                  "order": 5,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "lat-pulldown", "percentage": 50, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "lat-pulldown", "percentage": 50, "roundTo": 5 }, "setType": "working" }
+                  ]
+                }
+              ]
+            },
+            {
+              "dayNumber": 2,
+              "name": "Legs",
+              "muscleGroups": ["legs"],
+              "exercises": [
+                {
+                  "exerciseId": "leg-press",
+                  "order": 1,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 10, "max": 10 }, "restSeconds": 30, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 10 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 6, "max": 12 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 10 }, "setType": "working" },
+                    { "setNumber": 3, "repRange": { "min": 6, "max": 12 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 10 }, "setType": "working" },
+                    { "setNumber": 4, "repRange": { "min": 6, "max": 12 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 10 }, "setType": "working" },
+                    { "setNumber": 5, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 10 }, "setType": "downset" }
+                  ]
+                },
+                {
+                  "exerciseId": "leg-extension",
+                  "order": 2,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "leg-press", "percentage": 30, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "leg-press", "percentage": 30, "roundTo": 5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "leg-curl",
+                  "order": 3,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "leg-press", "percentage": 25, "roundTo": 5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "leg-press", "percentage": 25, "roundTo": 5 }, "setType": "working" }
+                  ]
+                }
+              ]
+            },
+            {
+              "dayNumber": 3,
+              "name": "Shoulders & Arms",
+              "muscleGroups": ["shoulders", "biceps", "triceps"],
+              "exercises": [
+                {
+                  "exerciseId": "shoulder-press",
+                  "order": 1,
+                  "sets": [
+                    { "setNumber": 1, "repRange": { "min": 8, "max": 8 }, "restSeconds": 30, "weightFormula": { "baseType": "userMax", "percentage": 40, "roundTo": 2.5 }, "setType": "warmup" },
+                    { "setNumber": 2, "repRange": { "min": 6, "max": 12 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 3, "repRange": { "min": 6, "max": 12 }, "restSeconds": 90, "weightFormula": { "baseType": "userMax", "percentage": 90, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 4, "repRange": "REP_OUT", "restSeconds": 120, "weightFormula": { "baseType": "userMax", "percentage": 65, "roundTo": 2.5 }, "setType": "downset" }
+                  ]
+                },
+                {
+                  "exerciseId": "dumbbell-lateral-raise",
+                  "order": 2,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 30, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 30, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "rear-delt-fly",
+                  "order": 3,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 30, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 30, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "alternating-dumbbell-curl",
+                  "order": 4,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 45, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 45, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                },
+                {
+                  "exerciseId": "tricep-overhead-extension",
+                  "order": 5,
+                  "sets": [
+                    { "setNumber": 1, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 45, "roundTo": 2.5 }, "setType": "working" },
+                    { "setNumber": 2, "repRange": "REP_OUT", "restSeconds": 60, "weightFormula": { "baseType": "relatedExercise", "exerciseReference": "shoulder-press", "percentage": 45, "roundTo": 2.5 }, "setType": "working" }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

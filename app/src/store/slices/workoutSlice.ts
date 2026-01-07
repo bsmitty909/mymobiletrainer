@@ -57,7 +57,7 @@ const workoutSlice = createSlice({
       if (state.activeSession) {
         const exercise = state.activeSession.exercises[action.payload];
         if (exercise) {
-          exercise.completedAt = new Date();
+          exercise.completedAt = Date.now();
         }
       }
     },
@@ -66,7 +66,7 @@ const workoutSlice = createSlice({
     pauseWorkout: (state) => {
       if (state.activeSession) {
         state.activeSession.status = 'paused';
-        state.activeSession.pausedAt = new Date();
+        state.activeSession.pausedAt = Date.now();
       }
     },
 

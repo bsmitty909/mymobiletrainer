@@ -7,26 +7,69 @@
  */
 
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppSelector } from '../store/store';
 import { RootStackParamList, MainTabsParamList } from '../types';
 
-// Import screens (will be created)
+// Import screens
 import WelcomeScreen from '../screens/onboarding/WelcomeScreen';
 import WorkoutDashboardScreen from '../screens/workout/WorkoutDashboardScreen';
+import WorkoutDetailScreen from '../screens/workout/WorkoutDetailScreen';
+import ActiveWorkoutScreen from '../screens/workout/ActiveWorkoutScreen';
+import WorkoutSummaryScreen from '../screens/workout/WorkoutSummaryScreen';
 import ProgressDashboardScreen from '../screens/progress/ProgressDashboardScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
+import SettingsScreen from '../screens/settings/SettingsScreen';
+import MaxLiftsScreen from '../screens/profile/MaxLiftsScreen';
+import PrivacyPolicyScreen from '../screens/settings/PrivacyPolicyScreen';
+import TermsOfServiceScreen from '../screens/settings/TermsOfServiceScreen';
 
 const RootStack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<MainTabsParamList>();
+const WorkoutStack = createStackNavigator();
+const ProfileStack = createStackNavigator();
+
+/**
+ * Workout tab stack navigator
+ * Allows navigation within workout tab: Dashboard → Active → Summary
+ */
+function WorkoutStackNavigator() {
+  return (
+    <WorkoutStack.Navigator screenOptions={{ headerShown: false }}>
+      <WorkoutStack.Screen name="WorkoutDashboard" component={WorkoutDashboardScreen} />
+      <WorkoutStack.Screen name="WorkoutDetail" component={WorkoutDetailScreen} />
+      <WorkoutStack.Screen name="ActiveWorkout" component={ActiveWorkoutScreen} />
+      <WorkoutStack.Screen name="WorkoutSummary" component={WorkoutSummaryScreen} />
+    </WorkoutStack.Navigator>
+  );
+}
+
+/**
+ * Profile tab stack navigator
+ * Allows navigation within profile tab: Profile → Settings → Max Lifts
+ */
+function ProfileStackNavigator() {
+  return (
+    <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
+      <ProfileStack.Screen name="ProfileMain" component={ProfileScreen} />
+      <ProfileStack.Screen name="Settings" component={SettingsScreen} />
+      <ProfileStack.Screen name="MaxLifts" component={MaxLiftsScreen} />
+      <ProfileStack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
+      <ProfileStack.Screen name="TermsOfService" component={TermsOfServiceScreen} />
+    </ProfileStack.Navigator>
+  );
+}
 
 /**
  * Main tab navigation (after onboarding)
  */
 function MainTabs() {
+  const insets = useSafeAreaInsets();
+  
   return (
     <Tab.Navigator
       screenOptions={{
@@ -34,9 +77,12 @@ function MainTabs() {
         tabBarActiveTintColor: '#2563EB', // Energy Blue
         tabBarInactiveTintColor: '#6B7280',
         tabBarStyle: {
-          height: 60,
-          paddingBottom: 8,
+          height: 60 + insets.bottom,
+          paddingBottom: Math.max(insets.bottom, 8),
           paddingTop: 8,
+          borderTopWidth: 1,
+          borderTopColor: '#E5E7EB',
+          backgroundColor: '#FFFFFF',
         },
         tabBarLabelStyle: {
           fontSize: 12,
@@ -46,7 +92,7 @@ function MainTabs() {
     >
       <Tab.Screen
         name="Workout"
-        component={WorkoutDashboardScreen}
+        component={WorkoutStackNavigator}
         options={{
           tabBarLabel: 'Workout',
           tabBarIcon: ({ color }) => (
@@ -66,7 +112,7 @@ function MainTabs() {
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileStackNavigator}
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color }) => (

@@ -143,7 +143,10 @@ export class FormulaCalculator {
       };
     }
 
-    const workingSets = previousLog.sets.filter(set => set.setNumber > 1);
+    // If only one set, use it. Otherwise, skip warmup (first set) and analyze working sets
+    const workingSets = previousLog.sets.length === 1
+      ? previousLog.sets
+      : previousLog.sets.filter(set => set.setNumber > 1);
     const avgReps = this.calculateAverageReps(workingSets.map(s => s.reps));
     const firstSet = previousLog.sets[0];
     const targetReps = firstSet.targetReps;
@@ -421,7 +424,8 @@ export class FormulaCalculator {
   ): number[] {
     const progression: number[] = [];
     const startWeight = estimatedMax * 0.35; // Start at 35%
-    const increment = (estimatedMax - startWeight) / (numberOfSets - 1);
+    const targetMax = estimatedMax * 1.05; // Go slightly above estimated max
+    const increment = (targetMax - startWeight) / (numberOfSets - 1);
 
     for (let i = 0; i < numberOfSets; i++) {
       const weight = startWeight + (increment * i);

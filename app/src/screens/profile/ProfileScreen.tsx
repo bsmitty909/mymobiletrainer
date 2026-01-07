@@ -9,7 +9,7 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import { Text, Card, List } from 'react-native-paper';
 import { useAppSelector } from '../../store/store';
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }: any) {
   const user = useAppSelector((state) => state.user.currentUser);
 
   return (
@@ -51,14 +51,14 @@ export default function ProfileScreen() {
           description="View and manage your maximum lift records"
           left={(props) => <List.Icon {...props} icon="weight-lifter" />}
           right={(props) => <List.Icon {...props} icon="chevron-right" />}
-          onPress={() => {}}
+          onPress={() => navigation.navigate('MaxLifts')}
         />
         <List.Item
           title="Settings"
           description="Preferences, notifications, and more"
           left={(props) => <List.Icon {...props} icon="cog" />}
           right={(props) => <List.Icon {...props} icon="chevron-right" />}
-          onPress={() => {}}
+          onPress={() => navigation.navigate('Settings')}
         />
         <List.Item
           title="Export Data"

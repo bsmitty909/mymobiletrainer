@@ -1,0 +1,349 @@
+{
+  "programId": "30-minute-body-v1",
+  "programName": "30 Minute Body",
+  "description": "Progressive strength training based on Lance McCullough's proven methodology",
+  "phases": [
+    {
+      "id": "max-determination",
+      "name": "Max Determination Week",
+      "description": "Establish your baseline strength for personalized programming",
+      "targetExperience": "all",
+      "weeks": [
+        {
+          "weekNumber": 0,
+          "title": "Max Determination Week",
+          "goals": "Establish maximum strength levels for target muscle groups. Keep great form and be honest in your logging.",
+          "weekType": "max",
+          "days": [
+            {
+              "dayNumber": 1,
+              "name": "Chest & Back",
+              "muscleGroups": ["chest", "back"],
+              "exercises": [
+                {
+                  "exerciseId": "bench-press",
+                  "order": 1,
+                  "sets": [
+                    {
+                      "setNumber": 1,
+                      "repRange": { "min": 1, "max": 1 },
+                      "restSeconds": 120,
+                      "weightFormula": {
+                        "baseType": "userMax",
+                        "percentage": 35,
+                        "roundTo": 5
+                      },
+                      "setType": "warmup"
+                    },
+                    {
+                      "setNumber": 2,
+                      "repRange": { "min": 1, "max": 1 },
+                      "restSeconds": 120,
+                      "weightFormula": {
+                        "baseType": "userMax",
+                        "percentage": 55,
+                        "roundTo": 5
+                      },
+                      "setType": "working"
+                    }
+                  ],
+                  "alternates": ["machine-press", "dumbbell-incline-press"]
+                },
+                {
+                  "exerciseId": "lat-pulldown",
+                  "order": 2,
+                  "sets": [
+                    {
+                      "setNumber": 1,
+                      "repRange": { "min": 4, "max": 4 },
+                      "restSeconds": 120,
+                      "weightFormula": {
+                        "baseType": "userMax",
+                        "percentage": 40,
+                        "roundTo": 5
+                      },
+                      "setType": "warmup"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "dayNumber": 2,
+              "name": "Legs",
+              "muscleGroups": ["legs"],
+              "exercises": [
+                {
+                  "exerciseId": "leg-press",
+                  "order": 1,
+                  "sets": [
+                    {
+                      "setNumber": 1,
+                      "repRange": { "min": 10, "max": 10 },
+                      "restSeconds": 120,
+                      "weightFormula": {
+                        "baseType": "bodyWeight",
+                        "percentage": 50,
+                        "roundTo": 10
+                      },
+                      "setType": "warmup"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "dayNumber": 3,
+              "name": "Shoulders & Arms",
+              "muscleGroups": ["shoulders", "biceps", "triceps"],
+              "exercises": [
+                {
+                  "exerciseId": "shoulder-press",
+                  "order": 1,
+                  "sets": [
+                    {
+                      "setNumber": 1,
+                      "repRange": { "min": 4, "max": 4 },
+                      "restSeconds": 120,
+                      "weightFormula": {
+                        "baseType": "bodyWeight",
+                        "percentage": 20,
+                        "roundTo": 5
+                      },
+                      "setType": "warmup"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "progressive-weeks",
+      "name": "Progressive Training",
+      "description": "Structured strength building with adaptive programming",
+      "targetExperience": "all",
+      "weeks": [
+        {
+          "weekNumber": 1,
+          "title": "Week 1 - Building Intensity",
+          "goals": "Jump into the workout. Give it all you got and push to your limits every time.",
+          "weekType": "intensity",
+          "days": [
+            {
+              "dayNumber": 1,
+              "name": "Chest & Back",
+              "muscleGroups": ["chest", "back", "biceps", "triceps"],
+              "exercises": [
+                {
+                  "exerciseId": "bench-press",
+                  "order": 1,
+                  "sets": [
+                    {
+                      "setNumber": 1,
+                      "repRange": { "min": 6, "max": 6 },
+                      "restSeconds": 30,
+                      "weightFormula": {
+                        "baseType": "userMax",
+                        "percentage": 40,
+                        "roundTo": 5
+                      },
+                      "setType": "warmup"
+                    },
+                    {
+                      "setNumber": 2,
+                      "repRange": { "min": 1, "max": 1 },
+                      "restSeconds": 90,
+                      "weightFormula": {
+                        "baseType": "userMax",
+                        "percentage": 85,
+                        "roundTo": 5
+                      },
+                      "setType": "working"
+                    },
+                    {
+                      "setNumber": 3,
+                      "repRange": { "min": 1, "max": 1 },
+                      "restSeconds": 90,
+                      "weightFormula": {
+                        "baseType": "userMax",
+                        "percentage": 90,
+                        "roundTo": 5
+                      },
+                      "setType": "working"
+                    },
+                    {
+                      "setNumber": 4,
+                      "repRange": "REP_OUT",
+                      "restSeconds": 180,
+                      "weightFormula": {
+                        "baseType": "userMax",
+                        "percentage": 95,
+                        "roundTo": 5
+                      },
+                      "setType": "working"
+                    },
+                    {
+                      "setNumber": 5,
+                      "repRange": "REP_OUT",
+                      "restSeconds": 120,
+                      "weightFormula": {
+                        "baseType": "userMax",
+                        "percentage": 65,
+                        "roundTo": 5
+                      },
+                      "setType": "downset"
+                    }
+                  ],
+                  "alternates": ["machine-press", "dumbbell-incline-press"]
+                },
+                {
+                  "exerciseId": "dumbbell-chest-fly",
+                  "order": 2,
+                  "sets": [
+                    {
+                      "setNumber": 1,
+                      "repRange": { "min": 15, "max": 15 },
+                      "restSeconds": 90,
+                      "weightFormula": {
+                        "baseType": "relatedExercise",
+                        "exerciseReference": "dumbbell-incline-press",
+                        "percentage": 25,
+                        "roundTo": 2.5
+                      },
+                      "setType": "working"
+                    },
+                    {
+                      "setNumber": 2,
+                      "repRange": { "min": 15, "max": 15 },
+                      "restSeconds": 90,
+                      "weightFormula": {
+                        "baseType": "relatedExercise",
+                        "exerciseReference": "dumbbell-incline-press",
+                        "percentage": 25,
+                        "roundTo": 2.5
+                      },
+                      "setType": "working"
+                    }
+                  ]
+                },
+                {
+                  "exerciseId": "lat-pulldown",
+                  "order": 3,
+                  "sets": [
+                    {
+                      "setNumber": 1,
+                      "repRange": { "min": 6, "max": 6 },
+                      "restSeconds": 30,
+                      "weightFormula": {
+                        "baseType": "userMax",
+                        "percentage": 40,
+                        "roundTo": 5
+                      },
+                      "setType": "warmup"
+                    },
+                    {
+                      "setNumber": 2,
+                      "repRange": { "min": 3, "max": 3 },
+                      "restSeconds": 90,
+                      "weightFormula": {
+                        "baseType": "userMax",
+                        "percentage": 85,
+                        "roundTo": 5
+                      },
+                      "setType": "working"
+                    }
+                  ]
+                },
+                {
+                  "exerciseId": "machine-low-row",
+                  "order": 4,
+                  "sets": [
+                    {
+                      "setNumber": 1,
+                      "repRange": "REP_OUT",
+                      "restSeconds": 60,
+                      "weightFormula": {
+                        "baseType": "userMax",
+                        "percentage": 50,
+                        "roundTo": 5
+                      },
+                      "setType": "working"
+                    }
+                  ]
+                },
+                {
+                  "exerciseId": "machine-high-row",
+                  "order": 5,
+                  "sets": [
+                    {
+                      "setNumber": 1,
+                      "repRange": "REP_OUT",
+                      "restSeconds": 60,
+                      "weightFormula": {
+                        "baseType": "userMax",
+                        "percentage": 50,
+                        "roundTo": 5
+                      },
+                      "setType": "working"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "dayNumber": 2,
+              "name": "Legs",
+              "muscleGroups": ["legs"],
+              "exercises": [
+                {
+                  "exerciseId": "leg-press",
+                  "order": 1,
+                  "sets": [
+                    {
+                      "setNumber": 1,
+                      "repRange": { "min": 20, "max": 20 },
+                      "restSeconds": 90,
+                      "weightFormula": {
+                        "baseType": "userMax",
+                        "percentage": 50,
+                        "roundTo": 10
+                      },
+                      "setType": "working"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "dayNumber": 3,
+              "name": "Shoulders & Arms",
+              "muscleGroups": ["shoulders", "biceps", "triceps"],
+              "exercises": [
+                {
+                  "exerciseId": "shoulder-press",
+                  "order": 1,
+                  "sets": [
+                    {
+                      "setNumber": 1,
+                      "repRange": { "min": 6, "max": 6 },
+                      "restSeconds": 30,
+                      "weightFormula": {
+                        "baseType": "userMax",
+                        "percentage": 40,
+                        "roundTo": 5
+                      },
+                      "setType": "warmup"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
