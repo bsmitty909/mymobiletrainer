@@ -1,6 +1,6 @@
 /**
  * Rest Timer Component
- * 
+ *
  * Countdown timer for rest periods between sets.
  * Features:
  * - Visual countdown display
@@ -15,12 +15,14 @@ import { View, StyleSheet } from 'react-native';
 import { Text, Button, ProgressBar } from 'react-native-paper';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { tickRestTimer, stopRestTimer, addRestTime } from '../../store/slices/uiSlice';
+import useThemeColors from '../../utils/useThemeColors';
 
 interface RestTimerProps {
   onComplete?: () => void;
 }
 
 export default function RestTimer({ onComplete }: RestTimerProps) {
+  const colors = useThemeColors();
   const dispatch = useAppDispatch();
   const { isActive, remaining, target } = useAppSelector((state) => state.ui.restTimer);
 
@@ -58,7 +60,7 @@ export default function RestTimer({ onComplete }: RestTimerProps) {
 
         <ProgressBar
           progress={progress}
-          color="#2563EB"
+          color={colors.primary}
           style={styles.progressBar}
         />
 

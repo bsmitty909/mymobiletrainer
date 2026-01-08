@@ -8,18 +8,50 @@ import React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { Text } from 'react-native-paper';
 import { BarChart } from 'react-native-chart-kit';
+import useThemeColors from '../../utils/useThemeColors';
 
 interface VolumeTrendChartProps {
   workoutHistory: Array<{ date: number; totalVolume: number; weekNumber: number; dayNumber: number }>;
 }
 
 export default function VolumeTrendChart({ workoutHistory }: VolumeTrendChartProps) {
+  const colors = useThemeColors();
+  
+  const styles = StyleSheet.create({
+    container: {
+      alignItems: 'center',
+      paddingVertical: 16,
+    },
+    chart: {
+      borderRadius: 16,
+    },
+    placeholder: {
+      alignItems: 'center',
+      paddingVertical: 40,
+    },
+    placeholderText: {
+      color: colors.textSecondary,
+      marginVertical: 4,
+    },
+    placeholderSubtext: {
+      color: colors.textSecondary,
+      marginTop: 8,
+      opacity: 0.7,
+    },
+    legend: {
+      marginTop: 8,
+    },
+    legendText: {
+      color: colors.textSecondary,
+    },
+  });
+
   // If no data, show placeholder
   if (!workoutHistory || workoutHistory.length === 0) {
     return (
       <View style={styles.placeholder}>
         <Text variant="bodyLarge" style={styles.placeholderText}>
-          📊
+          
         </Text>
         <Text variant="bodyMedium" style={styles.placeholderText}>
           No workout data yet
@@ -39,12 +71,12 @@ export default function VolumeTrendChart({ workoutHistory }: VolumeTrendChartPro
   const labels = recentWorkouts.map(w => `W${w.weekNumber}D${w.dayNumber}`);
 
   const chartConfig = {
-    backgroundColor: '#FFFFFF',
-    backgroundGradientFrom: '#FFFFFF',
-    backgroundGradientTo: '#FFFFFF',
+    backgroundColor: colors.card,
+    backgroundGradientFrom: colors.card,
+    backgroundGradientTo: colors.card,
     decimalPlaces: 0,
-    color: (opacity = 1) => `rgba(16, 185, 129, ${opacity})`,
-    labelColor: (opacity = 1) => `rgba(107, 114, 128, ${opacity})`,
+    color: (opacity = 1) => `${colors.success}${Math.round(opacity * 255).toString(16).padStart(2, '0')}`,
+    labelColor: (opacity = 1) => `${colors.textSecondary}${Math.round(opacity * 255).toString(16).padStart(2, '0')}`,
     style: {
       borderRadius: 16,
     },
@@ -82,31 +114,3 @@ export default function VolumeTrendChart({ workoutHistory }: VolumeTrendChartPro
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    paddingVertical: 16,
-  },
-  chart: {
-    borderRadius: 16,
-  },
-  placeholder: {
-    alignItems: 'center',
-    paddingVertical: 40,
-  },
-  placeholderText: {
-    color: '#9CA3AF',
-    marginVertical: 4,
-  },
-  placeholderSubtext: {
-    color: '#D1D5DB',
-    marginTop: 8,
-  },
-  legend: {
-    marginTop: 8,
-  },
-  legendText: {
-    color: '#6B7280',
-  },
-});

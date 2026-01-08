@@ -76,9 +76,15 @@ const userSlice = createSlice({
           exerciseId,
           weight,
           reps,
-          dateAchieved: new Date(),
+          dateAchieved: Date.now(),
           verified: true,
         };
+      }
+    },
+
+    updateProfileImage: (state, action: PayloadAction<string>) => {
+      if (state.currentUser) {
+        state.currentUser.profileImage = action.payload;
       }
     },
 
@@ -111,6 +117,7 @@ export const {
   completeOnboarding,
   updateWorkoutPosition,
   updateMaxLifts,
+  updateProfileImage,
   setLoading,
   setError,
   clearError,

@@ -1,15 +1,19 @@
 /**
  * FormulaCalculator Service
- * 
- * Core service that implements the weight calculation formulas from the Excel spreadsheet.
- * This is the heart of the adaptive workout programming - it calculates suggested weights
- * based on user maxes, week type, and previous performance.
- * 
- * Formula Logic Extracted from Excel:
- * - Week Type determines base percentage (Max=100%, Intensity=85%, Percentage=75%, Mixed=90%)
- * - Previous performance adjusts weight (exceeded reps = increase, failed = decrease)
- * - Equipment type determines increment size (dumbbells=2.5lbs, machines=5lbs)
- * - All weights rounded to gym-available increments
+ *
+ * Core service implementing formulas extracted from Asa B 2020.xlsx workout program.
+ * This 48-week progressive overload program uses percentage-based weight calculations,
+ * conditional set display, and automatic progression logic.
+ *
+ * Extracted Formula Logic:
+ * - Percentage-based loading: 17 intensity levels from 10% to 200%
+ * - Progressive overload: +5 lbs on successful max attempts
+ * - Conditional sets: Display sets only after previous sets completed
+ * - Auto-regulation: Failed max attempts redirect to down sets (volume work)
+ * - Rest periods: 30s (warmup), 1-2 MIN (working), 1-5 MIN (max attempts)
+ * - All weights rounded to nearest 5 lbs
+ *
+ * Source: formulas/FORMULA_IMPLEMENTATION_GUIDE.md
  */
 
 import {

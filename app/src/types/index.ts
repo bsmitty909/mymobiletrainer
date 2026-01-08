@@ -15,6 +15,7 @@ export interface User {
   experienceLevel: ExperienceLevel;
   currentWeek: number;
   currentDay: number;
+  profileImage?: string; // URI to profile image
   createdAt: number; // timestamp
   lastActive: number; // timestamp
 }
@@ -33,7 +34,7 @@ export interface BodyWeightEntry {
   userId: string;
   weight: number;
   weekNumber: number;
-  recordedAt: Date;
+  recordedAt: number; // timestamp
 }
 
 // ============================================================================
@@ -424,3 +425,45 @@ export const ACCESSORY_RATIOS: Record<string, number> = {
   cableRow: 0.50,
   rearDeltFly: 0.30,
 };
+
+// ============================================================================
+// GAMIFICATION TYPES
+// ============================================================================
+
+export type BadgeCategory = 'workout_count' | 'streak' | 'volume' | 'pr' | 'consistency' | 'milestone';
+export type BadgeRarity = 'common' | 'rare' | 'epic' | 'legendary';
+
+export interface Badge {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  category: BadgeCategory;
+  rarity: BadgeRarity;
+  requirement: number;
+  unlockedAt?: number; // timestamp
+}
+
+export interface UserLevel {
+  level: number;
+  xp: number;
+  xpForNextLevel: number;
+  title: string;
+}
+
+export interface WorkoutStreak {
+  currentStreak: number;
+  longestStreak: number;
+  lastWorkoutDate: number; // timestamp
+  streakDates: number[]; // Array of timestamps for calendar visualization
+}
+
+export interface GamificationState {
+  level: UserLevel;
+  badges: Badge[];
+  unlockedBadges: string[]; // Array of badge IDs
+  streak: WorkoutStreak;
+  totalWorkouts: number;
+  totalVolume: number;
+  totalPRs: number;
+}

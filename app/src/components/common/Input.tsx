@@ -7,6 +7,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { TextInput, TextInputProps, HelperText } from 'react-native-paper';
+import useThemeColors from '../../utils/useThemeColors';
 
 interface InputProps extends Omit<TextInputProps, 'mode'> {
   error?: boolean;
@@ -19,6 +20,15 @@ export default function Input({
   style,
   ...props 
 }: InputProps) {
+  const colors = useThemeColors();
+  
+  const styles = StyleSheet.create({
+    input: {
+      backgroundColor: colors.surface,
+      marginVertical: 8,
+    },
+  });
+
   return (
     <>
       <TextInput
@@ -35,10 +45,3 @@ export default function Input({
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  input: {
-    backgroundColor: '#FFFFFF',
-    marginVertical: 8,
-  },
-});

@@ -5,8 +5,47 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Text, Appbar } from 'react-native-paper';
+import useThemeColors from '../../utils/useThemeColors';
 
 export default function TermsOfServiceScreen({ navigation }: any) {
+  const colors = useThemeColors();
+  
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    scrollView: {
+      flex: 1,
+    },
+    content: {
+      padding: 20,
+    },
+    title: {
+      fontWeight: 'bold',
+      marginBottom: 8,
+      color: colors.text,
+    },
+    date: {
+      color: colors.textSecondary,
+      marginBottom: 24,
+    },
+    sectionTitle: {
+      fontWeight: 'bold',
+      marginTop: 20,
+      marginBottom: 12,
+      color: colors.primary,
+    },
+    paragraph: {
+      lineHeight: 22,
+      color: colors.text,
+      marginBottom: 12,
+    },
+    bottomSpacing: {
+      height: 40,
+    },
+  });
+  
   return (
     <View style={styles.container}>
       <Appbar.Header>
@@ -95,38 +134,3 @@ export default function TermsOfServiceScreen({ navigation }: any) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F3F4F6',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  content: {
-    padding: 20,
-  },
-  title: {
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  date: {
-    color: '#6B7280',
-    marginBottom: 24,
-  },
-  sectionTitle: {
-    fontWeight: 'bold',
-    marginTop: 20,
-    marginBottom: 12,
-    color: '#2563EB',
-  },
-  paragraph: {
-    lineHeight: 22,
-    color: '#374151',
-    marginBottom: 12,
-  },
-  bottomSpacing: {
-    height: 40,
-  },
-});

@@ -1,45 +1,52 @@
 /**
  * Active Workout Screen
- * 
+ *
  * Main screen for logging sets during an active workout session.
  * Features:
- * - Exercise display with video link
+ * - Exercise display with detailed instructions
  * - Set-by-set logging interface
- * - Weight and rep input
- * - Rest timer integration
+ * - Large game-styled buttons and inputs
  * - Progress indicator
  * - Previous performance reference
  */
 
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Text, Card, Button, TextInput, Chip } from 'react-native-paper';
+import { Text, Card, Chip } from 'react-native-paper';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { logSet, completeExercise, completeWorkout } from '../../store/slices/workoutSlice';
-import { startRestTimer, nextExercise, showVideoPlayer, hideVideoPlayer } from '../../store/slices/uiSlice';
+import { startRestTimer, nextExercise } from '../../store/slices/uiSlice';
 import RestTimer from '../../components/workout/RestTimer';
-import VideoPlayerModal from '../../components/workout/VideoPlayerModal';
-import { getExerciseById } from '../../constants/exercises';
+import GameButton from '../../components/common/GameButton';
+import GameInput from '../../components/common/GameInput';
+import ExerciseInstructionCard from '../../components/workout/ExerciseInstructionCard';
+import { getExerciseById, getExerciseInstructions } from '../../constants/exercises';
+import useThemeColors from '../../utils/useThemeColors';
 
 export default function ActiveWorkoutScreen({ navigation }: any) {
   const dispatch = useAppDispatch();
+  const colors = useThemeColors();
   const activeSession = useAppSelector((state) => state.workout.activeSession);
   const currentExerciseIndex = useAppSelector(
     (state) => state.ui.activeWorkout.currentExerciseIndex
   );
-  const videoPlayerState = useAppSelector((state) => state.ui.modals.videoPlayer);
 
   const [weight, setWeight] = useState('');
   const [reps, setReps] = useState('');
 
   if (!activeSession) {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={styles.centered}>
           <Text variant="headlineMedium">No active workout</Text>
-          <Button mode="contained" onPress={() => navigation.goBack()} style={{ marginTop: 16 }}>
+          <GameButton
+            onPress={() => navigation.goBack()}
+            size="medium"
+            variant="secondary"
+            style={{ marginTop: 16, width: 200 }}
+          >
             Back to Dashboard
-          </Button>
+          </GameButton>
         </View>
       </View>
     );
@@ -57,7 +64,7 @@ export default function ActiveWorkoutScreen({ navigation }: any) {
 
     const loggedWeight = parseFloat(weight);
     const loggedReps = parseInt(reps, 10);
-    const targetReps = { min: 10, max: 12 }; // TODO: Get from template
+    const targetReps = { min: 10, max: 12 };
 
     const setLog = {
       id: `set-${Date.now()}`,
@@ -71,26 +78,19 @@ export default function ActiveWorkoutScreen({ navigation }: any) {
     };
 
     dispatch(logSet({ exerciseIndex: currentExerciseIndex, setLog }));
-    
-    // Start rest timer
     dispatch(startRestTimer(90));
 
-    // Calculate next set suggestion with inverse weight/rep relationship
-    // Rule: +5 lbs = -1 rep, -5 lbs = +1 rep
     let nextWeight = loggedWeight;
     let nextReps = loggedReps;
 
     if (loggedReps > targetReps.max) {
-      // User exceeded target - increase weight, decrease reps
       nextWeight = loggedWeight + 5;
-      nextReps = Math.max(loggedReps - 1, 1); // At least 1 rep
+      nextReps = Math.max(loggedReps - 1, 1);
     } else if (loggedReps < targetReps.min) {
-      // User failed minimum - decrease weight, increase reps
       nextWeight = Math.max(loggedWeight - 5, 0);
       nextReps = loggedReps + 1;
     }
     
-    // Set weight and reps for next set
     setWeight(nextWeight.toString());
     setReps(nextReps.toString());
   };
@@ -99,12 +99,10 @@ export default function ActiveWorkoutScreen({ navigation }: any) {
     dispatch(completeExercise(currentExerciseIndex));
     
     if (currentExerciseIndex < totalExercises - 1) {
-      // Move to next exercise
       dispatch(nextExercise());
       setWeight('');
       setReps('');
     } else {
-      // Last exercise completed - finish workout and navigate to summary
       dispatch(completeWorkout());
       navigation.navigate('WorkoutSummary');
     }
@@ -115,6 +113,11 @@ export default function ActiveWorkoutScreen({ navigation }: any) {
     setWeight((currentWeight + amount).toString());
   };
 
+  const adjustReps = (amount: number) => {
+    const currentReps = parseInt(reps, 10) || 0;
+    setReps(Math.max(1, currentReps + amount).toString());
+  };
+
   const quickSelectReps = (repCount: number) => {
     setReps(repCount.toString());
   };
@@ -122,148 +125,382 @@ export default function ActiveWorkoutScreen({ navigation }: any) {
   const completionPercentage = ((currentExerciseIndex + 1) / totalExercises) * 100;
   const previousSet = currentExerciseLog?.sets[currentExerciseLog.sets.length - 1];
 
+  const dynamicStyles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    centered: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 24,
+    },
+    scrollView: {
+      flex: 1,
+    },
+    progressHeader: {
+      backgroundColor: colors.primary,
+      paddingHorizontal: 24,
+      paddingVertical: 16,
+      paddingTop: 50,
+    },
+    headerTitle: {
+      color: '#fff',
+      fontWeight: 'bold',
+      fontSize: 20,
+    },
+    exerciseCount: {
+      color: 'rgba(255, 255, 255, 0.9)',
+      marginTop: 4,
+      fontSize: 16,
+    },
+    progressBar: {
+      height: 8,
+      backgroundColor: 'rgba(255, 255, 255, 0.3)',
+      borderRadius: 4,
+      marginTop: 12,
+      overflow: 'hidden',
+    },
+    progressFill: {
+      height: '100%',
+      backgroundColor: colors.success,
+      borderRadius: 4,
+    },
+    statsCard: {
+      margin: 16,
+      marginTop: 16,
+      backgroundColor: colors.card,
+      borderRadius: 16,
+      elevation: 6,
+    },
+    statsContent: {
+      padding: 20,
+    },
+    statRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 12,
+    },
+    statLabel: {
+      fontSize: 16,
+      color: colors.textSecondary,
+      fontWeight: '600',
+    },
+    statValue: {
+      fontSize: 18,
+      color: colors.primary,
+      fontWeight: '900',
+    },
+    loggingCard: {
+      margin: 16,
+      marginTop: 8,
+      backgroundColor: colors.card,
+      borderRadius: 20,
+      elevation: 8,
+      shadowColor: colors.primary,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.1,
+      shadowRadius: 12,
+    },
+    loggingContent: {
+      padding: 24,
+    },
+    setTitle: {
+      fontSize: 28,
+      marginBottom: 24,
+      fontWeight: '900',
+      color: colors.primary,
+      textAlign: 'center',
+      textTransform: 'uppercase',
+      letterSpacing: 1.5,
+    },
+    inputSection: {
+      backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 20,
+      marginBottom: 20,
+      borderWidth: 1,
+      borderColor: colors.border + '40',
+    },
+    inputSectionHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 16,
+      gap: 8,
+    },
+    inputSectionIcon: {
+      width: 28,
+      height: 28,
+      borderRadius: 14,
+      backgroundColor: colors.primary + '20',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    inputSectionIconText: {
+      fontSize: 16,
+      color: colors.primary,
+      fontWeight: '700',
+    },
+    inputSectionTitle: {
+      fontSize: 16,
+      fontWeight: '700',
+      color: colors.text,
+      textTransform: 'uppercase',
+      letterSpacing: 0.8,
+    },
+    repsControl: {
+      backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 20,
+      marginBottom: 20,
+      borderWidth: 1,
+      borderColor: colors.border + '40',
+    },
+    repsHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 16,
+      gap: 8,
+    },
+    repsLabel: {
+      fontSize: 16,
+      fontWeight: '700',
+      color: colors.text,
+      textTransform: 'uppercase',
+      letterSpacing: 0.8,
+    },
+    repsSubLabel: {
+      fontSize: 13,
+      color: colors.textSecondary,
+      marginBottom: 12,
+      fontWeight: '500',
+    },
+    repsChipsContainer: {
+      marginBottom: 16,
+    },
+    repsChipsRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 8,
+      justifyContent: 'center',
+    },
+    repChip: {
+      minWidth: 56,
+      height: 48,
+      backgroundColor: colors.background,
+      borderWidth: 2,
+      borderColor: colors.border,
+      borderRadius: 12,
+      elevation: 2,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.1,
+      shadowRadius: 2,
+    },
+    selectedChip: {
+      backgroundColor: colors.primary,
+      borderColor: colors.primary,
+      elevation: 6,
+      shadowColor: colors.primary,
+      shadowOffset: { width: 0, height: 3 },
+      shadowOpacity: 0.4,
+      shadowRadius: 6,
+      transform: [{ scale: 1.05 }],
+    },
+    repChipText: {
+      fontWeight: '700',
+      fontSize: 17,
+    },
+    manualInputDivider: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginVertical: 12,
+      gap: 12,
+    },
+    dividerLine: {
+      flex: 1,
+      height: 1,
+      backgroundColor: colors.border + '40',
+    },
+    dividerText: {
+      fontSize: 12,
+      color: colors.textSecondary,
+      fontWeight: '600',
+      textTransform: 'uppercase',
+    },
+    buttonSection: {
+      marginTop: 8,
+      gap: 12,
+    },
+  });
+
   return (
-    <View style={styles.container}>
+    <View style={dynamicStyles.container}>
       <RestTimer onComplete={() => {}} />
 
-      <ScrollView style={styles.scrollView}>
-        {/* Header with progress */}
-        <View style={styles.header}>
-          <Text variant="titleLarge" style={styles.headerTitle}>
+      <ScrollView style={dynamicStyles.scrollView}>
+        {/* Progress Header */}
+        <View style={dynamicStyles.progressHeader}>
+          <Text style={dynamicStyles.headerTitle}>
             {activeSession.weekNumber > 0 ? `Week ${activeSession.weekNumber}` : 'Max Week'} - Day {activeSession.dayNumber}
           </Text>
-          <Text variant="bodyMedium" style={styles.exerciseCount}>
+          <Text style={dynamicStyles.exerciseCount}>
             Exercise {currentExerciseIndex + 1} of {totalExercises}
           </Text>
-          <View style={styles.progressBar}>
-            <View style={[styles.progressFill, { width: `${completionPercentage}%` }]} />
+          <View style={dynamicStyles.progressBar}>
+            <View style={[dynamicStyles.progressFill, { width: `${completionPercentage}%` }]} />
           </View>
         </View>
 
-        {/* Exercise info */}
-        <Card style={styles.exerciseCard}>
-          <Card.Content>
-            <View style={styles.exerciseNameHeaderRow}>
-              <Text variant="headlineSmall" style={styles.exerciseName}>
-                {exercise?.name || 'Unknown Exercise'}
-              </Text>
-              <Button mode="text" onPress={() => {}}>
-                📹 Video
-              </Button>
+        {/* Exercise Instruction Card */}
+        {currentExerciseLog && getExerciseInstructions(currentExerciseLog.exerciseId) && (
+          <ExerciseInstructionCard
+            {...getExerciseInstructions(currentExerciseLog.exerciseId)!}
+          />
+        )}
+
+        {/* Exercise Stats */}
+        <Card style={dynamicStyles.statsCard}>
+          <View style={dynamicStyles.statsContent}>
+            <View style={dynamicStyles.statRow}>
+              <Text style={dynamicStyles.statLabel}>Suggested Weight</Text>
+              <Text style={dynamicStyles.statValue}>{currentExerciseLog?.suggestedWeight} lbs</Text>
             </View>
-
-            <Text variant="bodyMedium" style={styles.currentMax}>
-              Suggested Weight: {currentExerciseLog?.suggestedWeight} lbs
-            </Text>
-
             {previousSet && (
-              <Text variant="bodySmall" style={styles.previous}>
-                Previous: {previousSet.reps} reps @ {previousSet.weight} lbs
-              </Text>
-            )}
-          </Card.Content>
-        </Card>
-
-        {/* Set logging */}
-        <Card style={styles.loggingCard}>
-          <Card.Content>
-            <Text variant="titleMedium" style={styles.setTitle}>
-              Set {currentSetNumber}
-            </Text>
-
-            {/* Completed sets */}
-            {currentExerciseLog?.sets.map((set, idx) => (
-              <View key={idx} style={styles.completedSet}>
-                <Text variant="bodyMedium">
-                  ✓ Set {set.setNumber}: {set.weight} lbs × {set.reps} reps
+              <View style={dynamicStyles.statRow}>
+                <Text style={dynamicStyles.statLabel}>Previous Set</Text>
+                <Text style={dynamicStyles.statValue}>
+                  {previousSet.reps} reps @ {previousSet.weight} lbs
                 </Text>
               </View>
-            ))}
-
-            {/* Weight input */}
-            <View style={styles.inputSection}>
-              <Text variant="titleSmall" style={styles.inputLabel}>
-                Weight (lbs)
-              </Text>
-              <View style={styles.weightControl}>
-                <Button mode="outlined" onPress={() => adjustWeight(-5)} style={styles.adjustButton}>
-                  -5
-                </Button>
-                <TextInput
-                  value={weight}
-                  onChangeText={setWeight}
-                  keyboardType="numeric"
-                  placeholder={currentExerciseLog?.suggestedWeight.toString()}
-                  style={styles.input}
-                  mode="outlined"
-                />
-                <Button mode="outlined" onPress={() => adjustWeight(5)} style={styles.adjustButton}>
-                  +5
-                </Button>
-              </View>
+            )}
+            <View style={dynamicStyles.statRow}>
+              <Text style={dynamicStyles.statLabel}>Sets Completed</Text>
+              <Text style={dynamicStyles.statValue}>{currentExerciseLog?.sets.length || 0}</Text>
             </View>
+          </View>
+        </Card>
 
-            {/* Reps input */}
-            <View style={styles.inputSection}>
-              <Text variant="titleSmall" style={styles.inputLabel}>
-                Reps Completed
-              </Text>
-              <View style={styles.repsControl}>
-                {[1, 2, 3, 4, 5, 6, 8, 10, 12, 15].map((num) => (
-                  <Chip
-                    key={num}
-                    selected={reps === num.toString()}
-                    onPress={() => quickSelectReps(num)}
-                    style={styles.repChip}
-                  >
-                    {num}
-                  </Chip>
-                ))}
+        {/* Set Logging */}
+        <Card style={dynamicStyles.loggingCard}>
+          <View style={dynamicStyles.loggingContent}>
+            <Text style={dynamicStyles.setTitle}>
+              SET {currentSetNumber}
+            </Text>
+
+            {/* Weight Input Section */}
+            <View style={dynamicStyles.inputSection}>
+              <View style={dynamicStyles.inputSectionHeader}>
+                <View style={dynamicStyles.inputSectionIcon}>
+                  <Text style={dynamicStyles.inputSectionIconText}>⚖️</Text>
+                </View>
+                <Text style={dynamicStyles.inputSectionTitle}>Weight</Text>
               </View>
-              <TextInput
-                value={reps}
-                onChangeText={setReps}
+              <GameInput
+                value={weight}
+                onChangeText={setWeight}
+                placeholder={currentExerciseLog?.suggestedWeight.toString()}
                 keyboardType="numeric"
-                placeholder="Or enter manually"
-                style={styles.input}
-                mode="outlined"
+                onIncrement={() => adjustWeight(5)}
+                onDecrement={() => adjustWeight(-5)}
+                incrementAmount={5}
+                unit="lbs"
               />
             </View>
 
-            {/* Actions */}
-            <Button
-              mode="contained"
-              onPress={handleLogSet}
-              disabled={!weight || !reps}
-              style={styles.logButton}
-              contentStyle={styles.logButtonContent}
-            >
-              LOG SET & START REST TIMER
-            </Button>
+            {/* Reps Section */}
+            <View style={dynamicStyles.repsControl}>
+              <View style={dynamicStyles.repsHeader}>
+                <View style={dynamicStyles.inputSectionIcon}>
+                  <Text style={dynamicStyles.inputSectionIconText}>💪</Text>
+                </View>
+                <Text style={dynamicStyles.repsLabel}>Reps Completed</Text>
+              </View>
+              
+              <Text style={dynamicStyles.repsSubLabel}>
+                Quick select or enter manually below
+              </Text>
 
-            <Button
-              mode="outlined"
-              onPress={handleCompleteExercise}
-              style={styles.completeButton}
-            >
-              Complete Exercise → Next
-            </Button>
-          </Card.Content>
+              {/* Quick Select Chips */}
+              <View style={dynamicStyles.repsChipsContainer}>
+                <View style={dynamicStyles.repsChipsRow}>
+                  {[1, 2, 3, 4, 5, 6, 8, 10, 12, 15].map((num) => (
+                    <Chip
+                      key={num}
+                      selected={reps === num.toString()}
+                      onPress={() => quickSelectReps(num)}
+                      style={[
+                        dynamicStyles.repChip,
+                        reps === num.toString() && dynamicStyles.selectedChip
+                      ]}
+                      textStyle={[
+                        dynamicStyles.repChipText,
+                        { color: reps === num.toString() ? '#fff' : colors.text }
+                      ]}
+                    >
+                      {num}
+                    </Chip>
+                  ))}
+                </View>
+              </View>
+
+              {/* Divider */}
+              <View style={dynamicStyles.manualInputDivider}>
+                <View style={dynamicStyles.dividerLine} />
+                <Text style={dynamicStyles.dividerText}>or enter manually</Text>
+                <View style={dynamicStyles.dividerLine} />
+              </View>
+
+              {/* Manual Input */}
+              <GameInput
+                value={reps}
+                onChangeText={setReps}
+                placeholder="Enter reps"
+                keyboardType="numeric"
+                onIncrement={() => adjustReps(1)}
+                onDecrement={() => adjustReps(-1)}
+                incrementAmount={1}
+                unit="reps"
+              />
+            </View>
+
+            {/* Action Buttons */}
+            <View style={dynamicStyles.buttonSection}>
+              <GameButton
+                onPress={handleLogSet}
+                disabled={!weight || !reps}
+                variant="success"
+                icon="checkbox-marked-circle"
+              >
+                LOG SET & START REST
+              </GameButton>
+
+              <GameButton
+                onPress={handleCompleteExercise}
+                variant="primary"
+                size="medium"
+                icon="arrow-right-circle"
+              >
+                Complete Exercise
+              </GameButton>
+            </View>
+          </View>
         </Card>
 
-        {/* Form tips */}
+        {/* Form Tips */}
         {exercise?.formTips && (
-          <Card style={styles.tipsCard}>
-            <Card.Content>
-              <Text variant="titleSmall" style={styles.tipsTitle}>
+          <Card style={[dynamicStyles.statsCard, { marginBottom: 32 }]}>
+            <View style={dynamicStyles.statsContent}>
+              <Text style={[dynamicStyles.setTitle, { fontSize: 18, textAlign: 'left' }]}>
                 💡 Form Tips
               </Text>
               {exercise.formTips.map((tip, idx) => (
-                <Text key={idx} variant="bodySmall" style={styles.tip}>
+                <Text key={idx} style={[dynamicStyles.statLabel, { marginBottom: 8 }]}>
                   • {tip}
                 </Text>
               ))}
-            </Card.Content>
+            </View>
           </Card>
         )}
       </ScrollView>
@@ -274,118 +511,13 @@ export default function ActiveWorkoutScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F3F4F6',
+  },
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   scrollView: {
     flex: 1,
-  },
-  header: {
-    backgroundColor: '#2563EB',
-    padding: 24,
-    paddingTop: 60,
-  },
-  headerTitle: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-  },
-  exerciseCount: {
-    color: '#FFFFFF',
-    opacity: 0.9,
-    marginTop: 4,
-  },
-  progressBar: {
-    height: 4,
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    borderRadius: 2,
-    marginTop: 16,
-    overflow: 'hidden',
-  },
-  progressFill: {
-    height: '100%',
-    backgroundColor: '#10B981',
-  },
-  exerciseCard: {
-    margin: 16,
-  },
-  exerciseNameHeaderRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  exerciseName: {
-    fontWeight: 'bold',
-    flex: 1,
-  },
-  currentMax: {
-    color: '#2563EB',
-    marginTop: 8,
-  },
-  previous: {
-    color: '#6B7280',
-    marginTop: 4,
-  },
-  loggingCard: {
-    margin: 16,
-    marginTop: 8,
-  },
-  setTitle: {
-    marginBottom: 16,
-    fontWeight: 'bold',
-  },
-  completedSet: {
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
-  },
-  inputSection: {
-    marginTop: 16,
-  },
-  inputLabel: {
-    marginBottom: 8,
-    color: '#374151',
-  },
-  weightControl: {
-    flexDirection: 'row',
-    gap: 8,
-    alignItems: 'center',
-  },
-  adjustButton: {
-    minWidth: 60,
-  },
-  input: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  repsControl: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginBottom: 12,
-  },
-  repChip: {
-    marginRight: 0,
-  },
-  logButton: {
-    marginTop: 24,
-  },
-  logButtonContent: {
-    paddingVertical: 8,
-  },
-  completeButton: {
-    marginTop: 12,
-  },
-  tipsCard: {
-    margin: 16,
-    marginTop: 8,
-    marginBottom: 32,
-  },
-  tipsTitle: {
-    marginBottom: 12,
-    fontWeight: 'bold',
-  },
-  tip: {
-    color: '#6B7280',
-    marginBottom: 4,
   },
 });

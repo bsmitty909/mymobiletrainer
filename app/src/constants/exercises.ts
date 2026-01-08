@@ -349,4 +349,23 @@ export const exercisesByMuscleGroup = {
   triceps: ['tricep-pushdown', 'tricep-overhead-extension'],
 };
 
+// Helper to get formatted instructions for ExerciseInstructionCard
+export const getExerciseInstructions = (exerciseId: string) => {
+  const exercise = getExerciseById(exerciseId);
+  if (!exercise) return null;
+
+  // Parse instructions into setup steps
+  const setupSteps = exercise.instructions
+    .split('\n')
+    .filter(line => line.trim())
+    .map(line => line.replace(/^\d+\.\s*/, ''));
+
+  return {
+    exerciseName: exercise.name,
+    targetMuscles: exercise.muscleGroups,
+    setupSteps,
+    executionCues: exercise.formTips || [],
+  };
+};
+
 export default exercises;

@@ -347,15 +347,15 @@ export class ProgressionService {
     }
 
     if (streak >= 5) {
-      return `🔥 ${streak}-day streak! You're unstoppable!`;
+      return `${streak}-day streak! You're unstoppable!`;
     }
 
     if (weekNumber >= 4) {
-      return `💪 Week ${weekNumber}! You're building serious strength!`;
+      return `Week ${weekNumber}! You're building serious strength!`;
     }
 
     if (weekNumber === 1) {
-      return `🚀 Welcome to Week 1! Let's build something great!`;
+      return `Welcome to Week 1! Let's build something great!`;
     }
 
     return `Keep pushing! Every rep counts!`;

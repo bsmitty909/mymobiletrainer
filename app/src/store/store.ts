@@ -13,6 +13,7 @@ import userReducer from './slices/userSlice';
 import workoutReducer from './slices/workoutSlice';
 import progressReducer from './slices/progressSlice';
 import uiReducer from './slices/uiSlice';
+import gamificationReducer from './slices/gamificationSlice';
 
 // Combine reducers
 const rootReducer = combineReducers({
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   workout: workoutReducer,
   progress: progressReducer,
   ui: uiReducer,
+  gamification: gamificationReducer,
 });
 
 // Configure store

@@ -1,0 +1,630 @@
+{
+  "max_determination": {
+    "description": "Initial 1RM assessment formulas",
+    "exercises": [
+      {
+        "name": "WATCH- HOW TO MAX PROPERLY",
+        "row": 17,
+        "cell": "A17"
+      },
+      {
+        "name": "2. Lat Pull Down",
+        "row": 33,
+        "cell": "A33"
+      },
+      {
+        "name": "3. Machine Low Row",
+        "row": 50,
+        "cell": "A50"
+      },
+      {
+        "name": "4. MACHINE HIGH ROW",
+        "row": 66,
+        "cell": "A66"
+      },
+      {
+        "name": "1. Leg Press",
+        "row": 92,
+        "cell": "A92"
+      },
+      {
+        "name": "2. Leg Extension",
+        "row": 111,
+        "cell": "A111"
+      },
+      {
+        "name": "3. Leg Curl",
+        "row": 126,
+        "cell": "A126"
+      },
+      {
+        "name": "1. Dumbbell Shoulder Press",
+        "row": 153,
+        "cell": "A153"
+      },
+      {
+        "name": "4. Alternating Dumbbell Curls",
+        "row": 170,
+        "cell": "A170"
+      },
+      {
+        "name": "5. Tricep Push Down ",
+        "row": 196,
+        "cell": "A196"
+      }
+    ],
+    "progression_pattern": [
+      {
+        "cell": "B70",
+        "formula": "=B69+5",
+        "row": 70
+      },
+      {
+        "cell": "B71",
+        "formula": "=B70+5",
+        "row": 71
+      },
+      {
+        "cell": "B72",
+        "formula": "=B71+5",
+        "row": 72
+      },
+      {
+        "cell": "B73",
+        "formula": "=B72+5",
+        "row": 73
+      },
+      {
+        "cell": "B74",
+        "formula": "=B73+5",
+        "row": 74
+      },
+      {
+        "cell": "B75",
+        "formula": "=B74+5",
+        "row": 75
+      },
+      {
+        "cell": "B76",
+        "formula": "=B75+5",
+        "row": 76
+      },
+      {
+        "cell": "B77",
+        "formula": "=B76+5",
+        "row": 77
+      },
+      {
+        "cell": "B78",
+        "formula": "=B77+5",
+        "row": 78
+      },
+      {
+        "cell": "B79",
+        "formula": "=B78+5",
+        "row": 79
+      }
+    ]
+  },
+  "weight_calculations": {
+    "description": "Percentage-based weight calculations",
+    "formulas_by_percentage": {
+      "10%": {
+        "decimal": 0.1,
+        "examples": [
+          {
+            "cell": "B141",
+            "formula": "=if('WEEK 1 '!F140<12,mround('WEEK 1 '!B137*0.1,2.5),'WEEK 1 '!B140)",
+            "percentage": 0.1,
+            "percentage_display": "10%"
+          }
+        ]
+      },
+      "15%": {
+        "decimal": 0.15,
+        "examples": [
+          {
+            "cell": "B140",
+            "formula": "=if('WEEK 1 '!F139<12,mround('WEEK 1 '!B137*0.15,2.5),'WEEK 1 '!B139)",
+            "percentage": 0.15,
+            "percentage_display": "15%"
+          }
+        ]
+      },
+      "20%": {
+        "decimal": 0.2,
+        "examples": [
+          {
+            "cell": "B139",
+            "formula": "= mround('WEEK 1 '!B137*0.2,5)",
+            "percentage": 0.2,
+            "percentage_display": "20%"
+          }
+        ]
+      },
+      "29%": {
+        "decimal": 0.29,
+        "examples": [
+          {
+            "cell": "B37",
+            "formula": "=mround(B35*0.29,2.5)",
+            "percentage": 0.29,
+            "percentage_display": "29%"
+          },
+          {
+            "cell": "B38",
+            "formula": "=mround(B35*0.29,2.5)",
+            "percentage": 0.29,
+            "percentage_display": "29%"
+          }
+        ]
+      },
+      "35%": {
+        "decimal": 0.35,
+        "examples": [
+          {
+            "cell": "B22",
+            "formula": "=IF( 'WEEK 1 '!B20<125,45,mround('WEEK 1 '!B20*0.35,5))",
+            "percentage": 0.35,
+            "percentage_display": "35%"
+          },
+          {
+            "cell": "I22",
+            "formula": "=mround('WEEK 1 '!I20*0.35,5)",
+            "percentage": 0.35,
+            "percentage_display": "35%"
+          },
+          {
+            "cell": "P22",
+            "formula": "=mround('WEEK 1 '!P20*0.35,5)",
+            "percentage": 0.35,
+            "percentage_display": "35%"
+          },
+          {
+            "cell": "B44",
+            "formula": "=mround('WEEK 1 '!B42*0.35,5)",
+            "percentage": 0.35,
+            "percentage_display": "35%"
+          },
+          {
+            "cell": "B86",
+            "formula": "=mround('WEEK 1 '!B84*0.35,5)",
+            "percentage": 0.35,
+            "percentage_display": "35%"
+          }
+        ]
+      },
+      "50%": {
+        "decimal": 0.5,
+        "examples": [
+          {
+            "cell": "B87",
+            "formula": "=mround('WEEK 1 '!B84*0.5,5)",
+            "percentage": 0.5,
+            "percentage_display": "50%"
+          },
+          {
+            "cell": "I115",
+            "formula": "=MROUND('DETERMINING MAX WEEK'!E167*0.5,10)",
+            "percentage": 0.5,
+            "percentage_display": "50%"
+          }
+        ]
+      },
+      "65%": {
+        "decimal": 0.65,
+        "examples": [
+          {
+            "cell": "I23",
+            "formula": "=mround('WEEK 1 '!I20*0.65,5)",
+            "percentage": 0.65,
+            "percentage_display": "65%"
+          },
+          {
+            "cell": "P23",
+            "formula": "=mround('WEEK 1 '!P20*0.65,5)",
+            "percentage": 0.65,
+            "percentage_display": "65%"
+          },
+          {
+            "cell": "P30",
+            "formula": "=IF('WEEK 1 '!T27>=4,\"\",IF(OR(ISBLANK('WEEK 1 '!T25),ISBLANK('WEEK 1 '!T24),ISBLANK('WEEK 1 '!T23)),\"\",IF('WEEK 1 '!T25<6,mround('WEEK 1 '!P20*0.65,5),IF('WEEK 1 '!T25<10,mround('WEEK 1 '!P20*0.7,5),mround('WEEK 1 '!P20*0.65,5)))))",
+            "percentage": 0.65,
+            "percentage_display": "65%"
+          },
+          {
+            "cell": "P32",
+            "formula": "=IF('WEEK 1 '!T27<4,\"\",IF(OR(ISBLANK('WEEK 1 '!T25),ISBLANK('WEEK 1 '!T24),ISBLANK('WEEK 1 '!T23)),\"\",IF('WEEK 1 '!T27<6,mround('WEEK 1 '!P33*0.65,5),IF('WEEK 1 '!T27<10,mround('WEEK 1 '!P33*0.7,5),mround('WEEK 1 '!P33*0.65,5)))))",
+            "percentage": 0.65,
+            "percentage_display": "65%"
+          },
+          {
+            "cell": "B45",
+            "formula": "=mround('WEEK 1 '!B42*0.65,5)",
+            "percentage": 0.65,
+            "percentage_display": "65%"
+          }
+        ]
+      },
+      "70%": {
+        "decimal": 0.7,
+        "examples": [
+          {
+            "cell": "B53",
+            "formula": "=mround('WEEK 1 '!B54*0.7,5)",
+            "percentage": 0.7,
+            "percentage_display": "70%"
+          },
+          {
+            "cell": "I133",
+            "formula": "=if('WEEK 1 '!M132<15,mround('WEEK 1 '!I132*0.7,5),MROUND('WEEK 1 '!I132,5))",
+            "percentage": 0.7,
+            "percentage_display": "70%"
+          }
+        ]
+      },
+      "75%": {
+        "decimal": 0.75,
+        "examples": [
+          {
+            "cell": "B61",
+            "formula": "=IF('WEEK 1 '!F60<6,MROUND('WEEK 1 '!B58*0.75,5),IF('WEEK 1 '!F60<=11,MROUND('WEEK 1 '!B58*0.85,5),'WEEK 1 '!B60))",
+            "percentage": 0.75,
+            "percentage_display": "75%"
+          },
+          {
+            "cell": "B69",
+            "formula": "=IF('WEEK 1 '!F68<6,MROUND('WEEK 1 '!B66*0.75,5),IF('WEEK 1 '!F68<=11,MROUND('WEEK 1 '!B66*0.8,5),'WEEK 1 '!B68))",
+            "percentage": 0.75,
+            "percentage_display": "75%"
+          },
+          {
+            "cell": "B88",
+            "formula": "=mround('WEEK 1 '!B84*0.75,5)",
+            "percentage": 0.75,
+            "percentage_display": "75%"
+          }
+        ]
+      },
+      "78%": {
+        "decimal": 0.78,
+        "examples": [
+          {
+            "cell": "B31",
+            "formula": "=IF(OR(ISBLANK('WEEK 1 '!F25),ISBLANK('WEEK 1 '!F24),ISBLANK('WEEK 1 '!F23)),\"\",mround('WEEK 1 '!B32*0.78,5))",
+            "percentage": 0.78,
+            "percentage_display": "78%"
+          },
+          {
+            "cell": "I31",
+            "formula": "=IF(OR(ISBLANK('WEEK 1 '!M25),ISBLANK('WEEK 1 '!M24),ISBLANK('WEEK 1 '!M23)),\"\",mround('WEEK 1 '!I32*0.78,5))",
+            "percentage": 0.78,
+            "percentage_display": "78%"
+          },
+          {
+            "cell": "B125",
+            "formula": "=mround('WEEK 1 '!B126*0.78,5)",
+            "percentage": 0.78,
+            "percentage_display": "78%"
+          }
+        ]
+      },
+      "80%": {
+        "decimal": 0.8,
+        "examples": [
+          {
+            "cell": "B23",
+            "formula": "=MROUND('WEEK 1 '!B20*0.8,5)",
+            "percentage": 0.8,
+            "percentage_display": "80%"
+          },
+          {
+            "cell": "P29",
+            "formula": "=IF('WEEK 1 '!T27>=4,\"\",IF(OR(ISBLANK('WEEK 1 '!T25),ISBLANK('WEEK 1 '!T24),ISBLANK('WEEK 1 '!T23)),\"\",IF('WEEK 1 '!T25<6,mround('WEEK 1 '!P20*0.8,5),IF('WEEK 1 '!T25<10,mround('WEEK 1 '!P20*0.93,5),mround('WEEK 1 '!P20*0.7,5)))))",
+            "percentage": 0.8,
+            "percentage_display": "80%"
+          },
+          {
+            "cell": "P31",
+            "formula": "=IF('WEEK 1 '!T27<4,\"\",IF(OR(ISBLANK('WEEK 1 '!T25),ISBLANK('WEEK 1 '!T24),ISBLANK('WEEK 1 '!T23)),\"\",IF('WEEK 1 '!T27<6,mround('WEEK 1 '!P33*0.8,5),IF('WEEK 1 '!T27<10,mround('WEEK 1 '!P33*0.93,5),mround('WEEK 1 '!P33*0.7,5)))))",
+            "percentage": 0.8,
+            "percentage_display": "80%"
+          },
+          {
+            "cell": "B52",
+            "formula": "=MROUND('WEEK 1 '!B54*0.8,5)",
+            "percentage": 0.8,
+            "percentage_display": "80%"
+          },
+          {
+            "cell": "B62",
+            "formula": "=IF('WEEK 1 '!F61<6,MROUND('WEEK 1 '!B61*0.8,5),IF('WEEK 1 '!F61<=11,MROUND('WEEK 1 '!B58*0.85,5),'WEEK 1 '!B61))",
+            "percentage": 0.8,
+            "percentage_display": "80%"
+          }
+        ]
+      },
+      "85%": {
+        "decimal": 0.85,
+        "examples": [
+          {
+            "cell": "P24",
+            "formula": "=mround('WEEK 1 '!P20*0.85,5)",
+            "percentage": 0.85,
+            "percentage_display": "85%"
+          },
+          {
+            "cell": "B68",
+            "formula": "= mround('WEEK 1 '!B66*0.85,5)",
+            "percentage": 0.85,
+            "percentage_display": "85%"
+          }
+        ]
+      },
+      "90%": {
+        "decimal": 0.9,
+        "examples": [
+          {
+            "cell": "B24",
+            "formula": "=mround('WEEK 1 '!B20*0.9,5)",
+            "percentage": 0.9,
+            "percentage_display": "90%"
+          },
+          {
+            "cell": "I24",
+            "formula": "=mround('WEEK 1 '!I20*0.9,5)",
+            "percentage": 0.9,
+            "percentage_display": "90%"
+          },
+          {
+            "cell": "B30",
+            "formula": "=IF(OR(ISBLANK('WEEK 1 '!F25),ISBLANK('WEEK 1 '!F24),ISBLANK('WEEK 1 '!F23)),\"\",MROUND('WEEK 1 '!B32*0.9,5))",
+            "percentage": 0.9,
+            "percentage_display": "90%"
+          },
+          {
+            "cell": "I30",
+            "formula": "=IF(OR(ISBLANK('WEEK 1 '!M25),ISBLANK('WEEK 1 '!M24),ISBLANK('WEEK 1 '!M23)),\"\",MROUND('WEEK 1 '!I32*0.9,5))",
+            "percentage": 0.9,
+            "percentage_display": "90%"
+          },
+          {
+            "cell": "B46",
+            "formula": "=mround('WEEK 1 '!B42*0.9,5)",
+            "percentage": 0.9,
+            "percentage_display": "90%"
+          }
+        ]
+      },
+      "95%": {
+        "decimal": 0.95,
+        "examples": [
+          {
+            "cell": "B104",
+            "formula": "=if('WEEK 1 '!F103<8,mround('WEEK 1 '!B103*0.95,5),IF('WEEK 1 '!F103<=14,MROUND('WEEK 1 '!B103*0.95,5),'WEEK 1 '!B103))",
+            "percentage": 0.95,
+            "percentage_display": "95%"
+          }
+        ]
+      },
+      "100%": {
+        "decimal": 1.0,
+        "examples": [
+          {
+            "cell": "P25",
+            "formula": "=mround('WEEK 1 '!P20*1,5)",
+            "percentage": 1.0,
+            "percentage_display": "100%"
+          },
+          {
+            "cell": "B89",
+            "formula": "=mround('WEEK 1 '!B84*1,5)",
+            "percentage": 1.0,
+            "percentage_display": "100%"
+          }
+        ]
+      },
+      "105%": {
+        "decimal": 1.05,
+        "examples": [
+          {
+            "cell": "B95",
+            "formula": "= mround('WEEK 1 '!B93*1.05,5)",
+            "percentage": 1.05,
+            "percentage_display": "105%"
+          },
+          {
+            "cell": "B103",
+            "formula": "= mround('WEEK 1 '!B101*1.05,5)",
+            "percentage": 1.05,
+            "percentage_display": "105%"
+          },
+          {
+            "cell": "I103",
+            "formula": "= mround('WEEK 1 '!I101*1.05,5)",
+            "percentage": 1.05,
+            "percentage_display": "105%"
+          }
+        ]
+      },
+      "200%": {
+        "decimal": 2.0,
+        "examples": [
+          {
+            "cell": "I37",
+            "formula": "=mround('WEEK 1 '!I35*2*0.75,10)",
+            "percentage": 2.0,
+            "percentage_display": "200%"
+          },
+          {
+            "cell": "I38",
+            "formula": "=mround('WEEK 1 '!I35*2*0.75,10)",
+            "percentage": 2.0,
+            "percentage_display": "200%"
+          },
+          {
+            "cell": "B131",
+            "formula": "= mround('WEEK 1 '!B129*2*0.7,5)",
+            "percentage": 2.0,
+            "percentage_display": "200%"
+          },
+          {
+            "cell": "I131",
+            "formula": "=mround('WEEK 1 '!I129*2*0.75,5)",
+            "percentage": 2.0,
+            "percentage_display": "200%"
+          }
+        ]
+      }
+    }
+  },
+  "progression_rules": {
+    "description": "Logic for determining weight increases",
+    "rules": [
+      {
+        "cell": "A26",
+        "formula": "=IF('WEEK 1 '!F25<1,\"PROCEED TO DOWN SETS\",\"NEW 1 REP MAX ATTEMPT\")",
+        "row": 26,
+        "type": "max_attempt_trigger"
+      },
+      {
+        "cell": "H26",
+        "formula": "=IF('WEEK 1 '!M25<1,\"PROCEED TO DOWN SETS\",\"NEW 1 REP MAX ATTEMPT\")",
+        "row": 26,
+        "type": "max_attempt_trigger"
+      },
+      {
+        "cell": "O26",
+        "formula": "=IF(OR(ISBLANK('WEEK 1 '!T25),ISBLANK('WEEK 1 '!T24),ISBLANK('WEEK 1 '!T23)),\"PROCEED TO DOWNSETS\",if('WEEK 1 '!T25>=6,\"NEW 4 REP MAX ATTEMPT\",\"PROCEED TO DOWN SETS\"))",
+        "row": 26,
+        "type": "max_attempt_trigger"
+      },
+      {
+        "cell": "B27",
+        "formula": "=IF('WEEK 1 '!F25<1,\"\",B25+5)",
+        "row": 27,
+        "type": "conditional_weight_increase"
+      },
+      {
+        "cell": "I27",
+        "formula": "=IF('WEEK 1 '!M25<1,\"\",I25+5)",
+        "row": 27,
+        "type": "conditional_weight_increase"
+      },
+      {
+        "cell": "P27",
+        "formula": "=IF(OR(ISBLANK('WEEK 1 '!T25),ISBLANK('WEEK 1 '!T24),ISBLANK('WEEK 1 '!T23)),\"\",IF('WEEK 1 '!T25>=6,'WEEK 1 '!P20+5,\"\"))",
+        "row": 27,
+        "type": "conditional_weight_increase"
+      },
+      {
+        "cell": "B28",
+        "formula": "=IF('WEEK 1 '!F27<1,\"\",B27+5)",
+        "row": 28,
+        "type": "conditional_weight_increase"
+      },
+      {
+        "cell": "I28",
+        "formula": "=IF('WEEK 1 '!M27<1,\"\",I27+5)",
+        "row": 28,
+        "type": "conditional_weight_increase"
+      },
+      {
+        "cell": "A48",
+        "formula": "=IF('WEEK 1 '!F47<3,\"PROCEED TO DOWN SETS\",\"NEW 4 REP MAX ATTEMPT\")",
+        "row": 48,
+        "type": "max_attempt_trigger"
+      },
+      {
+        "cell": "B49",
+        "formula": "=IF('WEEK 1 '!F47<=2,\"\",B47+5)",
+        "row": 49,
+        "type": "conditional_weight_increase"
+      }
+    ]
+  },
+  "set_conditionals": {
+    "description": "Conditional display logic for sets",
+    "patterns": []
+  },
+  "rest_periods": {
+    "description": "Rest period assignments",
+    "assignments": [
+      {
+        "cell": "D22",
+        "value": "30s",
+        "row": 22
+      },
+      {
+        "cell": "K22",
+        "value": "30s",
+        "row": 22
+      },
+      {
+        "cell": "D23",
+        "value": "1-2 MIN",
+        "row": 23
+      },
+      {
+        "cell": "K23",
+        "value": "1-2 MIN",
+        "row": 23
+      },
+      {
+        "cell": "D24",
+        "value": "1-2 MIN",
+        "row": 24
+      },
+      {
+        "cell": "K24",
+        "value": "1-2 MIN",
+        "row": 24
+      },
+      {
+        "cell": "D25",
+        "value": "1-5 MIN",
+        "row": 25
+      },
+      {
+        "cell": "K25",
+        "value": "1-5 MIN",
+        "row": 25
+      },
+      {
+        "cell": "Q25",
+        "value": "REP OUT",
+        "row": 25
+      },
+      {
+        "cell": "D27",
+        "value": "=if('WEEK 1 '!F25<1,\"\",\"1-5 MIN\")",
+        "row": 27
+      },
+      {
+        "cell": "K27",
+        "value": "=if('WEEK 1 '!M25<1,\"\",\"1-5 MIN\")",
+        "row": 27
+      },
+      {
+        "cell": "Q27",
+        "value": "=IF(OR(ISBLANK('WEEK 1 '!T25),ISBLANK('WEEK 1 '!T24),ISBLANK('WEEK 1 '!T23)),\"\",IF('WEEK 1 '!T25>=6,\"REP OUT\",\"\"))",
+        "row": 27
+      },
+      {
+        "cell": "D28",
+        "value": "=IF('WEEK 1 '!F27<1,\"\",\"1-5 MIN\")",
+        "row": 28
+      },
+      {
+        "cell": "K28",
+        "value": "=IF('WEEK 1 '!M27<1,\"\",\"1-5 MIN\")",
+        "row": 28
+      },
+      {
+        "cell": "Q29",
+        "value": "=IF('WEEK 1 '!T27>=4,\"\",IF(OR(ISBLANK('WEEK 1 '!T25),ISBLANK('WEEK 1 '!T24),ISBLANK('WEEK 1 '!T23)),\"\",\"REP OUT\"))",
+        "row": 29
+      }
+    ]
+  }
+}

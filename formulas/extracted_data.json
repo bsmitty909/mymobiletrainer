@@ -1,0 +1,411 @@
+{
+  "overview": {},
+  "max_determination": {
+    "exercises": [
+      {
+        "name": "WATCH- HOW TO MAX PROPERLY",
+        "cell": "A17",
+        "row": 17
+      },
+      {
+        "name": "1. DUMBBELL INCLINE CHEST PRESS",
+        "cell": "I18",
+        "row": 18
+      },
+      {
+        "name": "2. Lat Pull Down",
+        "cell": "A33",
+        "row": 33
+      },
+      {
+        "name": "3. Machine Low Row",
+        "cell": "A50",
+        "row": 50
+      },
+      {
+        "name": "4. MACHINE HIGH ROW",
+        "cell": "A66",
+        "row": 66
+      },
+      {
+        "name": "1. Leg Press",
+        "cell": "A92",
+        "row": 92
+      },
+      {
+        "name": "2. Leg Extension",
+        "cell": "A111",
+        "row": 111
+      },
+      {
+        "name": "3. Leg Curl",
+        "cell": "A126",
+        "row": 126
+      },
+      {
+        "name": "1. Dumbbell Shoulder Press",
+        "cell": "A153",
+        "row": 153
+      },
+      {
+        "name": "4. Alternating Dumbbell Curls",
+        "cell": "A170",
+        "row": 170
+      },
+      {
+        "name": "5. Tricep Push Down ",
+        "cell": "A196",
+        "row": 196
+      }
+    ],
+    "formulas": [
+      {
+        "cell": "B70",
+        "formula": "=B69+5",
+        "type": "weight_increment"
+      },
+      {
+        "cell": "B71",
+        "formula": "=B70+5",
+        "type": "weight_increment"
+      },
+      {
+        "cell": "B72",
+        "formula": "=B71+5",
+        "type": "weight_increment"
+      },
+      {
+        "cell": "B73",
+        "formula": "=B72+5",
+        "type": "weight_increment"
+      },
+      {
+        "cell": "B74",
+        "formula": "=B73+5",
+        "type": "weight_increment"
+      },
+      {
+        "cell": "B75",
+        "formula": "=B74+5",
+        "type": "weight_increment"
+      },
+      {
+        "cell": "B76",
+        "formula": "=B75+5",
+        "type": "weight_increment"
+      },
+      {
+        "cell": "B77",
+        "formula": "=B76+5",
+        "type": "weight_increment"
+      },
+      {
+        "cell": "B78",
+        "formula": "=B77+5",
+        "type": "weight_increment"
+      },
+      {
+        "cell": "B79",
+        "formula": "=B78+5",
+        "type": "weight_increment"
+      }
+    ]
+  },
+  "week_patterns": {
+    "week1_master": {
+      "structure": {},
+      "weight_formulas": [
+        {
+          "cell": "B23",
+          "formula": "=MROUND('WEEK 1 '!B20*0.8,5)",
+          "row": 23,
+          "col": 2
+        },
+        {
+          "cell": "B30",
+          "formula": "=IF(OR(ISBLANK('WEEK 1 '!F25),ISBLANK('WEEK 1 '!F24),ISBLANK('WEEK 1 '!F23)),\"\",MROUND('WEEK 1 '!B32*0.9,5))",
+          "row": 30,
+          "col": 2
+        },
+        {
+          "cell": "I30",
+          "formula": "=IF(OR(ISBLANK('WEEK 1 '!M25),ISBLANK('WEEK 1 '!M24),ISBLANK('WEEK 1 '!M23)),\"\",MROUND('WEEK 1 '!I32*0.9,5))",
+          "row": 30,
+          "col": 9
+        },
+        {
+          "cell": "B52",
+          "formula": "=MROUND('WEEK 1 '!B54*0.8,5)",
+          "row": 52,
+          "col": 2
+        },
+        {
+          "cell": "B61",
+          "formula": "=IF('WEEK 1 '!F60<6,MROUND('WEEK 1 '!B58*0.75,5),IF('WEEK 1 '!F60<=11,MROUND('WEEK 1 '!B58*0.85,5),'WEEK 1 '!B60))",
+          "row": 61,
+          "col": 2
+        },
+        {
+          "cell": "B62",
+          "formula": "=IF('WEEK 1 '!F61<6,MROUND('WEEK 1 '!B61*0.8,5),IF('WEEK 1 '!F61<=11,MROUND('WEEK 1 '!B58*0.85,5),'WEEK 1 '!B61))",
+          "row": 62,
+          "col": 2
+        },
+        {
+          "cell": "B69",
+          "formula": "=IF('WEEK 1 '!F68<6,MROUND('WEEK 1 '!B66*0.75,5),IF('WEEK 1 '!F68<=11,MROUND('WEEK 1 '!B66*0.8,5),'WEEK 1 '!B68))",
+          "row": 69,
+          "col": 2
+        },
+        {
+          "cell": "B70",
+          "formula": "=IF('WEEK 1 '!F69<6,MROUND('WEEK 1 '!B69*0.8,5),IF('WEEK 1 '!F69<=11,MROUND('WEEK 1 '!B66*0.85,5),'WEEK 1 '!B69))",
+          "row": 70,
+          "col": 2
+        },
+        {
+          "cell": "B96",
+          "formula": "=if('WEEK 1 '!F95<8,mround('WEEK 1 '!B95*0.9,5),IF('WEEK 1 '!F95<=14,MROUND('WEEK 1 '!B95*0.95,5),'WEEK 1 '!B95))",
+          "row": 96,
+          "col": 2
+        },
+        {
+          "cell": "B97",
+          "formula": "=if('WEEK 1 '!F96<8,mround('WEEK 1 '!B96*0.8,5),IF('WEEK 1 '!F96<=14,MROUND('WEEK 1 '!B96*0.95,5),'WEEK 1 '!B96))",
+          "row": 97,
+          "col": 2
+        },
+        {
+          "cell": "B104",
+          "formula": "=if('WEEK 1 '!F103<8,mround('WEEK 1 '!B103*0.95,5),IF('WEEK 1 '!F103<=14,MROUND('WEEK 1 '!B103*0.95,5),'WEEK 1 '!B103))",
+          "row": 104,
+          "col": 2
+        },
+        {
+          "cell": "I104",
+          "formula": "=if('WEEK 1 '!M103<5,mround('WEEK 1 '!I103*0.8,5),IF('WEEK 1 '!M103<=10,MROUND('WEEK 1 '!I103*0.95,5),'WEEK 1 '!I103))",
+          "row": 104,
+          "col": 9
+        },
+        {
+          "cell": "B105",
+          "formula": "=if('WEEK 1 '!F104<8,mround('WEEK 1 '!B104*0.8,5),IF('WEEK 1 '!F104<=14,MROUND('WEEK 1 '!B104*0.95,5),'WEEK 1 '!B104))",
+          "row": 105,
+          "col": 2
+        },
+        {
+          "cell": "I105",
+          "formula": "=if('WEEK 1 '!M104<4,mround('WEEK 1 '!I104*0.8,5),IF('WEEK 1 '!M104<=10,MROUND('WEEK 1 '!I104*0.95,5),'WEEK 1 '!I104))",
+          "row": 105,
+          "col": 9
+        },
+        {
+          "cell": "I115",
+          "formula": "=MROUND('DETERMINING MAX WEEK'!E167*0.5,10)",
+          "row": 115,
+          "col": 9
+        },
+        {
+          "cell": "B124",
+          "formula": "=MROUND('WEEK 1 '!B126*0.9,5)",
+          "row": 124,
+          "col": 2
+        },
+        {
+          "cell": "B132",
+          "formula": "=if('WEEK 1 '!F131<10,mround('WEEK 1 '!B131*0.8,5),IF('WEEK 1 '!F131<=14,MROUND('WEEK 1 '!B131*0.95,5),'WEEK 1 '!B131))",
+          "row": 132,
+          "col": 2
+        },
+        {
+          "cell": "B133",
+          "formula": "=if('WEEK 1 '!F132<8,mround('WEEK 1 '!B132*0.8,5),IF('WEEK 1 '!F132<=14,MROUND('WEEK 1 '!B132*0.95,5),'WEEK 1 '!B132))",
+          "row": 133,
+          "col": 2
+        },
+        {
+          "cell": "I133",
+          "formula": "=if('WEEK 1 '!M132<15,mround('WEEK 1 '!I132*0.7,5),MROUND('WEEK 1 '!I132,5))",
+          "row": 133,
+          "col": 9
+        },
+        {
+          "cell": "B148",
+          "formula": "=if('WEEK 1 '!F147<10,mround('WEEK 1 '!B147*0.8,5),IF('WEEK 1 '!F147<=14,MROUND('WEEK 1 '!B145*0.95,5),'WEEK 1 '!B147))",
+          "row": 148,
+          "col": 2
+        },
+        {
+          "cell": "B149",
+          "formula": "=if('WEEK 1 '!F148<10,mround('WEEK 1 '!B148*0.8,5),IF('WEEK 1 '!F148<=14,MROUND('WEEK 1 '!B148*0.95,5),'WEEK 1 '!B148))",
+          "row": 149,
+          "col": 2
+        }
+      ],
+      "set_schemes": [],
+      "progression_rules": [
+        {
+          "cell": "A26",
+          "formula": "=IF('WEEK 1 '!F25<1,\"PROCEED TO DOWN SETS\",\"NEW 1 REP MAX ATTEMPT\")",
+          "row": 26
+        },
+        {
+          "cell": "H26",
+          "formula": "=IF('WEEK 1 '!M25<1,\"PROCEED TO DOWN SETS\",\"NEW 1 REP MAX ATTEMPT\")",
+          "row": 26
+        },
+        {
+          "cell": "O26",
+          "formula": "=IF(OR(ISBLANK('WEEK 1 '!T25),ISBLANK('WEEK 1 '!T24),ISBLANK('WEEK 1 '!T23)),\"PROCEED TO DOWNSETS\",if('WEEK 1 '!T25>=6,\"NEW 4 REP MAX ATTEMPT\",\"PROCEED TO DOWN SETS\"))",
+          "row": 26
+        },
+        {
+          "cell": "B27",
+          "formula": "=IF('WEEK 1 '!F25<1,\"\",B25+5)",
+          "row": 27
+        },
+        {
+          "cell": "I27",
+          "formula": "=IF('WEEK 1 '!M25<1,\"\",I25+5)",
+          "row": 27
+        },
+        {
+          "cell": "P27",
+          "formula": "=IF(OR(ISBLANK('WEEK 1 '!T25),ISBLANK('WEEK 1 '!T24),ISBLANK('WEEK 1 '!T23)),\"\",IF('WEEK 1 '!T25>=6,'WEEK 1 '!P20+5,\"\"))",
+          "row": 27
+        },
+        {
+          "cell": "B28",
+          "formula": "=IF('WEEK 1 '!F27<1,\"\",B27+5)",
+          "row": 28
+        },
+        {
+          "cell": "I28",
+          "formula": "=IF('WEEK 1 '!M27<1,\"\",I27+5)",
+          "row": 28
+        },
+        {
+          "cell": "A48",
+          "formula": "=IF('WEEK 1 '!F47<3,\"PROCEED TO DOWN SETS\",\"NEW 4 REP MAX ATTEMPT\")",
+          "row": 48
+        },
+        {
+          "cell": "B49",
+          "formula": "=IF('WEEK 1 '!F47<=2,\"\",B47+5)",
+          "row": 49
+        },
+        {
+          "cell": "B50",
+          "formula": "=IF('WEEK 1 '!F49<4,\"\",B49+5)",
+          "row": 50
+        },
+        {
+          "cell": "A120",
+          "formula": "=IF('WEEK 1 '!F119<1,\"PROCEED TO DOWN SETS\",\"NEW 4 REP MAX ATTEMPT\")",
+          "row": 120
+        },
+        {
+          "cell": "B121",
+          "formula": "=IF('WEEK 1 '!F119<1,\"\",'WEEK 1 '!B119+5)",
+          "row": 121
+        },
+        {
+          "cell": "B122",
+          "formula": "=IF(OR(ISBLANK('WEEK 1 '!F118),ISBLANK('WEEK 1 '!F119),ISBLANK('WEEK 1 '!F121)), \"\",IF('WEEK 1 '!F121<4,\"\",'WEEK 1 '!B121+5))",
+          "row": 122
+        }
+      ]
+    }
+  },
+  "formulas_by_type": {
+    "weight_calculation": [],
+    "progression_logic": [],
+    "conditional_logic": [],
+    "rest_periods": []
+  },
+  "analytics": {
+    "formula_count": 141,
+    "sample_formulas": [
+      {
+        "cell": "B1",
+        "formula": "=IF(B2>0,\"MAX WEEK\",IF(B3>0,\"MAX WEEK\",if(B4>0,\"MAX WEEK\",\"\")))"
+      },
+      {
+        "cell": "C1",
+        "formula": "=IF(C2>0,\"WEEK 1\",IF(C3>0,\"WEEK 1\",if(C4>0,\"WEEK 1\",\"\")))"
+      },
+      {
+        "cell": "D1",
+        "formula": "=IF(D2>0,\"WEEK 2\",IF(D3>0,\"WEEK 2\",if(D4>0,\"WEEK 2\",\"\")))"
+      },
+      {
+        "cell": "E1",
+        "formula": "=IF(E2>0,\"WEEK 4\",IF(E3>0,\"WEEK 4\",if(E4>0,\"WEEK 4\",\"\")))"
+      },
+      {
+        "cell": "F1",
+        "formula": "=IF(F2>0,\"WEEK 5\",IF(F3>0,\"WEEK 5\",if(F4>0,\"WEEK 5\",\"\")))"
+      },
+      {
+        "cell": "G1",
+        "formula": "=IF(G2>0,\"WEEK 6\",IF(G3>0,\"WEEK 6\",if(G4>0,\"WEEK 6\",\"\")))"
+      },
+      {
+        "cell": "H1",
+        "formula": "=IF(H2>0,\"WEEK 7\",IF(H3>0,\"WEEK 7\",if(H4>0,\"WEEK 7\",\"\")))"
+      },
+      {
+        "cell": "I1",
+        "formula": "=IF(I2>0,\"WEEK 8\",IF(I3>0,\"WEEK 8\",if(I4>0,\"WEEK 8\",\"\")))"
+      },
+      {
+        "cell": "J1",
+        "formula": "=IF(J2>0,\"WEEK 9\",IF(J3>0,\"WEEK 9\",if(J4>0,\"WEEK 9\",\"\")))"
+      },
+      {
+        "cell": "K1",
+        "formula": "=IF(K2>0,\"WEEK 10\",IF(K3>0,\"WEEK 10\",if(K4>0,\"WEEK 10\",\"\")))"
+      },
+      {
+        "cell": "L1",
+        "formula": "=IF(L2>0,\"WEEK 11\",IF(L3>0,\"WEEK 11\",if(L4>0,\"WEEK 11\",\"\")))"
+      },
+      {
+        "cell": "M1",
+        "formula": "=IF(M2>0,\"WEEK 12\",IF(M3>0,\"WEEK 12\",if(M4>0,\"WEEK 12\",\"\")))"
+      },
+      {
+        "cell": "N1",
+        "formula": "=IF(N2>0,\"WEEK 12\",\"\")"
+      },
+      {
+        "cell": "O1",
+        "formula": "=IF(O2>0,\"WEEK 13\",\"\")"
+      },
+      {
+        "cell": "P1",
+        "formula": "=IF(P2>0,\"WEEK 14\",\"\")"
+      },
+      {
+        "cell": "Q1",
+        "formula": "=IF(Q2>0,\"WEEK 15\",\"\")"
+      },
+      {
+        "cell": "R1",
+        "formula": "=IF(R2>0,\"WEEK 16\",\"\")"
+      },
+      {
+        "cell": "S1",
+        "formula": "=IF(S2>0,\"WEEK 17\",\"\")"
+      },
+      {
+        "cell": "T1",
+        "formula": "=IF(T2>0,\"WEEK 18\",\"\")"
+      },
+      {
+        "cell": "U1",
+        "formula": "=IF(U2>0,\"WEEK 19\",\"\")"
+      }
+    ]
+  }
+}

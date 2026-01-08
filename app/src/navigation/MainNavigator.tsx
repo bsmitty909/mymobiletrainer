@@ -11,6 +11,7 @@ import { Text, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppSelector } from '../store/store';
 import { RootStackParamList, MainTabsParamList } from '../types';
@@ -18,6 +19,7 @@ import { RootStackParamList, MainTabsParamList } from '../types';
 // Import screens
 import WelcomeScreen from '../screens/onboarding/WelcomeScreen';
 import WorkoutDashboardScreen from '../screens/workout/WorkoutDashboardScreen';
+import WarmupScreen from '../screens/workout/WarmupScreen';
 import WorkoutDetailScreen from '../screens/workout/WorkoutDetailScreen';
 import ActiveWorkoutScreen from '../screens/workout/ActiveWorkoutScreen';
 import WorkoutSummaryScreen from '../screens/workout/WorkoutSummaryScreen';
@@ -25,6 +27,8 @@ import ProgressDashboardScreen from '../screens/progress/ProgressDashboardScreen
 import ProfileScreen from '../screens/profile/ProfileScreen';
 import SettingsScreen from '../screens/settings/SettingsScreen';
 import MaxLiftsScreen from '../screens/profile/MaxLiftsScreen';
+import EditProfileScreen from '../screens/profile/EditProfileScreen';
+import AboutScreen from '../screens/profile/AboutScreen';
 import PrivacyPolicyScreen from '../screens/settings/PrivacyPolicyScreen';
 import TermsOfServiceScreen from '../screens/settings/TermsOfServiceScreen';
 
@@ -42,6 +46,7 @@ function WorkoutStackNavigator() {
     <WorkoutStack.Navigator screenOptions={{ headerShown: false }}>
       <WorkoutStack.Screen name="WorkoutDashboard" component={WorkoutDashboardScreen} />
       <WorkoutStack.Screen name="WorkoutDetail" component={WorkoutDetailScreen} />
+      <WorkoutStack.Screen name="Warmup" component={WarmupScreen} />
       <WorkoutStack.Screen name="ActiveWorkout" component={ActiveWorkoutScreen} />
       <WorkoutStack.Screen name="WorkoutSummary" component={WorkoutSummaryScreen} />
     </WorkoutStack.Navigator>
@@ -56,8 +61,10 @@ function ProfileStackNavigator() {
   return (
     <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
       <ProfileStack.Screen name="ProfileMain" component={ProfileScreen} />
+      <ProfileStack.Screen name="EditProfile" component={EditProfileScreen} />
       <ProfileStack.Screen name="Settings" component={SettingsScreen} />
       <ProfileStack.Screen name="MaxLifts" component={MaxLiftsScreen} />
+      <ProfileStack.Screen name="About" component={AboutScreen} />
       <ProfileStack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
       <ProfileStack.Screen name="TermsOfService" component={TermsOfServiceScreen} />
     </ProfileStack.Navigator>
@@ -69,20 +76,22 @@ function ProfileStackNavigator() {
  */
 function MainTabs() {
   const insets = useSafeAreaInsets();
+  const themeMode = useAppSelector((state) => state.ui.theme);
+  const isDark = themeMode === 'dark';
   
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#2563EB', // Energy Blue
-        tabBarInactiveTintColor: '#6B7280',
+        tabBarActiveTintColor: '#2563EB',
+        tabBarInactiveTintColor: isDark ? '#9CA3AF' : '#6B7280',
         tabBarStyle: {
           height: 60 + insets.bottom,
           paddingBottom: Math.max(insets.bottom, 8),
           paddingTop: 8,
           borderTopWidth: 1,
-          borderTopColor: '#E5E7EB',
-          backgroundColor: '#FFFFFF',
+          borderTopColor: isDark ? '#374151' : '#E5E7EB',
+          backgroundColor: isDark ? '#1F2937' : '#FFFFFF',
         },
         tabBarLabelStyle: {
           fontSize: 12,
@@ -96,7 +105,7 @@ function MainTabs() {
         options={{
           tabBarLabel: 'Workout',
           tabBarIcon: ({ color }) => (
-            <Text style={{ color, fontSize: 24 }}>🏋️</Text>
+            <MaterialCommunityIcons name="dumbbell" size={24} color={color} />
           ),
         }}
       />
@@ -106,7 +115,7 @@ function MainTabs() {
         options={{
           tabBarLabel: 'Progress',
           tabBarIcon: ({ color }) => (
-            <Text style={{ color, fontSize: 24 }}>📊</Text>
+            <MaterialCommunityIcons name="chart-line" size={24} color={color} />
           ),
         }}
       />
@@ -116,7 +125,7 @@ function MainTabs() {
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color }) => (
-            <Text style={{ color, fontSize: 24 }}>👤</Text>
+            <MaterialCommunityIcons name="account" size={24} color={color} />
           ),
         }}
       />

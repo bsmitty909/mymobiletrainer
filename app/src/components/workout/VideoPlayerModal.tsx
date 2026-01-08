@@ -6,8 +6,9 @@
  */
 
 import React from 'react';
-import { View, StyleSheet, Dimensions, Linking, Alert } from 'react-native';
+import { View, StyleSheet, Dimensions, Linking, Alert, Platform } from 'react-native';
 import { Modal, Portal, IconButton, Text, Button } from 'react-native-paper';
+import useThemeColors from '../../utils/useThemeColors';
 
 interface VideoPlayerModalProps {
   visible: boolean;
@@ -22,6 +23,8 @@ export default function VideoPlayerModal({
   exerciseName,
   onDismiss,
 }: VideoPlayerModalProps) {
+  const colors = useThemeColors();
+  
   const openVideoInBrowser = async () => {
     if (!videoUrl) return;
 
@@ -39,6 +42,66 @@ export default function VideoPlayerModal({
     }
   };
 
+  const { width, height } = Dimensions.get('window');
+  const videoHeight = Platform.OS === 'ios' ? height * 0.4 : height * 0.35;
+
+  const styles = StyleSheet.create({
+    modal: {
+      backgroundColor: colors.surface,
+      marginHorizontal: 20,
+      marginVertical: 60,
+      borderRadius: 12,
+      overflow: 'hidden',
+      maxHeight: height * 0.8,
+    },
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: 16,
+      backgroundColor: colors.headerBackground,
+    },
+    title: {
+      color: colors.headerText,
+      fontWeight: 'bold',
+      flex: 1,
+    },
+    videoContainer: {
+      height: videoHeight,
+      backgroundColor: '#000000',
+    },
+    placeholder: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: colors.background,
+    },
+    placeholderText: {
+      color: colors.textSecondary,
+      textAlign: 'center',
+      marginVertical: 8,
+    },
+    content: {
+      padding: 24,
+    },
+    description: {
+      color: colors.text,
+      marginBottom: 16,
+      textAlign: 'center',
+    },
+    openButton: {
+      marginTop: 8,
+    },
+    footer: {
+      padding: 16,
+      backgroundColor: colors.surface,
+    },
+    footerText: {
+      color: colors.textSecondary,
+      textAlign: 'center',
+    },
+  });
+
   return (
     <Portal>
       <Modal
@@ -52,32 +115,29 @@ export default function VideoPlayerModal({
           </Text>
           <IconButton
             icon="close"
-            iconColor="#FFFFFF"
+            iconColor={colors.headerText}
             size={24}
             onPress={onDismiss}
           />
         </View>
 
-        <View style={styles.videoContainer}>
-          {embedUrl ? (
-            <WebView
-              source={{ uri: embedUrl }}
-              style={styles.webview}
-              allowsFullscreenVideo
-              mediaPlaybackRequiresUserAction={false}
-              javaScriptEnabled
-              domStorageEnabled
-            />
-          ) : (
-            <View style={styles.placeholder}>
-              <Text variant="bodyLarge" style={styles.placeholderText}>
-                📹
-              </Text>
-              <Text variant="bodyMedium" style={styles.placeholderText}>
-                Video not available
-              </Text>
-            </View>
-          )}
+        <View style={styles.content}>
+          <View style={styles.placeholder}>
+            <Text variant="bodyLarge" style={styles.placeholderText}>
+              📹
+            </Text>
+            <Text variant="bodyMedium" style={styles.description}>
+              Exercise demonstration video
+            </Text>
+            <Button
+              mode="contained"
+              onPress={openVideoInBrowser}
+              style={styles.openButton}
+              disabled={!videoUrl}
+            >
+              Open Video
+            </Button>
+          </View>
         </View>
 
         <View style={styles.footer}>
@@ -89,56 +149,3 @@ export default function VideoPlayerModal({
     </Portal>
   );
 }
-
-const { width, height } = Dimensions.get('window');
-const videoHeight = Platform.OS === 'ios' ? height * 0.4 : height * 0.35;
-
-const styles = StyleSheet.create({
-  modal: {
-    backgroundColor: '#1F2937',
-    marginHorizontal: 20,
-    marginVertical: 60,
-    borderRadius: 12,
-    overflow: 'hidden',
-    maxHeight: height * 0.8,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#2563EB',
-  },
-  title: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    flex: 1,
-  },
-  videoContainer: {
-    height: videoHeight,
-    backgroundColor: '#000000',
-  },
-  webview: {
-    flex: 1,
-    backgroundColor: '#000000',
-  },
-  placeholder: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#1F2937',
-  },
-  placeholderText: {
-    color: '#9CA3AF',
-    textAlign: 'center',
-    marginVertical: 8,
-  },
-  footer: {
-    padding: 16,
-    backgroundColor: '#374151',
-  },
-  footerText: {
-    color: '#D1D5DB',
-    textAlign: 'center',
-  },
-});

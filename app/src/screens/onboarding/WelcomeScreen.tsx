@@ -11,16 +11,20 @@ import { useAppDispatch } from '../../store/store';
 import { createUser, completeOnboarding } from '../../store/slices/userSlice';
 import Input from '../../components/common/Input';
 import StorageService from '../../services/StorageService';
+import useThemeColors from '../../utils/useThemeColors';
 
-type OnboardingStep = 'welcome' | 'profile' | 'experience';
+type OnboardingStep = 'welcome' | 'profile' | 'goals' | 'experience';
+type FitnessGoal = 'lose-weight' | 'tone-up' | 'gain-muscle';
 
 export default function WelcomeScreen() {
   const dispatch = useAppDispatch();
+  const colors = useThemeColors();
   
   const [step, setStep] = useState<OnboardingStep>('welcome');
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [weight, setWeight] = useState('');
+  const [fitnessGoal, setFitnessGoal] = useState<FitnessGoal>('tone-up');
   const [experienceLevel, setExperienceLevel] = useState<'beginner' | 'moderate' | 'advanced'>('beginner');
 
   const handleGetStarted = () => {
@@ -29,18 +33,20 @@ export default function WelcomeScreen() {
 
   const handleProfileNext = () => {
     if (name && age && weight) {
-      setStep('experience');
+      setStep('goals');
     }
   };
 
+  const handleGoalsNext = () => {
+    setStep('experience');
+  };
+
   const handleComplete = async () => {
-    // Create user profile
     dispatch(createUser({
       name,
       experienceLevel,
     }));
 
-    // Save additional profile data
     const profileData = {
       name,
       age: parseInt(age, 10),
@@ -50,10 +56,136 @@ export default function WelcomeScreen() {
     };
 
     await StorageService.saveUserProfile(profileData);
-    
-    // Mark onboarding complete
     dispatch(completeOnboarding());
   };
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    content: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 24,
+    },
+    logoContainer: {
+      width: 200,
+      height: 200,
+      borderRadius: 100,
+      borderWidth: 6,
+      borderColor: colors.primary,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 24,
+      backgroundColor: colors.surface,
+      elevation: 8,
+      shadowColor: colors.primary,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.3,
+      shadowRadius: 8,
+    },
+    title: {
+      fontSize: 32,
+      fontWeight: '900',
+      textAlign: 'center',
+      color: colors.primary,
+      letterSpacing: 1,
+    },
+    appName: {
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginBottom: 8,
+      color: colors.text,
+    },
+    subtitle: {
+      textAlign: 'center',
+      color: colors.textSecondary,
+      marginBottom: 24,
+    },
+    description: {
+      textAlign: 'center',
+      color: colors.textSecondary,
+      paddingHorizontal: 32,
+      lineHeight: 24,
+      marginBottom: 32,
+    },
+    features: {
+      alignItems: 'flex-start',
+      gap: 8,
+    },
+    feature: {
+      color: colors.text,
+    },
+    footer: {
+      paddingBottom: 32,
+      paddingHorizontal: 24,
+    },
+    button: {
+      marginBottom: 16,
+    },
+    buttonContent: {
+      paddingVertical: 8,
+    },
+    credit: {
+      textAlign: 'center',
+      color: colors.textSecondary,
+    },
+    formContainer: {
+      flex: 1,
+      padding: 24,
+      paddingTop: 80,
+    },
+    formTitle: {
+      fontWeight: 'bold',
+      marginBottom: 8,
+      textAlign: 'center',
+      color: colors.text,
+    },
+    formSubtitle: {
+      textAlign: 'center',
+      color: colors.textSecondary,
+      marginBottom: 32,
+    },
+    input: {
+      marginBottom: 16,
+    },
+    nextButton: {
+      marginTop: 24,
+    },
+    completeButton: {
+      marginTop: 32,
+    },
+    backButton: {
+      marginTop: 12,
+    },
+    experienceSection: {
+      marginBottom: 32,
+    },
+    segmentedButtons: {
+      marginBottom: 24,
+    },
+    experienceDescriptions: {
+      minHeight: 150,
+    },
+    descriptionCard: {
+      backgroundColor: colors.surface,
+      padding: 16,
+      borderRadius: 8,
+      borderLeftWidth: 4,
+      borderLeftColor: colors.primary,
+    },
+    descriptionTitle: {
+      fontWeight: 'bold',
+      marginBottom: 8,
+      color: colors.primary,
+    },
+    descriptionText: {
+      color: colors.text,
+      lineHeight: 20,
+    },
+  });
 
   // Welcome Step
   if (step === 'welcome') {
@@ -61,10 +193,10 @@ export default function WelcomeScreen() {
       <View style={styles.container}>
         <View style={styles.content}>
           <Text variant="displayLarge" style={styles.title}>
-            💪
+            30 MINUTE
           </Text>
           <Text variant="headlineLarge" style={styles.appName}>
-            MY MOBILE TRAINER
+            Personal Body Trainer
           </Text>
           <Text variant="titleMedium" style={styles.subtitle}>
             Your Personal Strength Training Companion
@@ -74,10 +206,10 @@ export default function WelcomeScreen() {
           </Text>
           
           <View style={styles.features}>
-            <Text variant="bodyMedium" style={styles.feature}>✓ Formula-driven weight calculations</Text>
-            <Text variant="bodyMedium" style={styles.feature}>✓ Progressive overload tracking</Text>
-            <Text variant="bodyMedium" style={styles.feature}>✓ 5-week structured program</Text>
-            <Text variant="bodyMedium" style={styles.feature}>✓ Exercise video demonstrations</Text>
+            <Text variant="bodyMedium" style={styles.feature}>• Formula-driven weight calculations</Text>
+            <Text variant="bodyMedium" style={styles.feature}>• Progressive overload tracking</Text>
+            <Text variant="bodyMedium" style={styles.feature}>• 5-week structured program</Text>
+            <Text variant="bodyMedium" style={styles.feature}>• Exercise video demonstrations</Text>
           </View>
         </View>
 
@@ -104,7 +236,7 @@ export default function WelcomeScreen() {
       <ScrollView style={styles.container}>
         <View style={styles.formContainer}>
           <Text variant="headlineMedium" style={styles.formTitle}>
-            👋 Let's Get to Know You
+            Let's Get to Know You
           </Text>
           <Text variant="bodyMedium" style={styles.formSubtitle}>
             This helps us personalize your workout experience
@@ -159,12 +291,109 @@ export default function WelcomeScreen() {
     );
   }
 
+  // Fitness Goals Step
+  if (step === 'goals') {
+    return (
+      <View style={styles.container}>
+        <View style={styles.formContainer}>
+          <Text variant="headlineMedium" style={styles.formTitle}>
+            What's Your Primary Goal?
+          </Text>
+          <Text variant="bodyMedium" style={styles.formSubtitle}>
+            We'll tailor your experience based on your fitness objective
+          </Text>
+
+          <View style={styles.experienceSection}>
+            <SegmentedButtons
+              value={fitnessGoal}
+              onValueChange={(value) => setFitnessGoal(value as FitnessGoal)}
+              buttons={[
+                {
+                  value: 'lose-weight',
+                  label: 'Lose Weight',
+                },
+                {
+                  value: 'tone-up',
+                  label: 'Tone Up',
+                },
+                {
+                  value: 'gain-muscle',
+                  label: 'Gain Muscle',
+                },
+              ]}
+              style={styles.segmentedButtons}
+            />
+
+            <View style={styles.experienceDescriptions}>
+              {fitnessGoal === 'lose-weight' && (
+                <View style={styles.descriptionCard}>
+                  <Text variant="titleSmall" style={styles.descriptionTitle}>
+                    Lose Weight
+                  </Text>
+                  <Text variant="bodySmall" style={styles.descriptionText}>
+                    • Build lean muscle to boost metabolism{'\n'}
+                    • Combine strength training with cardio{'\n'}
+                    • Focus on compound movements{'\n'}
+                    • Track progress with body measurements
+                  </Text>
+                </View>
+              )}
+              {fitnessGoal === 'tone-up' && (
+                <View style={styles.descriptionCard}>
+                  <Text variant="titleSmall" style={styles.descriptionTitle}>
+                    ✨ Tone Up
+                  </Text>
+                  <Text variant="bodySmall" style={styles.descriptionText}>
+                    • Define and sculpt your muscles{'\n'}
+                    • Moderate weights with higher reps{'\n'}
+                    • Balanced full-body approach{'\n'}
+                    • Improve overall body composition
+                  </Text>
+                </View>
+              )}
+              {fitnessGoal === 'gain-muscle' && (
+                <View style={styles.descriptionCard}>
+                  <Text variant="titleSmall" style={styles.descriptionTitle}>
+                     Gain Muscle
+                  </Text>
+                  <Text variant="bodySmall" style={styles.descriptionText}>
+                    • Progressive overload for muscle growth{'\n'}
+                    • Heavy weights with controlled reps{'\n'}
+                    • Track strength gains and volume{'\n'}
+                    • Maximize muscle hypertrophy
+                  </Text>
+                </View>
+              )}
+            </View>
+          </View>
+
+          <Button
+            mode="contained"
+            onPress={handleGoalsNext}
+            style={styles.nextButton}
+            contentStyle={styles.buttonContent}
+          >
+            Continue
+          </Button>
+
+          <Button
+            mode="text"
+            onPress={() => setStep('profile')}
+            style={styles.backButton}
+          >
+            Back
+          </Button>
+        </View>
+      </View>
+    );
+  }
+
   // Experience Level Step
   return (
     <View style={styles.container}>
       <View style={styles.formContainer}>
         <Text variant="headlineMedium" style={styles.formTitle}>
-          🏋️ Your Fitness Experience
+          Your Fitness Experience
         </Text>
         <Text variant="bodyMedium" style={styles.formSubtitle}>
           This helps us recommend the right starting point
@@ -178,17 +407,17 @@ export default function WelcomeScreen() {
               {
                 value: 'beginner',
                 label: 'Beginner',
-                icon: '🌱',
+                
               },
               {
                 value: 'moderate',
                 label: 'Moderate',
-                icon: '💪',
+                icon: '',
               },
               {
                 value: 'advanced',
                 label: 'Advanced',
-                icon: '🔥',
+                
               },
             ]}
             style={styles.segmentedButtons}
@@ -198,7 +427,7 @@ export default function WelcomeScreen() {
             {experienceLevel === 'beginner' && (
               <View style={styles.descriptionCard}>
                 <Text variant="titleSmall" style={styles.descriptionTitle}>
-                  🌱 Beginner
+                  Beginner
                 </Text>
                 <Text variant="bodySmall" style={styles.descriptionText}>
                   • New to strength training{'\n'}
@@ -210,7 +439,7 @@ export default function WelcomeScreen() {
             {experienceLevel === 'moderate' && (
               <View style={styles.descriptionCard}>
                 <Text variant="titleSmall" style={styles.descriptionTitle}>
-                  💪 Moderate
+                   Moderate
                 </Text>
                 <Text variant="bodySmall" style={styles.descriptionText}>
                   • Some strength training experience{'\n'}
@@ -222,7 +451,7 @@ export default function WelcomeScreen() {
             {experienceLevel === 'advanced' && (
               <View style={styles.descriptionCard}>
                 <Text variant="titleSmall" style={styles.descriptionTitle}>
-                  🔥 Advanced
+                  Advanced
                 </Text>
                 <Text variant="bodySmall" style={styles.descriptionText}>
                   • Experienced lifter{'\n'}
@@ -254,111 +483,3 @@ export default function WelcomeScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 24,
-  },
-  title: {
-    fontSize: 72,
-    marginBottom: 16,
-  },
-  appName: {
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 8,
-    color: '#2563EB',
-  },
-  subtitle: {
-    textAlign: 'center',
-    color: '#6B7280',
-    marginBottom: 24,
-  },
-  description: {
-    textAlign: 'center',
-    color: '#6B7280',
-    paddingHorizontal: 32,
-    lineHeight: 24,
-    marginBottom: 32,
-  },
-  features: {
-    alignItems: 'flex-start',
-    gap: 8,
-  },
-  feature: {
-    color: '#4B5563',
-  },
-  footer: {
-    paddingBottom: 32,
-    paddingHorizontal: 24,
-  },
-  button: {
-    marginBottom: 16,
-  },
-  buttonContent: {
-    paddingVertical: 8,
-  },
-  credit: {
-    textAlign: 'center',
-    color: '#9CA3AF',
-  },
-  formContainer: {
-    flex: 1,
-    padding: 24,
-    paddingTop: 80,
-  },
-  formTitle: {
-    fontWeight: 'bold',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  formSubtitle: {
-    textAlign: 'center',
-    color: '#6B7280',
-    marginBottom: 32,
-  },
-  input: {
-    marginBottom: 16,
-  },
-  nextButton: {
-    marginTop: 24,
-  },
-  completeButton: {
-    marginTop: 32,
-  },
-  backButton: {
-    marginTop: 12,
-  },
-  experienceSection: {
-    marginBottom: 32,
-  },
-  segmentedButtons: {
-    marginBottom: 24,
-  },
-  experienceDescriptions: {
-    minHeight: 150,
-  },
-  descriptionCard: {
-    backgroundColor: '#F3F4F6',
-    padding: 16,
-    borderRadius: 8,
-    borderLeftWidth: 4,
-    borderLeftColor: '#2563EB',
-  },
-  descriptionTitle: {
-    fontWeight: 'bold',
-    marginBottom: 8,
-    color: '#2563EB',
-  },
-  descriptionText: {
-    color: '#4B5563',
-    lineHeight: 20,
-  },
-});

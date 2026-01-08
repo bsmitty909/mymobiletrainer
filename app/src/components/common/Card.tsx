@@ -5,8 +5,9 @@
  */
 
 import React from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet, ViewStyle } from 'react-native';
 import { Card as PaperCard } from 'react-native-paper';
+import useThemeColors from '../../utils/useThemeColors';
 
 interface CardProps {
   children: React.ReactNode;
@@ -16,6 +17,23 @@ interface CardProps {
 }
 
 export default function Card({ children, style, elevated = false, onPress }: CardProps) {
+  const colors = useThemeColors();
+  
+  const styles = StyleSheet.create({
+    card: {
+      marginVertical: 8,
+      marginHorizontal: 16,
+      backgroundColor: colors.card,
+    },
+    elevated: {
+      elevation: 4,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+    },
+  });
+
   const cardStyle = [
     styles.card,
     elevated && styles.elevated,
@@ -36,18 +54,3 @@ export default function Card({ children, style, elevated = false, onPress }: Car
     </PaperCard>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    marginVertical: 8,
-    marginHorizontal: 16,
-    backgroundColor: '#FFFFFF',
-  },
-  elevated: {
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-});

@@ -1,57 +1,103 @@
 /**
  * StatCard Component
- * 
+ *
  * Displays a statistic with label, value, and optional icon/trend
  */
 
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Card } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import useThemeColors from '../../utils/useThemeColors';
 
 interface StatCardProps {
   label: string;
   value: string | number;
-  icon?: string;
+  icon?: keyof typeof MaterialCommunityIcons.glyphMap;
   trend?: 'up' | 'down' | 'neutral';
   trendValue?: string;
   onPress?: () => void;
 }
 
-export default function StatCard({ 
-  label, 
-  value, 
-  icon, 
-  trend, 
+export default function StatCard({
+  label,
+  value,
+  icon,
+  trend,
   trendValue,
-  onPress 
+  onPress
 }: StatCardProps) {
+  const colors = useThemeColors();
+  
   const getTrendColor = () => {
     switch (trend) {
       case 'up':
-        return '#10B981'; // Green
+        return colors.success;
       case 'down':
-        return '#EF4444'; // Red
+        return colors.error;
       default:
-        return '#6B7280'; // Gray
+        return colors.textSecondary;
     }
   };
 
-  const getTrendIcon = () => {
+  const getTrendIconName = (): keyof typeof MaterialCommunityIcons.glyphMap => {
     switch (trend) {
       case 'up':
-        return '↑';
+        return 'trending-up';
       case 'down':
-        return '↓';
+        return 'trending-down';
       default:
-        return '—';
+        return 'minus';
     }
   };
+
+  const styles = StyleSheet.create({
+    card: {
+      flex: 1,
+      margin: 8,
+      backgroundColor: colors.card,
+      minHeight: 120,
+    },
+    content: {
+      flex: 1,
+      justifyContent: 'space-between',
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 8,
+    },
+    icon: {
+      fontSize: 20,
+      marginRight: 8,
+    },
+    label: {
+      color: colors.textSecondary,
+      textTransform: 'uppercase',
+      fontSize: 12,
+      fontWeight: '600',
+    },
+    value: {
+      color: colors.text,
+      fontWeight: 'bold',
+      marginVertical: 4,
+    },
+    trendContainer: {
+      marginTop: 4,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    trendText: {
+      fontSize: 13,
+      fontWeight: '600',
+    },
+  });
 
   return (
     <Card style={styles.card} onPress={onPress}>
       <Card.Content style={styles.content}>
         <View style={styles.header}>
-          {icon && <Text style={styles.icon}>{icon}</Text>}
+          {icon && <MaterialCommunityIcons name={icon} size={20} color={colors.textSecondary} style={{marginRight: 8}} />}
           <Text variant="bodyMedium" style={styles.label}>
             {label}
           </Text>
@@ -63,8 +109,9 @@ export default function StatCard({
         
         {trend && trendValue && (
           <View style={styles.trendContainer}>
-            <Text style={[styles.trendText, { color: getTrendColor() }]}>
-              {getTrendIcon()} {trendValue}
+            <MaterialCommunityIcons name={getTrendIconName()} size={16} color={getTrendColor()} />
+            <Text style={[styles.trendText, { color: getTrendColor(), marginLeft: 4 }]}>
+              {trendValue}
             </Text>
           </View>
         )}
@@ -72,43 +119,3 @@ export default function StatCard({
     </Card>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    flex: 1,
-    margin: 8,
-    backgroundColor: '#FFFFFF',
-    minHeight: 120,
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'space-between',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  icon: {
-    fontSize: 20,
-    marginRight: 8,
-  },
-  label: {
-    color: '#6B7280',
-    textTransform: 'uppercase',
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  value: {
-    color: '#1F2937',
-    fontWeight: 'bold',
-    marginVertical: 4,
-  },
-  trendContainer: {
-    marginTop: 4,
-  },
-  trendText: {
-    fontSize: 13,
-    fontWeight: '600',
-  },
-});

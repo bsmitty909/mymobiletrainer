@@ -8,11 +8,16 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { Text, List, Switch, Divider } from 'react-native-paper';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import { setTheme } from '../../store/slices/uiSlice';
+import { setTheme, resetUI } from '../../store/slices/uiSlice';
+import { resetUser } from '../../store/slices/userSlice';
+import { clearProgress } from '../../store/slices/progressSlice';
+import { clearActiveSession } from '../../store/slices/workoutSlice';
 import StorageService from '../../services/StorageService';
+import useThemeColors from '../../utils/useThemeColors';
 
 export default function SettingsScreen({ navigation }: any) {
   const dispatch = useAppDispatch();
+  const colors = useThemeColors();
   const theme = useAppSelector((state) => state.ui.theme);
   
   // Local state for settings
@@ -93,8 +98,11 @@ export default function SettingsScreen({ navigation }: any) {
           onPress: async () => {
             try {
               await StorageService.clearAll();
-              Alert.alert('Success', 'All data has been cleared.');
-              navigation.navigate('Onboarding');
+              dispatch(resetUser());
+              dispatch(clearProgress());
+              dispatch(clearActiveSession());
+              dispatch(resetUI());
+              Alert.alert('Success', 'All data has been cleared. Please restart the app.');
             } catch (error) {
               Alert.alert('Error', 'Failed to clear data.');
             }
@@ -103,6 +111,31 @@ export default function SettingsScreen({ navigation }: any) {
       ]
     );
   };
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    section: {
+      backgroundColor: colors.surface,
+      marginTop: 16,
+      paddingVertical: 8,
+    },
+    sectionTitle: {
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      color: colors.primary,
+      fontWeight: 'bold',
+    },
+    divider: {
+      height: 1,
+      backgroundColor: colors.border,
+    },
+    bottomSpacing: {
+      height: 32,
+    },
+  });
 
   return (
     <ScrollView style={styles.container}>
@@ -220,8 +253,8 @@ export default function SettingsScreen({ navigation }: any) {
         <List.Item
           title="Clear All Data"
           description="Reset app to initial state"
-          left={props => <List.Icon {...props} icon="delete-forever" color="#EF4444" />}
-          titleStyle={{ color: '#EF4444' }}
+          left={props => <List.Icon {...props} icon="delete-forever" color={colors.error} />}
+          titleStyle={{ color: colors.error }}
           onPress={handleClearData}
         />
       </View>
@@ -256,28 +289,3 @@ export default function SettingsScreen({ navigation }: any) {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F3F4F6',
-  },
-  section: {
-    backgroundColor: '#FFFFFF',
-    marginTop: 16,
-    paddingVertical: 8,
-  },
-  sectionTitle: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    color: '#2563EB',
-    fontWeight: 'bold',
-  },
-  divider: {
-    height: 1,
-    backgroundColor: '#E5E7EB',
-  },
-  bottomSpacing: {
-    height: 32,
-  },
-});

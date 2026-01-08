@@ -11,9 +11,11 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { updateMaxLifts } from '../../store/slices/userSlice';
 import Input from '../../components/common/Input';
 import StorageService from '../../services/StorageService';
+import useThemeColors from '../../utils/useThemeColors';
 
 export default function MaxLiftsScreen({ navigation }: any) {
   const dispatch = useAppDispatch();
+  const colors = useThemeColors();
   const userProfile = useAppSelector((state) => state.user.profile);
   const userMaxes = userProfile?.maxLifts || {};
   
@@ -48,10 +50,8 @@ export default function MaxLiftsScreen({ navigation }: any) {
     const exerciseId = selectedExercise || exerciseName.toLowerCase().replace(/\s+/g, '-');
 
     try {
-      // Update Redux store
       dispatch(updateMaxLifts({ exerciseId, weight, reps }));
       
-      // Persist to storage
       const updatedMaxes = {
         ...userMaxes,
         [exerciseId]: {
@@ -95,6 +95,91 @@ export default function MaxLiftsScreen({ navigation }: any) {
   };
 
   const maxLiftsArray = Object.values(userMaxes || {});
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    scrollView: {
+      flex: 1,
+    },
+    emptyState: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 32,
+      marginTop: 100,
+    },
+    emptyTitle: {
+      marginBottom: 12,
+      textAlign: 'center',
+      color: colors.text,
+    },
+    emptyDescription: {
+      textAlign: 'center',
+      color: colors.textSecondary,
+    },
+    list: {
+      paddingVertical: 8,
+    },
+    sectionTitle: {
+      paddingHorizontal: 16,
+      paddingTop: 24,
+      paddingBottom: 8,
+      color: colors.primary,
+      fontWeight: 'bold',
+    },
+    sectionTitleSpaced: {
+      marginTop: 16,
+    },
+    listItem: {
+      backgroundColor: colors.surface,
+      marginVertical: 1,
+    },
+    maxValue: {
+      flexDirection: 'row',
+      alignItems: 'baseline',
+      paddingRight: 8,
+    },
+    weight: {
+      fontWeight: 'bold',
+      color: colors.primary,
+    },
+    unit: {
+      marginLeft: 4,
+      color: colors.textSecondary,
+    },
+    fab: {
+      position: 'absolute',
+      right: 16,
+      bottom: 16,
+      backgroundColor: colors.primary,
+    },
+    modal: {
+      backgroundColor: colors.surface,
+      padding: 24,
+      margin: 20,
+      borderRadius: 8,
+    },
+    modalTitle: {
+      marginBottom: 16,
+      fontWeight: 'bold',
+      color: colors.text,
+    },
+    input: {
+      marginVertical: 8,
+    },
+    modalActions: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      marginTop: 24,
+      gap: 12,
+    },
+    modalButton: {
+      minWidth: 100,
+    },
+  });
 
   return (
     <View style={styles.container}>
@@ -237,86 +322,3 @@ export default function MaxLiftsScreen({ navigation }: any) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F3F4F6',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  emptyState: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 32,
-    marginTop: 100,
-  },
-  emptyTitle: {
-    marginBottom: 12,
-    textAlign: 'center',
-  },
-  emptyDescription: {
-    textAlign: 'center',
-    color: '#6B7280',
-  },
-  list: {
-    paddingVertical: 8,
-  },
-  sectionTitle: {
-    paddingHorizontal: 16,
-    paddingTop: 24,
-    paddingBottom: 8,
-    color: '#2563EB',
-    fontWeight: 'bold',
-  },
-  sectionTitleSpaced: {
-    marginTop: 16,
-  },
-  listItem: {
-    backgroundColor: '#FFFFFF',
-    marginVertical: 1,
-  },
-  maxValue: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    paddingRight: 8,
-  },
-  weight: {
-    fontWeight: 'bold',
-    color: '#2563EB',
-  },
-  unit: {
-    marginLeft: 4,
-    color: '#6B7280',
-  },
-  fab: {
-    position: 'absolute',
-    right: 16,
-    bottom: 16,
-    backgroundColor: '#2563EB',
-  },
-  modal: {
-    backgroundColor: '#FFFFFF',
-    padding: 24,
-    margin: 20,
-    borderRadius: 8,
-  },
-  modalTitle: {
-    marginBottom: 16,
-    fontWeight: 'bold',
-  },
-  input: {
-    marginVertical: 8,
-  },
-  modalActions: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    marginTop: 24,
-    gap: 12,
-  },
-  modalButton: {
-    minWidth: 100,
-  },
-});

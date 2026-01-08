@@ -9,6 +9,7 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import { Text, Button, List, Divider } from 'react-native-paper';
 import { useAppSelector } from '../../store/store';
 import { getExerciseById } from '../../constants/exercises';
+import useThemeColors from '../../utils/useThemeColors';
 
 interface WorkoutDetailScreenProps {
   navigation: any;
@@ -22,6 +23,7 @@ interface WorkoutDetailScreenProps {
 }
 
 export default function WorkoutDetailScreen({ navigation, route }: WorkoutDetailScreenProps) {
+  const colors = useThemeColors();
   const { weekNumber, dayNumber, workoutData } = route.params;
   const userMaxes = useAppSelector((state) => state.user.maxLifts);
 
@@ -37,6 +39,111 @@ export default function WorkoutDetailScreen({ navigation, route }: WorkoutDetail
     if (typeof target === 'object') return `${target.min}-${target.max}`;
     return target.toString();
   };
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    header: {
+      backgroundColor: colors.headerBackground,
+      padding: 24,
+      paddingTop: 60,
+    },
+    headerTitle: {
+      color: colors.headerText,
+      fontWeight: 'bold',
+    },
+    headerSubtitle: {
+      color: colors.headerText,
+      opacity: 0.9,
+      marginTop: 4,
+    },
+    scrollView: {
+      flex: 1,
+    },
+    section: {
+      backgroundColor: colors.card,
+      marginVertical: 8,
+      marginHorizontal: 16,
+      borderRadius: 8,
+      padding: 16,
+    },
+    sectionTitle: {
+      marginBottom: 12,
+      fontWeight: 'bold',
+      color: colors.text,
+    },
+    exerciseItem: {
+      paddingVertical: 8,
+      paddingHorizontal: 0,
+    },
+    numberBadge: {
+      width: 32,
+      height: 32,
+      borderRadius: 16,
+      backgroundColor: colors.primary,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 8,
+    },
+    numberText: {
+      color: '#FFFFFF',
+      fontWeight: 'bold',
+      fontSize: 14,
+    },
+    weightContainer: {
+      flexDirection: 'row',
+      alignItems: 'baseline',
+      paddingRight: 8,
+    },
+    weight: {
+      fontWeight: 'bold',
+      color: colors.primary,
+    },
+    unit: {
+      marginLeft: 4,
+      color: colors.textSecondary,
+    },
+    tipCard: {
+      padding: 12,
+      backgroundColor: colors.primary + '20',
+      borderRadius: 8,
+    },
+    tipText: {
+      color: colors.primary,
+      marginVertical: 4,
+    },
+    durationCard: {
+      alignItems: 'center',
+      padding: 16,
+    },
+    duration: {
+      color: colors.primary,
+      fontWeight: 'bold',
+    },
+    durationSubtitle: {
+      color: colors.textSecondary,
+      marginTop: 4,
+    },
+    footer: {
+      flexDirection: 'row',
+      padding: 16,
+      backgroundColor: colors.surface,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+      gap: 12,
+    },
+    footerButton: {
+      flex: 1,
+    },
+    startButton: {
+      backgroundColor: colors.primary,
+    },
+    startButtonContent: {
+      paddingVertical: 8,
+    },
+  });
 
   return (
     <View style={styles.container}>
@@ -81,7 +188,7 @@ export default function WorkoutDetailScreen({ navigation, route }: WorkoutDetail
                   )}
                   style={styles.exerciseItem}
                 />
-                {index < exercises.length - 1 && <Divider />}
+                {index < exercises.length - 1 && <Divider style={{ backgroundColor: colors.border }} />}
               </View>
             );
           })}
@@ -109,7 +216,7 @@ export default function WorkoutDetailScreen({ navigation, route }: WorkoutDetail
 
         <View style={styles.section}>
           <Text variant="titleMedium" style={styles.sectionTitle}>
-            ⏱️ Estimated Duration
+            Estimated Duration
           </Text>
           <View style={styles.durationCard}>
             <Text variant="headlineMedium" style={styles.duration}>
@@ -142,107 +249,3 @@ export default function WorkoutDetailScreen({ navigation, route }: WorkoutDetail
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F3F4F6',
-  },
-  header: {
-    backgroundColor: '#2563EB',
-    padding: 24,
-    paddingTop: 60,
-  },
-  headerTitle: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-  },
-  headerSubtitle: {
-    color: '#FFFFFF',
-    opacity: 0.9,
-    marginTop: 4,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  section: {
-    backgroundColor: '#FFFFFF',
-    marginVertical: 8,
-    marginHorizontal: 16,
-    borderRadius: 8,
-    padding: 16,
-  },
-  sectionTitle: {
-    marginBottom: 12,
-    fontWeight: 'bold',
-  },
-  exerciseItem: {
-    paddingVertical: 8,
-    paddingHorizontal: 0,
-  },
-  numberBadge: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#2563EB',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 8,
-  },
-  numberText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    fontSize: 14,
-  },
-  weightContainer: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    paddingRight: 8,
-  },
-  weight: {
-    fontWeight: 'bold',
-    color: '#2563EB',
-  },
-  unit: {
-    marginLeft: 4,
-    color: '#6B7280',
-  },
-  tipCard: {
-    padding: 12,
-    backgroundColor: '#EFF6FF',
-    borderRadius: 8,
-  },
-  tipText: {
-    color: '#1E40AF',
-    marginVertical: 4,
-  },
-  durationCard: {
-    alignItems: 'center',
-    padding: 16,
-  },
-  duration: {
-    color: '#2563EB',
-    fontWeight: 'bold',
-  },
-  durationSubtitle: {
-    color: '#6B7280',
-    marginTop: 4,
-  },
-  footer: {
-    flexDirection: 'row',
-    padding: 16,
-    backgroundColor: '#FFFFFF',
-    borderTopWidth: 1,
-    borderTopColor: '#E5E7EB',
-    gap: 12,
-  },
-  footerButton: {
-    flex: 1,
-  },
-  startButton: {
-    backgroundColor: '#2563EB',
-  },
-  startButtonContent: {
-    paddingVertical: 8,
-  },
-});

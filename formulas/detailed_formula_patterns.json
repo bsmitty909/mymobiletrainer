@@ -1,0 +1,144 @@
+{
+  "workout_structure": {
+    "days": [
+      {
+        "day": "DAY 1",
+        "row": 15,
+        "exercises": []
+      },
+      {
+        "day": "DAY 2",
+        "row": 74,
+        "exercises": []
+      },
+      {
+        "day": "DAY 3",
+        "row": 109,
+        "exercises": []
+      }
+    ],
+    "exercises_per_day": {},
+    "set_schemes": {},
+    "weight_percentages": {},
+    "progression_logic": {}
+  },
+  "formula_patterns": {
+    "warm_up_sets": [],
+    "working_sets": [
+      {
+        "cell": "B23",
+        "formula": "=MROUND('WEEK 1 '!B20*0.8,5)",
+        "column_letter": "B",
+        "row": 23,
+        "percentage": 0.8,
+        "type": "weight_percentage"
+      },
+      {
+        "cell": "B30",
+        "formula": "=IF(OR(ISBLANK('WEEK 1 '!F25),ISBLANK('WEEK 1 '!F24),ISBLANK('WEEK 1 '!F23)),\"\",MROUND('WEEK 1 '!B32*0.9,5))",
+        "column_letter": "B",
+        "row": 30,
+        "percentage": 0.9,
+        "type": "weight_percentage"
+      },
+      {
+        "cell": "I30",
+        "formula": "=IF(OR(ISBLANK('WEEK 1 '!M25),ISBLANK('WEEK 1 '!M24),ISBLANK('WEEK 1 '!M23)),\"\",MROUND('WEEK 1 '!I32*0.9,5))",
+        "column_letter": "I",
+        "row": 30,
+        "percentage": 0.9,
+        "type": "weight_percentage"
+      }
+    ],
+    "max_attempt_sets": [
+      {
+        "cell": "A26",
+        "formula": "=IF('WEEK 1 '!F25<1,\"PROCEED TO DOWN SETS\",\"NEW 1 REP MAX ATTEMPT\")",
+        "column_letter": "A",
+        "row": 26,
+        "type": "progression"
+      },
+      {
+        "cell": "H26",
+        "formula": "=IF('WEEK 1 '!M25<1,\"PROCEED TO DOWN SETS\",\"NEW 1 REP MAX ATTEMPT\")",
+        "column_letter": "H",
+        "row": 26,
+        "type": "progression"
+      },
+      {
+        "cell": "B27",
+        "formula": "=IF('WEEK 1 '!F25<1,\"\",B25+5)",
+        "column_letter": "B",
+        "row": 27,
+        "type": "progression"
+      },
+      {
+        "cell": "I27",
+        "formula": "=IF('WEEK 1 '!M25<1,\"\",I25+5)",
+        "column_letter": "I",
+        "row": 27,
+        "type": "progression"
+      },
+      {
+        "cell": "P27",
+        "formula": "=IF(OR(ISBLANK('WEEK 1 '!T25),ISBLANK('WEEK 1 '!T24),ISBLANK('WEEK 1 '!T23)),\"\",IF('WEEK 1 '!T25>=6,'WEEK 1 '!P20+5,\"\"))",
+        "column_letter": "P",
+        "row": 27,
+        "type": "progression"
+      },
+      {
+        "cell": "B28",
+        "formula": "=IF('WEEK 1 '!F27<1,\"\",B27+5)",
+        "column_letter": "B",
+        "row": 28,
+        "type": "progression"
+      },
+      {
+        "cell": "I28",
+        "formula": "=IF('WEEK 1 '!M27<1,\"\",I27+5)",
+        "column_letter": "I",
+        "row": 28,
+        "type": "progression"
+      }
+    ],
+    "down_sets": [
+      {
+        "cell": "O26",
+        "formula": "=IF(OR(ISBLANK('WEEK 1 '!T25),ISBLANK('WEEK 1 '!T24),ISBLANK('WEEK 1 '!T23)),\"PROCEED TO DOWNSETS\",if('WEEK 1 '!T25>=6,\"NEW 4 REP MAX ATTEMPT\",\"PROCEED TO DOWN SETS\"))",
+        "column_letter": "O",
+        "row": 26,
+        "type": "downset_logic"
+      },
+      {
+        "cell": "O28",
+        "formula": "=IF(OR(ISBLANK('WEEK 1 '!T25),ISBLANK('WEEK 1 '!T24),ISBLANK('WEEK 1 '!T23)),\"FILL OUT REP LOG FIRST\",\"DOWN SETS\")",
+        "column_letter": "O",
+        "row": 28,
+        "type": "downset_logic"
+      },
+      {
+        "cell": "A29",
+        "formula": "=IF(OR(ISBLANK('WEEK 1 '!F25),ISBLANK('WEEK 1 '!F24),ISBLANK('WEEK 1 '!F23)),\"FILL OUT REP LOG FOR DOWN SETS\",\"DOWN SETS\")",
+        "column_letter": "A",
+        "row": 29,
+        "type": "downset_logic"
+      },
+      {
+        "cell": "H29",
+        "formula": "=IF(OR(ISBLANK('WEEK 1 '!M25),ISBLANK('WEEK 1 '!M24),ISBLANK('WEEK 1 '!M23)),\"FILL OUT REP LOG FOR DOWN SETS\",\"DOWN SETS\")",
+        "column_letter": "H",
+        "row": 29,
+        "type": "downset_logic"
+      }
+    ]
+  },
+  "percentage_usage": {
+    "0.8": [
+      "B23"
+    ],
+    "0.9": [
+      "B30",
+      "I30"
+    ]
+  }
+}
