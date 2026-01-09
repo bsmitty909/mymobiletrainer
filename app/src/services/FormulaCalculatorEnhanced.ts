@@ -1,10 +1,10 @@
 /**
  * FormulaCalculator Service - Enhanced with Asa B 2020 Excel Formulas
- * 
+ *
  * Core service implementing formulas extracted from Asa B 2020.xlsx workout program.
  * This 48-week progressive overload program uses percentage-based weight calculations,
  * conditional set display, and automatic progression logic.
- * 
+ *
  * Extracted Formula Logic:
  * - Percentage-based loading: 17 intensity levels from 10% to 200%
  * - Progressive overload: +5 lbs on successful max attempts
@@ -12,7 +12,8 @@
  * - Auto-regulation: Failed max attempts redirect to down sets (volume work)
  * - Rest periods: 30s (warmup), 1-2 MIN (working), 1-5 MIN (max attempts)
  * - All weights rounded to nearest 5 lbs
- * 
+ * - Periodization: Deload weeks, intensity waves, training max adjustment
+ *
  * Source: formulas/FORMULA_IMPLEMENTATION_GUIDE.md
  */
 
@@ -29,6 +30,7 @@ import {
   WEEK_PERCENTAGES,
   WEIGHT_INCREMENTS,
 } from '../types';
+import { PeriodizationService, PeriodizationSettings, PeriodizationPlan } from './PeriodizationService';
 
 /**
  * Extracted intensity percentages from Asa B 2020 Excel formulas
@@ -49,7 +51,7 @@ export const INTENSITY_PERCENTAGES = {
   WORKING_VERY_HEAVY: 0.85,
   NEAR_MAX: 0.90,           // High intensity
   PEAK: 0.95,
-  MAX: 1.0,                 // 100% of 1RM
+  MAX: 1.0,                 // 100% of 4RM
   OVER_MAX: 1.05,           // Attempting new PR
   BODYWEIGHT_2X: 2.0        // Special: 2× bodyweight for leg exercises
 } as const;
@@ -81,20 +83,20 @@ export interface ConditionalSet {
 export class FormulaCalculator {
   /**
    * Calculate weight using extracted percentage formulas
-   * Formula: MROUND(1RM × percentage, 5)
-   * Special case: If 1RM < 125 and percentage ≤ 35%, use 45 lbs (empty barbell)
+   * Formula: MROUND(4RM × percentage, 5)
+   * Special case: If 4RM < 125 and percentage ≤ 35%, use 45 lbs (empty barbell)
    */
   static calculateWeightByPercentage(
-    oneRepMax: number,
+    fourRepMax: number,
     percentage: number,
     roundTo: number = 5
   ): number {
-    // Beginner special case from Excel: IF(1RM < 125, 45, MROUND(1RM * 0.35, 5))
-    if (oneRepMax < 125 && percentage <= 0.35) {
+    // Beginner special case from Excel: IF(4RM < 125, 45, MROUND(4RM * 0.35, 5))
+    if (fourRepMax < 125 && percentage <= 0.35) {
       return 45;
     }
     
-    const weight = oneRepMax * percentage;
+    const weight = fourRepMax * percentage;
     return this.roundToNearest5(weight, roundTo);
   }
 
@@ -215,11 +217,11 @@ export class FormulaCalculator {
 
   /**
    * Generate down sets (back-off sets for volume)
-   * Formula: IF(all_working_sets_complete, MROUND(1RM * 0.80, 5), "")
+   * Formula: IF(all_working_sets_complete, MROUND(4RM * 0.80, 5), "")
    * Only shown after completing all working sets
    */
   static generateDownSets(
-    oneRepMax: number,
+    fourRepMax: number,
     workingSetsCompleted: boolean,
     numberOfDownSets: number = 3
   ): ConditionalSet[] {
@@ -227,7 +229,7 @@ export class FormulaCalculator {
       return [];
     }
     
-    const downSetWeight = this.calculateWeightByPercentage(oneRepMax, 0.80);
+    const downSetWeight = this.calculateWeightByPercentage(fourRepMax, 0.80);
     const sets: ConditionalSet[] = [];
     
     for (let i = 0; i < numberOfDownSets; i++) {
@@ -304,9 +306,9 @@ export class FormulaCalculator {
    */
   static calculateRestPeriodFromIntensity(
     weightUsed: number,
-    oneRepMax: number
+    fourRepMax: number
   ): string {
-    const intensity = weightUsed / oneRepMax;
+    const intensity = weightUsed / fourRepMax;
     
     if (intensity <= 0.35) return '30s';
     if (intensity >= 0.90) return '1-5 MIN';
@@ -325,7 +327,7 @@ export class FormulaCalculator {
    */
   static generatePyramidSets(
     exerciseId: string,
-    oneRepMax: number,
+    fourRepMax: number,
     completedSets: SetLog[] = []
   ): ConditionalSet[] {
     const sets: ConditionalSet[] = [];
@@ -333,7 +335,7 @@ export class FormulaCalculator {
     // Warmup set
     sets.push({
       setNumber: 1,
-      weight: this.calculateWeightByPercentage(oneRepMax, INTENSITY_PERCENTAGES.WARMUP_STANDARD),
+      weight: this.calculateWeightByPercentage(fourRepMax, INTENSITY_PERCENTAGES.WARMUP_STANDARD),
       targetReps: 6,
       restPeriod: '30s',
       isConditional: false,
@@ -343,7 +345,7 @@ export class FormulaCalculator {
     // Build-up sets
     sets.push({
       setNumber: 2,
-      weight: this.calculateWeightByPercentage(oneRepMax, INTENSITY_PERCENTAGES.WORKING_HEAVY_2),
+      weight: this.calculateWeightByPercentage(fourRepMax, INTENSITY_PERCENTAGES.WORKING_HEAVY_2),
       targetReps: 1,
       restPeriod: '1-2 MIN',
       isConditional: false,
@@ -352,7 +354,7 @@ export class FormulaCalculator {
     
     sets.push({
       setNumber: 3,
-      weight: this.calculateWeightByPercentage(oneRepMax, INTENSITY_PERCENTAGES.NEAR_MAX),
+      weight: this.calculateWeightByPercentage(fourRepMax, INTENSITY_PERCENTAGES.NEAR_MAX),
       targetReps: 1,
       restPeriod: '1-2 MIN',
       isConditional: false,
@@ -362,7 +364,7 @@ export class FormulaCalculator {
     // Max attempt
     sets.push({
       setNumber: 4,
-      weight: oneRepMax,
+      weight: fourRepMax,
       targetReps: 1,
       restPeriod: '1-5 MIN',
       isConditional: false,
@@ -370,7 +372,7 @@ export class FormulaCalculator {
     });
     
     // Progressive max attempts (conditional)
-    const maxAttempts = this.generateProgressiveMaxAttempts(oneRepMax, 2, completedSets);
+    const maxAttempts = this.generateProgressiveMaxAttempts(fourRepMax, 2, completedSets);
     sets.push(...maxAttempts);
     
     return sets;
@@ -395,7 +397,7 @@ export class FormulaCalculator {
   }
 
   /**
-   * Calculate new 1RM based on completed max attempts
+   * Calculate new 4RM based on completed max attempts
    * Returns highest successful weight where reps >= 1
    */
   static calculateNewMax(

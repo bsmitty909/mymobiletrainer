@@ -160,6 +160,43 @@ export class StorageService {
       return false;
     }
   }
+
+  /**
+   * Save a generic item to storage
+   */
+  static async saveItem<T>(key: string, data: T): Promise<void> {
+    try {
+      await AsyncStorage.setItem(key, JSON.stringify(data));
+    } catch (error) {
+      console.error(`Error saving item ${key}:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get a generic item from storage
+   */
+  static async getItem<T>(key: string): Promise<T | null> {
+    try {
+      const value = await AsyncStorage.getItem(key);
+      return value ? JSON.parse(value) : null;
+    } catch (error) {
+      console.error(`Error getting item ${key}:`, error);
+      return null;
+    }
+  }
+
+  /**
+   * Remove a generic item from storage
+   */
+  static async removeItem(key: string): Promise<void> {
+    try {
+      await AsyncStorage.removeItem(key);
+    } catch (error) {
+      console.error(`Error removing item ${key}:`, error);
+      throw error;
+    }
+  }
 }
 
 export default StorageService;

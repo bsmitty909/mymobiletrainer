@@ -8,9 +8,9 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
-// Import slices (to be created)
+// Import slices
 import userReducer from './slices/userSlice';
-import workoutReducer from './slices/workoutSlice';
+import workoutReducer from './slices/workoutSliceEnhanced'; // Enhanced for formula integration
 import progressReducer from './slices/progressSlice';
 import uiReducer from './slices/uiSlice';
 import gamificationReducer from './slices/gamificationSlice';
@@ -30,11 +30,8 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        // Ignore these action types for Date objects
-        ignoredActions: ['workout/startSession', 'workout/logSet'],
-        // Ignore these paths in the state
-        ignoredActionPaths: ['payload.date', 'payload.timestamp'],
-        ignoredPaths: ['workout.activeSession.startedAt', 'workout.activeSession.completedAt'],
+        // All state should now be serializable with number timestamps and arrays
+        // If any serialization errors occur, check for Date objects or Sets
       },
     }),
 });

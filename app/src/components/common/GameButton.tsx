@@ -50,87 +50,69 @@ export default function GameButton({
   };
 
   const buttonHeight = {
-    large: 70,
-    medium: 56,
-    small: 44,
+    large: 50,
+    medium: 44,
+    small: 38,
   };
 
   const fontSize = {
-    large: 22,
-    medium: 18,
-    small: 16,
+    large: 15,
+    medium: 14,
+    small: 13,
+  };
+
+  const getButtonColor = () => {
+    if (variant === 'primary') return colors.primary;
+    if (variant === 'success') return colors.success;
+    if (variant === 'danger') return colors.error || '#d63031';
+    return colors.textSecondary;
   };
 
   return (
     <TouchableOpacity
       onPress={handlePress}
       disabled={disabled}
-      activeOpacity={0.8}
+      activeOpacity={0.7}
       style={[
         styles.container,
-        { height: buttonHeight[size], opacity: disabled ? 0.5 : 1 },
+        {
+          height: buttonHeight[size],
+          opacity: disabled ? 0.3 : 1,
+          backgroundColor: getButtonColor(),
+        },
         style,
       ]}
     >
-      <LinearGradient
-        colors={gradientColors[variant]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.gradient}
-      >
-        <View style={styles.content}>
-          {icon && (
-            <MaterialCommunityIcons
-              name={icon}
-              size={fontSize[size] + 6}
-              color="#fff"
-            />
-          )}
-          <Text style={[styles.text, { fontSize: fontSize[size] }]}>{children}</Text>
-        </View>
-        <View style={styles.shine} />
-      </LinearGradient>
+      <View style={styles.content}>
+        {icon && (
+          <MaterialCommunityIcons
+            name={icon}
+            size={fontSize[size] + 4}
+            color="#fff"
+          />
+        )}
+        <Text style={[styles.text, { fontSize: fontSize[size] }]}>{children}</Text>
+      </View>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 16,
-    overflow: 'hidden',
-    elevation: 6,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-  },
-  gradient: {
-    flex: 1,
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'relative',
+    marginVertical: 4,
   },
   content: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 8,
   },
   text: {
     color: '#fff',
-    fontWeight: '900',
-    letterSpacing: 0.5,
-    textTransform: 'uppercase',
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 4,
+    fontWeight: '600',
+    letterSpacing: 0.3,
     flexShrink: 1,
-  },
-  shine: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: '50%',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
 });

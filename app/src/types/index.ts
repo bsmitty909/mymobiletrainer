@@ -27,6 +27,8 @@ export interface UserProfile {
   currentDay: number;
   maxLifts: Record<string, MaxLift>;
   preferredExercises: Record<string, string>; // exerciseId -> variantId
+  exerciseSubstitutions: ExerciseSubstitution[]; // History of substitutions
+  permanentSubstitutions: Record<string, string>; // originalId -> substituteId
 }
 
 export interface BodyWeightEntry {
@@ -54,6 +56,7 @@ export interface Exercise {
   instructions: string;
   formTips: string[];
   primaryMuscle: MuscleGroup;
+  incrementSize?: number; // Weight increment in lbs (2.5, 5, 10)
 }
 
 export interface ExerciseVariant {
@@ -64,6 +67,21 @@ export interface ExerciseVariant {
   videoUrl: string;
   instructions: string;
   equivalenceRatio: number; // Conversion ratio to primary exercise max
+  incrementSize?: number; // Weight increment in lbs (2.5, 5, 10)
+}
+
+// Exercise substitution tracking
+export interface ExerciseSubstitution {
+  id: string;
+  userId: string;
+  originalExerciseId: string;
+  substituteExerciseId: string;
+  variantId?: string;
+  weekNumber: number;
+  dayNumber: number;
+  reason?: string;
+  substitutedAt: number; // timestamp
+  permanent: boolean; // If true, always use this substitution
 }
 
 // ============================================================================
@@ -305,6 +323,9 @@ export interface AppSettings {
 
 export type RootStackParamList = {
   Onboarding: undefined;
+  MaxDeterminationIntro: undefined;
+  MaxTesting: undefined;
+  MaxSummary: undefined;
   MainTabs: undefined;
 };
 
@@ -314,6 +335,9 @@ export type OnboardingStackParamList = {
   ExperienceLevel: undefined;
   BodyWeightInput: undefined;
   PreWorkoutIntro: { phase: string };
+  MaxDeterminationIntro: undefined;
+  MaxTesting: undefined;
+  MaxSummary: undefined;
 };
 
 export type WorkoutStackParamList = {
@@ -341,9 +365,15 @@ export type ProfileStackParamList = {
   About: undefined;
 };
 
+export type ExercisesStackParamList = {
+  ExerciseLibrary: undefined;
+  ExerciseDetail: { exerciseId: string };
+};
+
 export type MainTabsParamList = {
   Workout: undefined;
   Progress: undefined;
+  Exercises: undefined;
   Profile: undefined;
 };
 
@@ -466,4 +496,106 @@ export interface GamificationState {
   totalWorkouts: number;
   totalVolume: number;
   totalPRs: number;
+}
+
+// ============================================================================
+// PHASE 4.6: SOCIAL & MOTIVATION TYPES
+// ============================================================================
+
+// Enhanced Personal Record with celebration data
+export interface PersonalRecordEnhanced {
+  id: string;
+  exerciseId: string;
+  exerciseName: string;
+  weight: number;
+  reps: number;
+  date: number;
+  previousRecord?: {
+    weight: number;
+    reps: number;
+    date: number;
+  };
+  improvement: {
+    weightGain: number;
+    percentageGain: number;
+  };
+  userPercentile?: number;
+}
+
+export interface PRStats {
+  totalPRs: number;
+  prsThisWeek: number;
+  prsThisMonth: number;
+  averageImprovement: number;
+  bestPR: PersonalRecordEnhanced | null;
+  recentPRs: PersonalRecordEnhanced[];
+}
+
+export interface ShareableData {
+  exerciseName: string;
+  weight: number;
+  reps: number;
+  improvement: string;
+  percentile?: number;
+  message: string;
+}
+
+// Leaderboard Types
+export interface LeaderboardEntry {
+  userId: string;
+  username: string;
+  rank: number;
+  score: number;
+  category: LeaderboardCategory;
+  additionalData?: {
+    totalWorkouts?: number;
+    totalVolume?: number;
+    currentStreak?: number;
+    averageIntensity?: number;
+    prCount?: number;
+  };
+  isCurrentUser?: boolean;
+}
+
+export type LeaderboardCategory =
+  | 'total_strength'
+  | 'strength_gain'
+  | 'volume'
+  | 'consistency'
+  | 'streak'
+  | 'pr_count';
+
+export type LeaderboardTimeframe = 'week' | 'month' | 'all_time';
+
+export interface LeaderboardFilter {
+  category: LeaderboardCategory;
+  timeframe: LeaderboardTimeframe;
+  weightClass?: 'light' | 'middle' | 'heavy';
+  ageGroup?: 'under_25' | '25_35' | '35_45' | 'over_45';
+}
+
+export interface UserComparison {
+  currentUser: LeaderboardEntry;
+  nearbyUsers: LeaderboardEntry[];
+  percentile: number;
+  message: string;
+}
+
+// Streak Milestone Types
+export interface StreakMilestone {
+  value: number;
+  title: string;
+  emoji: string;
+  color: string;
+}
+
+// Reminder Types for Streak Notifications
+export interface StreakReminder {
+  id: string;
+  userId: string;
+  type: 'streak_risk' | 'milestone_approaching' | 'encouragement';
+  message: string;
+  scheduledFor: number; // timestamp
+  sent: boolean;
+  streakValue: number;
 }

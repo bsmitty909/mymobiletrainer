@@ -1,13 +1,16 @@
 /**
  * ProgressionService
- * 
+ *
  * Manages program progression and phase transitions:
  * - Determines when user advances to next week/phase
  * - Handles pre-workout → max week → regular weeks flow
  * - Tracks completion and readiness for progression
+ * - Tracks weekly maxes and progression history
+ * - Calculates strength gains and milestone achievements
  */
 
-import { ExperienceLevel, WorkoutSession, WorkoutPhase } from '../types';
+import { ExperienceLevel, WorkoutSession, WorkoutPhase, MaxLift, PersonalRecord } from '../types';
+import { WeeklyMax, MaxAttemptHistory } from '../types/enhanced';
 
 export class ProgressionService {
   /**
@@ -359,6 +362,302 @@ export class ProgressionService {
     }
 
     return `Keep pushing! Every rep counts!`;
+  }
+
+  /**
+   * Calculate week-over-week progression for an exercise
+   * Returns +5, 0, -5, etc. based on weight changes
+   */
+  static calculateWeeklyProgression(
+    weeklyMaxes: WeeklyMax[],
+    exerciseId: string
+  ): {
+    currentWeek: number;
+    currentMax: number;
+    previousMax: number;
+    progression: number;
+    progressionPercentage: number;
+  } | null {
+    const exerciseMaxes = weeklyMaxes
+      .filter(m => m.exerciseId === exerciseId)
+      .sort((a, b) => b.weekNumber - a.weekNumber);
+
+    if (exerciseMaxes.length < 2) {
+      return null;
+    }
+
+    const current = exerciseMaxes[0];
+    const previous = exerciseMaxes[1];
+    const progression = current.weight - previous.weight;
+    const progressionPercentage = (progression / previous.weight) * 100;
+
+    return {
+      currentWeek: current.weekNumber,
+      currentMax: current.weight,
+      previousMax: previous.weight,
+      progression,
+      progressionPercentage: Math.round(progressionPercentage * 10) / 10,
+    };
+  }
+
+  /**
+   * Get total strength gained since program start
+   */
+  static calculateTotalStrengthGain(
+    weeklyMaxes: WeeklyMax[],
+    exerciseId: string
+  ): {
+    startingMax: number;
+    currentMax: number;
+    totalGain: number;
+    totalGainPercentage: number;
+    weeksTracked: number;
+  } | null {
+    const exerciseMaxes = weeklyMaxes
+      .filter(m => m.exerciseId === exerciseId)
+      .sort((a, b) => a.weekNumber - b.weekNumber);
+
+    if (exerciseMaxes.length === 0) {
+      return null;
+    }
+
+    const starting = exerciseMaxes[0];
+    const current = exerciseMaxes[exerciseMaxes.length - 1];
+    const totalGain = current.weight - starting.weight;
+    const totalGainPercentage = (totalGain / starting.weight) * 100;
+
+    return {
+      startingMax: starting.weight,
+      currentMax: current.weight,
+      totalGain,
+      totalGainPercentage: Math.round(totalGainPercentage * 10) / 10,
+      weeksTracked: current.weekNumber - starting.weekNumber + 1,
+    };
+  }
+
+  /**
+   * Get progression history for charting (last N weeks)
+   */
+  static getProgressionHistory(
+    weeklyMaxes: WeeklyMax[],
+    exerciseId: string,
+    lastNWeeks: number = 12
+  ): Array<{ week: number; weight: number; date: Date }> {
+    const exerciseMaxes = weeklyMaxes
+      .filter(m => m.exerciseId === exerciseId)
+      .sort((a, b) => a.weekNumber - b.weekNumber)
+      .slice(-lastNWeeks);
+
+    return exerciseMaxes.map(m => ({
+      week: m.weekNumber,
+      weight: m.weight,
+      date: new Date(m.achievedAt),
+    }));
+  }
+
+  /**
+   * Calculate max attempt success rate
+   */
+  static calculateMaxAttemptSuccessRate(
+    maxAttemptHistory: MaxAttemptHistory[],
+    exerciseId?: string
+  ): {
+    totalAttempts: number;
+    successfulAttempts: number;
+    failedAttempts: number;
+    successRate: number;
+  } {
+    const attempts = exerciseId
+      ? maxAttemptHistory.filter(a => a.exerciseId === exerciseId)
+      : maxAttemptHistory;
+
+    const totalAttempts = attempts.length;
+    const successfulAttempts = attempts.filter(a => a.successful).length;
+    const failedAttempts = totalAttempts - successfulAttempts;
+    const successRate = totalAttempts > 0
+      ? (successfulAttempts / totalAttempts) * 100
+      : 0;
+
+    return {
+      totalAttempts,
+      successfulAttempts,
+      failedAttempts,
+      successRate: Math.round(successRate),
+    };
+  }
+
+  /**
+   * Get best lifts in last N days
+   */
+  static getBestLiftsInPeriod(
+    maxAttemptHistory: MaxAttemptHistory[],
+    periodDays: number = 30
+  ): Array<{
+    exerciseId: string;
+    weight: number;
+    reps: number;
+    date: Date;
+  }> {
+    const cutoffDate = Date.now() - (periodDays * 24 * 60 * 60 * 1000);
+    const recentAttempts = maxAttemptHistory
+      .filter(a => a.attemptedAt > cutoffDate && a.successful)
+      .sort((a, b) => b.attemptedWeight - a.attemptedWeight);
+
+    const bestByExercise = new Map<string, MaxAttemptHistory>();
+
+    for (const attempt of recentAttempts) {
+      const existing = bestByExercise.get(attempt.exerciseId);
+      if (!existing || attempt.attemptedWeight > existing.attemptedWeight) {
+        bestByExercise.set(attempt.exerciseId, attempt);
+      }
+    }
+
+    return Array.from(bestByExercise.values()).map(a => ({
+      exerciseId: a.exerciseId,
+      weight: a.attemptedWeight,
+      reps: a.repsCompleted,
+      date: new Date(a.attemptedAt),
+    }));
+  }
+
+  /**
+   * Determine milestone achievements based on weight gains
+   * Returns earned milestone badges
+   */
+  static getMilestoneAchievements(
+    weeklyMaxes: WeeklyMax[],
+    exerciseId: string
+  ): Array<{
+    type: 'gain_10' | 'gain_25' | 'gain_50' | 'gain_100';
+    title: string;
+    description: string;
+    icon: string;
+    earnedAt: Date;
+  }> {
+    const gains = this.calculateTotalStrengthGain(weeklyMaxes, exerciseId);
+    if (!gains) return [];
+
+    const milestones = [];
+    const totalGain = gains.totalGain;
+
+    if (totalGain >= 100) {
+      milestones.push({
+        type: 'gain_100' as const,
+        title: '💯 Century Gain',
+        description: `+${totalGain} lbs gained!`,
+        icon: '🏆',
+        earnedAt: new Date(),
+      });
+    } else if (totalGain >= 50) {
+      milestones.push({
+        type: 'gain_50' as const,
+        title: '💪 Half Century',
+        description: `+${totalGain} lbs gained!`,
+        icon: '⭐',
+        earnedAt: new Date(),
+      });
+    } else if (totalGain >= 25) {
+      milestones.push({
+        type: 'gain_25' as const,
+        title: '🎯 Quarter Century',
+        description: `+${totalGain} lbs gained!`,
+        icon: '🔥',
+        earnedAt: new Date(),
+      });
+    } else if (totalGain >= 10) {
+      milestones.push({
+        type: 'gain_10' as const,
+        title: '🚀 Strong Start',
+        description: `+${totalGain} lbs gained!`,
+        icon: '💪',
+        earnedAt: new Date(),
+      });
+    }
+
+    return milestones;
+  }
+
+  /**
+   * Compare current progress to program baseline
+   */
+  static compareToBaseline(
+    weeklyMaxes: WeeklyMax[],
+    exerciseIds: string[]
+  ): {
+    exerciseComparisons: Array<{
+      exerciseId: string;
+      baselineMax: number;
+      currentMax: number;
+      gain: number;
+      gainPercentage: number;
+    }>;
+    totalBaselineStrength: number;
+    totalCurrentStrength: number;
+    overallGain: number;
+    overallGainPercentage: number;
+  } {
+    const comparisons = exerciseIds.map(exerciseId => {
+      const gains = this.calculateTotalStrengthGain(weeklyMaxes, exerciseId);
+      return {
+        exerciseId,
+        baselineMax: gains?.startingMax || 0,
+        currentMax: gains?.currentMax || 0,
+        gain: gains?.totalGain || 0,
+        gainPercentage: gains?.totalGainPercentage || 0,
+      };
+    });
+
+    const totalBaselineStrength = comparisons.reduce((sum, c) => sum + c.baselineMax, 0);
+    const totalCurrentStrength = comparisons.reduce((sum, c) => sum + c.currentMax, 0);
+    const overallGain = totalCurrentStrength - totalBaselineStrength;
+    const overallGainPercentage = totalBaselineStrength > 0
+      ? (overallGain / totalBaselineStrength) * 100
+      : 0;
+
+    return {
+      exerciseComparisons: comparisons,
+      totalBaselineStrength,
+      totalCurrentStrength,
+      overallGain,
+      overallGainPercentage: Math.round(overallGainPercentage * 10) / 10,
+    };
+  }
+
+  /**
+   * Get weekly progression summary for all exercises
+   */
+  static getWeeklyProgressSummary(
+    weeklyMaxes: WeeklyMax[],
+    exerciseIds: string[]
+  ): Array<{
+    exerciseId: string;
+    exerciseName: string;
+    currentMax: number;
+    weeklyChange: number;
+    totalGain: number;
+    trendDirection: 'up' | 'down' | 'stable';
+  }> {
+    return exerciseIds.map(exerciseId => {
+      const progression = this.calculateWeeklyProgression(weeklyMaxes, exerciseId);
+      const gains = this.calculateTotalStrengthGain(weeklyMaxes, exerciseId);
+
+      let trendDirection: 'up' | 'down' | 'stable' = 'stable';
+      if (progression) {
+        if (progression.progression > 0) trendDirection = 'up';
+        else if (progression.progression < 0) trendDirection = 'down';
+      }
+
+      return {
+        exerciseId,
+        exerciseName: exerciseId.split('-').map(w =>
+          w.charAt(0).toUpperCase() + w.slice(1)
+        ).join(' '),
+        currentMax: progression?.currentMax || gains?.currentMax || 0,
+        weeklyChange: progression?.progression || 0,
+        totalGain: gains?.totalGain || 0,
+        trendDirection,
+      };
+    });
   }
 }
 

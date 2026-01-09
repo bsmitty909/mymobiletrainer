@@ -2,18 +2,24 @@
  * Progress Dashboard Screen (Redesigned)
  *
  * Enhanced with gamification features: levels, badges, streaks, and achievements
+ * Phase 4.5: Added Analytics & Insights integration
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, StyleSheet, ScrollView, Modal, TextInput, Alert } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppSelector, useAppDispatch } from '../../store/store';
 import { addBodyWeight } from '../../store/slices/progressSlice';
 import AchievementCard from '../../components/common/AchievementCard';
 import GameButton from '../../components/common/GameButton';
 import WorkoutStreakCalendar from '../../components/workout/WorkoutStreakCalendar';
+import VolumeTrendChart from '../../components/charts/VolumeTrendChart';
+import IntensityDistributionChart from '../../components/charts/IntensityDistributionChart';
+import BodyPartBalanceCard from '../../components/common/BodyPartBalanceCard';
 import HapticService from '../../services/HapticService';
+import AnalyticsService from '../../services/AnalyticsService';
 import useThemeColors from '../../utils/useThemeColors';
 
 export default function ProgressDashboardScreen({ navigation }: any) {
@@ -39,6 +45,25 @@ export default function ProgressDashboardScreen({ navigation }: any) {
   const level = gamification.level || { level: 1, xp: 0, xpForNextLevel: 100, title: 'Beginner' };
   const unlockedBadges = gamification.badges || [];
   const streakDates = gamification.streak?.streakDates || [];
+
+  // Calculate analytics from recent workouts (Phase 4.5)
+  const latestWorkoutAnalytics = useMemo(() => {
+    if (workoutHistory.length === 0) return null;
+    const completedWorkouts = workoutHistory.filter(w => w.status === 'completed');
+    if (completedWorkouts.length === 0) return null;
+    return AnalyticsService.analyzeWorkout(completedWorkouts[0]);
+  }, [workoutHistory]);
+
+  const volumeTrendData = useMemo(() => {
+    if (workoutHistory.length === 0) return [];
+    const completedWorkouts = workoutHistory.filter(w => w.status === 'completed');
+    return completedWorkouts.map(w => ({
+      date: w.completedAt || w.startedAt,
+      totalVolume: AnalyticsService.calculateVolume(w).totalVolume,
+      weekNumber: w.weekNumber,
+      dayNumber: w.dayNumber,
+    }));
+  }, [workoutHistory]);
 
   const handleLogWeight = () => {
     HapticService.buttonPress();
@@ -98,6 +123,18 @@ export default function ProgressDashboardScreen({ navigation }: any) {
         </View>
       </LinearGradient>
 
+      {/* Quick Action: Weekly Progress */}
+      <View style={styles.section}>
+        <GameButton
+          onPress={() => navigation.navigate('WeeklyProgress')}
+          variant="primary"
+          size="large"
+          icon="chart-line"
+        >
+          View Weekly Progress
+        </GameButton>
+      </View>
+
       {/* Achievement Stats Grid */}
       <View style={styles.statsSection}>
         <Text style={[styles.sectionTitle, { color: colors.text }]}>
@@ -109,7 +146,7 @@ export default function ProgressDashboardScreen({ navigation }: any) {
               <AchievementCard
                 title="Workouts"
                 value={totalWorkouts.toString()}
-                icon="💪"
+                icon="arm-flex"
                 color="gold"
                 subtitle="Completed"
               />
@@ -118,7 +155,7 @@ export default function ProgressDashboardScreen({ navigation }: any) {
               <AchievementCard
                 title="Streak"
                 value={currentStreak.toString()}
-                icon="🔥"
+                icon="fire"
                 color="blue"
                 subtitle={`Best: ${longestStreak}`}
               />
@@ -130,7 +167,7 @@ export default function ProgressDashboardScreen({ navigation }: any) {
               <AchievementCard
                 title="Volume"
                 value={`${Math.round(totalVolume / 1000)}k`}
-                icon="⚡"
+                icon="lightning-bolt"
                 color="green"
                 subtitle="lbs lifted"
               />
@@ -139,7 +176,7 @@ export default function ProgressDashboardScreen({ navigation }: any) {
               <AchievementCard
                 title="PRs"
                 value={totalPRs.toString()}
-                icon="🏆"
+                icon="trophy"
                 color="bronze"
                 subtitle="Personal Records"
               />
@@ -182,16 +219,136 @@ export default function ProgressDashboardScreen({ navigation }: any) {
           workoutDates={streakDates}
           currentStreak={currentStreak}
           longestStreak={longestStreak}
+          onDayPress={(date) => {
+            navigation.navigate('WorkoutDayDetail', {
+              date: date.toISOString()
+            });
+          }}
         />
       </View>
+
+      {/* Analytics Section - Phase 4.5 */}
+      {workoutHistory.length > 0 && (
+        <>
+          {/* Volume Trend */}
+          <View style={styles.section}>
+            <Card style={[styles.card, { backgroundColor: colors.card }]}>
+              <Card.Content>
+                <View style={styles.titleWithIcon}>
+                  <MaterialCommunityIcons name="chart-line" size={24} color={colors.text} />
+                  <Text style={[styles.cardTitle, { color: colors.text }]}>
+                    Volume Trends
+                  </Text>
+                </View>
+                <VolumeTrendChart workoutHistory={volumeTrendData} />
+              </Card.Content>
+            </Card>
+          </View>
+
+          {/* Intensity Distribution */}
+          {latestWorkoutAnalytics && (
+            <View style={styles.section}>
+              <Card style={[styles.card, { backgroundColor: colors.card }]}>
+                <Card.Content>
+                  <View style={styles.titleWithIcon}>
+                    <MaterialCommunityIcons name="lightning-bolt" size={24} color={colors.text} />
+                    <Text style={[styles.cardTitle, { color: colors.text }]}>
+                      Intensity Distribution
+                    </Text>
+                  </View>
+                  <Text style={[styles.emptyText, { color: colors.textSecondary, marginBottom: 12 }]}>
+                    Last Workout (Week {workoutHistory[0]?.weekNumber} Day {workoutHistory[0]?.dayNumber})
+                  </Text>
+                  <IntensityDistributionChart intensityData={latestWorkoutAnalytics.intensity} />
+                </Card.Content>
+              </Card>
+            </View>
+          )}
+
+          {/* Body Part Balance */}
+          {latestWorkoutAnalytics && (
+            <View style={styles.section}>
+              <View style={styles.titleWithIcon}>
+                <MaterialCommunityIcons name="arm-flex" size={24} color={colors.text} />
+                <Text style={[styles.sectionTitle, { color: colors.text }]}>
+                  Muscle Balance
+                </Text>
+              </View>
+              <BodyPartBalanceCard
+                balanceData={latestWorkoutAnalytics.bodyPartBalance}
+                showRecommendations={true}
+              />
+            </View>
+          )}
+
+          {/* Time Under Tension Stats */}
+          {latestWorkoutAnalytics && latestWorkoutAnalytics.timeUnderTension.totalWorkoutTime > 0 && (
+            <View style={styles.section}>
+              <Card style={[styles.card, { backgroundColor: colors.card }]}>
+                <Card.Content>
+                  <View style={styles.titleWithIcon}>
+                    <MaterialCommunityIcons name="timer" size={24} color={colors.text} />
+                    <Text style={[styles.cardTitle, { color: colors.text }]}>
+                      Workout Metrics
+                    </Text>
+                  </View>
+                  <View style={styles.achievementRow}>
+                    <View style={styles.achievementItem}>
+                      <AchievementCard
+                        title="Duration"
+                        value={`${Math.round(latestWorkoutAnalytics.timeUnderTension.totalWorkoutTime / 60)}`}
+                        icon="timer"
+                        color="blue"
+                        subtitle="minutes"
+                      />
+                    </View>
+                    <View style={styles.achievementItem}>
+                      <AchievementCard
+                        title="Quality Time"
+                        value={`${latestWorkoutAnalytics.timeUnderTension.qualityMinutes}`}
+                        icon="target"
+                        color="green"
+                        subtitle="work mins"
+                      />
+                    </View>
+                  </View>
+                  <View style={styles.achievementRow}>
+                    <View style={styles.achievementItem}>
+                      <AchievementCard
+                        title="Efficiency"
+                        value={`${latestWorkoutAnalytics.timeUnderTension.efficiency}`}
+                        icon="lightning-bolt"
+                        color="gold"
+                        subtitle="score"
+                      />
+                    </View>
+                    <View style={styles.achievementItem}>
+                      <AchievementCard
+                        title="Avg Intensity"
+                        value={`${latestWorkoutAnalytics.intensity.averageIntensity}%`}
+                        icon="fire"
+                        color="bronze"
+                        subtitle="intensity"
+                      />
+                    </View>
+                  </View>
+                </Card.Content>
+              </Card>
+            </View>
+          )}
+        </>
+      )}
 
       {/* Body Weight Section */}
       <View style={styles.section}>
         <Card style={[styles.card, { backgroundColor: colors.card }]}>
           <Card.Content>
-            <Text style={[styles.cardTitle, { color: colors.text }]}>
-              📊 Body Weight Tracking
-            </Text>
+            <View style={styles.titleWithIcon}>
+              <MaterialCommunityIcons name="chart-bar" size={24} color={colors.text} />
+              <Text style={[styles.cardTitle, { color: colors.text }]}>
+                Body Weight Tracking
+              </Text>
+            </View>
             {currentWeight > 0 ? (
               <View style={styles.weightDisplay}>
                 <Text style={[styles.currentWeightLabel, { color: colors.textSecondary }]}>
@@ -226,9 +383,12 @@ export default function ProgressDashboardScreen({ navigation }: any) {
         <Card style={[styles.card, { backgroundColor: colors.card }]}>
           <Card.Content>
             <View style={styles.cardHeader}>
-              <Text style={[styles.cardTitle, { color: colors.text }]}>
-                🏆 Personal Records
-              </Text>
+              <View style={styles.titleWithIcon}>
+                <MaterialCommunityIcons name="trophy" size={24} color={colors.text} />
+                <Text style={[styles.cardTitle, { color: colors.text }]}>
+                  Personal Records
+                </Text>
+              </View>
               <GameButton
                 onPress={() => navigation.navigate('Profile', { screen: 'MaxLifts' })}
                 variant="secondary"
@@ -260,9 +420,12 @@ export default function ProgressDashboardScreen({ navigation }: any) {
       <View style={styles.section}>
         <Card style={[styles.card, { backgroundColor: colors.card }]}>
           <Card.Content>
-            <Text style={[styles.cardTitle, { color: colors.text }]}>
-              📅 Recent Workouts
-            </Text>
+            <View style={styles.titleWithIcon}>
+              <MaterialCommunityIcons name="calendar" size={24} color={colors.text} />
+              <Text style={[styles.cardTitle, { color: colors.text }]}>
+                Recent Workouts
+              </Text>
+            </View>
             {workoutHistory.slice(0, 5).map((workout, idx) => (
               <View key={workout.id || idx} style={[styles.workoutItem, { borderBottomColor: colors.border }]}>
                 <View>
@@ -469,6 +632,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 16,
+  },
+  titleWithIcon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
   cardTitle: {
     fontSize: 20,

@@ -3,16 +3,19 @@
  * 
  * Displays a calendar visualization showing workout completion history.
  * Highlights days with completed workouts and shows current streak.
+ * Supports navigation across months and day selection.
  */
 
-import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useThemeColors } from '../../utils/useThemeColors';
 
 interface WorkoutStreakCalendarProps {
   workoutDates: number[]; // Array of timestamps
   currentStreak: number;
   longestStreak: number;
+  onDayPress?: (date: Date, hasWorkout: boolean) => void;
 }
 
 interface CalendarDay {
@@ -26,16 +29,18 @@ export const WorkoutStreakCalendar: React.FC<WorkoutStreakCalendarProps> = ({
   workoutDates,
   currentStreak,
   longestStreak,
+  onDayPress,
 }) => {
   const colors = useThemeColors();
+  const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const calendarData = useMemo(() => {
     const today = new Date();
-    const currentMonth = today.getMonth();
-    const currentYear = today.getFullYear();
+    const month = currentMonth.getMonth();
+    const year = currentMonth.getFullYear();
 
-    const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
-    const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
+    const firstDayOfMonth = new Date(year, month, 1);
+    const lastDayOfMonth = new Date(year, month + 1, 0);
     const startDayOfWeek = firstDayOfMonth.getDay();
 
     const daysInMonth = lastDayOfMonth.getDate();
@@ -49,22 +54,23 @@ export const WorkoutStreakCalendar: React.FC<WorkoutStreakCalendarProps> = ({
     );
 
     for (let i = 0; i < startDayOfWeek; i++) {
-      const prevMonthDate = new Date(currentYear, currentMonth, -startDayOfWeek + i + 1);
+      const prevMonthDate = new Date(year, month, -startDayOfWeek + i + 1);
+      const dateKey = `${prevMonthDate.getFullYear()}-${prevMonthDate.getMonth()}-${prevMonthDate.getDate()}`;
       days.push({
         date: prevMonthDate,
-        hasWorkout: false,
+        hasWorkout: workoutDatesSet.has(dateKey),
         isToday: false,
         isCurrentMonth: false,
       });
     }
 
     for (let day = 1; day <= daysInMonth; day++) {
-      const date = new Date(currentYear, currentMonth, day);
-      const dateKey = `${currentYear}-${currentMonth}-${day}`;
+      const date = new Date(year, month, day);
+      const dateKey = `${year}-${month}-${day}`;
       const isToday = 
         day === today.getDate() &&
-        currentMonth === today.getMonth() &&
-        currentYear === today.getFullYear();
+        month === today.getMonth() &&
+        year === today.getFullYear();
 
       days.push({
         date,
@@ -76,10 +82,11 @@ export const WorkoutStreakCalendar: React.FC<WorkoutStreakCalendarProps> = ({
 
     const remainingDays = 42 - days.length;
     for (let i = 1; i <= remainingDays; i++) {
-      const nextMonthDate = new Date(currentYear, currentMonth + 1, i);
+      const nextMonthDate = new Date(year, month + 1, i);
+      const dateKey = `${nextMonthDate.getFullYear()}-${nextMonthDate.getMonth()}-${nextMonthDate.getDate()}`;
       days.push({
         date: nextMonthDate,
-        hasWorkout: false,
+        hasWorkout: workoutDatesSet.has(dateKey),
         isToday: false,
         isCurrentMonth: false,
       });
@@ -89,19 +96,55 @@ export const WorkoutStreakCalendar: React.FC<WorkoutStreakCalendarProps> = ({
       days,
       monthName: firstDayOfMonth.toLocaleString('default', { month: 'long', year: 'numeric' }),
     };
-  }, [workoutDates]);
+  }, [workoutDates, currentMonth]);
+
+  const handlePreviousMonth = () => {
+    setCurrentMonth(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
+  };
+
+  const handleNextMonth = () => {
+    setCurrentMonth(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
+  };
+
+  const handleTodayPress = () => {
+    setCurrentMonth(new Date());
+  };
 
   const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   return (
     <View style={[styles.container, { backgroundColor: colors.card }]}>
       <View style={styles.header}>
-        <Text style={[styles.monthTitle, { color: colors.text }]}>
-          {calendarData.monthName}
-        </Text>
+        <View style={styles.monthNavigation}>
+          <TouchableOpacity 
+            onPress={handlePreviousMonth} 
+            style={[styles.navButton, { backgroundColor: colors.background }]}
+          >
+            <MaterialCommunityIcons name="chevron-left" size={24} color={colors.text} />
+          </TouchableOpacity>
+          
+          <Text style={[styles.monthTitle, { color: colors.text }]}>
+            {calendarData.monthName}
+          </Text>
+          
+          <TouchableOpacity 
+            onPress={handleNextMonth} 
+            style={[styles.navButton, { backgroundColor: colors.background }]}
+          >
+            <MaterialCommunityIcons name="chevron-right" size={24} color={colors.text} />
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity 
+          onPress={handleTodayPress}
+          style={[styles.todayButton, { backgroundColor: colors.primary }]}
+        >
+          <Text style={styles.todayButtonText}>Today</Text>
+        </TouchableOpacity>
+
         <View style={styles.streakInfo}>
           <View style={styles.streakBadge}>
-            <Text style={styles.streakEmoji}>🔥</Text>
+            <MaterialCommunityIcons name="flame" size={32} color="#FF6B35" />
             <Text style={[styles.streakValue, { color: colors.text }]}>
               {currentStreak}
             </Text>
@@ -110,7 +153,7 @@ export const WorkoutStreakCalendar: React.FC<WorkoutStreakCalendarProps> = ({
             </Text>
           </View>
           <View style={styles.streakBadge}>
-            <Text style={styles.streakEmoji}>⭐</Text>
+            <MaterialCommunityIcons name="trophy-variant" size={32} color="#FFD700" />
             <Text style={[styles.streakValue, { color: colors.text }]}>
               {longestStreak}
             </Text>
@@ -150,9 +193,19 @@ export const WorkoutStreakCalendar: React.FC<WorkoutStreakCalendarProps> = ({
           }
 
           return (
-            <View key={index} style={dayStyle}>
+            <TouchableOpacity
+              key={index}
+              style={dayStyle}
+              onPress={() => onDayPress?.(dayData.date, dayData.hasWorkout)}
+              activeOpacity={0.7}
+            >
               <Text style={textStyle}>{dayData.date.getDate()}</Text>
-            </View>
+              {dayData.hasWorkout && (
+                <View style={styles.workoutIndicator}>
+                  <MaterialCommunityIcons name="check-circle" size={12} color="#fff" />
+                </View>
+              )}
+            </TouchableOpacity>
           );
         })}
       </View>
@@ -188,10 +241,42 @@ const styles = StyleSheet.create({
   header: {
     marginBottom: 16,
   },
-  monthTitle: {
-    fontSize: 20,
-    fontWeight: '700',
+  monthNavigation: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 12,
+  },
+  navButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  monthTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    flex: 1,
+    textAlign: 'center',
+  },
+  todayButton: {
+    alignSelf: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 6,
+    borderRadius: 12,
+    marginBottom: 12,
+  },
+  todayButtonText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '700',
+    textTransform: 'uppercase',
   },
   streakInfo: {
     flexDirection: 'row',
@@ -201,13 +286,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
-  streakEmoji: {
-    fontSize: 32,
-    marginBottom: 4,
-  },
   streakValue: {
     fontSize: 24,
     fontWeight: '700',
+    marginTop: 4,
   },
   streakLabel: {
     fontSize: 12,
@@ -238,6 +320,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 8,
     marginVertical: 2,
+    position: 'relative',
   },
   dayText: {
     fontSize: 14,
@@ -249,6 +332,11 @@ const styles = StyleSheet.create({
   workoutDayText: {
     color: '#fff',
     fontWeight: '700',
+  },
+  workoutIndicator: {
+    position: 'absolute',
+    bottom: 4,
+    right: 4,
   },
   today: {
     borderWidth: 2,

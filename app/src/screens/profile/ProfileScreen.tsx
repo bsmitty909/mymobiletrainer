@@ -505,7 +505,7 @@ export default function ProfileScreen({ navigation }: any) {
             description="Track your progress over time"
             left={(props) => <List.Icon {...props} icon="chart-line" />}
             right={(props) => <List.Icon {...props} icon="chevron-right" />}
-            onPress={() => navigation.navigate('ProgressDashboard')}
+            onPress={() => navigation.navigate('Progress', { screen: 'ProgressDashboard' })}
             style={styles.listItem}
           />
           <Divider />

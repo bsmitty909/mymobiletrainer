@@ -5,7 +5,7 @@
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User, UserProfile, ExperienceLevel, UserState } from '../../types';
+import { User, UserProfile, ExperienceLevel, UserState, ExerciseSubstitution } from '../../types';
 
 const initialState: UserState = {
   currentUser: null,
@@ -37,6 +37,21 @@ const userSlice = createSlice({
       };
       state.loading = false;
       state.error = null;
+    },
+
+    // Initialize user profile
+    initializeProfile: (state, action: PayloadAction<{ userId: string; currentPhase: string }>) => {
+      const { userId, currentPhase } = action.payload;
+      state.profile = {
+        userId,
+        currentPhase,
+        currentWeek: 0,
+        currentDay: 1,
+        maxLifts: {},
+        preferredExercises: {},
+        exerciseSubstitutions: [],
+        permanentSubstitutions: {},
+      };
     },
 
     // Update user profile

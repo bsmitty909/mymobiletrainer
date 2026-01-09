@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { setTheme, resetUI } from '../../store/slices/uiSlice';
 import { resetUser } from '../../store/slices/userSlice';
 import { clearProgress } from '../../store/slices/progressSlice';
-import { clearActiveSession } from '../../store/slices/workoutSlice';
+import { clearActiveSession } from '../../store/slices/workoutSliceEnhanced';
 import StorageService from '../../services/StorageService';
 import useThemeColors from '../../utils/useThemeColors';
 

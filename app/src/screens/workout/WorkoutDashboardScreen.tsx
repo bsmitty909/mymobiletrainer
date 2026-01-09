@@ -4,15 +4,18 @@
  * Main workout screen showing current week/day and workout overview with gamified UI
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Modal } from 'react-native';
 import { Text, Card, IconButton } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAppSelector, useAppDispatch } from '../../store/store';
-import { startSession } from '../../store/slices/workoutSlice';
+import { startSession } from '../../store/slices/workoutSliceEnhanced';
 import GameButton from '../../components/common/GameButton';
 import AchievementCard from '../../components/common/AchievementCard';
 import WeeklyJourneyView from '../../components/workout/WeeklyJourneyView';
+import OfflineIndicator from '../../components/common/OfflineIndicator';
+import ResumeWorkoutCard from '../../components/workout/ResumeWorkoutCard';
+import QuickStartService, { ResumeWorkoutInfo } from '../../services/QuickStartService';
 import useThemeColors from '../../utils/useThemeColors';
 
 type AchievementType = 'workouts' | 'streak' | 'volume' | 'prs' | null;
@@ -24,6 +27,30 @@ export default function WorkoutDashboardScreen({ navigation }: any) {
   const currentDay = user?.currentDay ?? 1;
   const colors = useThemeColors();
   const [selectedAchievement, setSelectedAchievement] = useState<AchievementType>(null);
+  const [resumeInfo, setResumeInfo] = useState<ResumeWorkoutInfo | null>(null);
+
+  useEffect(() => {
+    checkForResumableWorkout();
+  }, [user?.id]);
+
+  const checkForResumableWorkout = async () => {
+    if (user?.id) {
+      const info = await QuickStartService.canResumeWorkout(user.id);
+      setResumeInfo(info);
+    }
+  };
+
+  const handleResumeWorkout = () => {
+    if (resumeInfo?.session) {
+      dispatch(startSession(resumeInfo.session));
+      navigation.navigate('ActiveWorkout', { sessionId: resumeInfo.session.id });
+    }
+  };
+
+  const handleDiscardWorkout = async () => {
+    await QuickStartService.clearPausedWorkout();
+    setResumeInfo(null);
+  };
 
   const mockWorkoutData = {
     exercises: [
@@ -344,8 +371,17 @@ export default function WorkoutDashboardScreen({ navigation }: any) {
   });
 
   return (
-    <ScrollView style={styles.container}>
-      <LinearGradient
+    <View style={{ flex: 1 }}>
+      <OfflineIndicator />
+      <ScrollView style={styles.container}>
+        {resumeInfo && resumeInfo.canResume && (
+          <ResumeWorkoutCard
+            resumeInfo={resumeInfo}
+            onResume={handleResumeWorkout}
+            onDiscard={handleDiscardWorkout}
+          />
+        )}
+        <LinearGradient
         colors={[colors.primary, colors.primary + 'DD']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
@@ -468,6 +504,7 @@ export default function WorkoutDashboardScreen({ navigation }: any) {
       </Card>
 
       {renderAchievementDetails()}
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }

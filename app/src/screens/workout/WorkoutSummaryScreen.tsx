@@ -10,7 +10,7 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import { Text, Card, Divider } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAppSelector, useAppDispatch } from '../../store/store';
-import { clearActiveSession } from '../../store/slices/workoutSlice';
+import { clearActiveSession } from '../../store/slices/workoutSliceEnhanced';
 import { addWorkoutCompletion } from '../../store/slices/gamificationSlice';
 import FormulaCalculator from '../../services/FormulaCalculator';
 import { getExerciseById } from '../../constants/exercises';
@@ -26,6 +26,44 @@ export default function WorkoutSummaryScreen({ navigation }: any) {
   const activeSession = useAppSelector((state) => state.workout.activeSession);
   const [showConfetti, setShowConfetti] = useState(false);
 
+  const duration = activeSession?.completedAt && activeSession?.startedAt
+    ? Math.floor((activeSession.completedAt - activeSession.startedAt) / 1000 / 60)
+    : 0;
+
+  const totalVolume = activeSession?.exercises ? FormulaCalculator.calculateVolume(activeSession.exercises) : 0;
+  const totalSets = activeSession?.exercises?.reduce((sum, ex) => sum + (ex.sets?.length || 0), 0) || 0;
+  const totalReps = activeSession?.exercises?.reduce(
+    (sum, ex) => sum + (ex.sets || []).reduce((s, set) => s + set.reps, 0),
+    0
+  ) || 0;
+
+  const newPRs = activeSession?.exercises?.filter(ex => {
+    if (!ex.sets || ex.sets.length === 0) return false;
+    const maxSet = ex.sets.reduce((best, current) =>
+      current.weight > (best?.weight || 0) ? current : best
+    , ex.sets[0]);
+    return maxSet && maxSet.weight > (ex.suggestedWeight * 1.05);
+  }) || [];
+
+  useEffect(() => {
+    if (activeSession && activeSession.status === 'completed') {
+      setShowConfetti(true);
+      HapticService.workoutCompleted();
+    }
+  }, [activeSession]);
+
+  useEffect(() => {
+    if (activeSession && activeSession.status === 'completed') {
+      dispatch(addWorkoutCompletion({
+        setsCompleted: totalSets,
+        exercisesCompleted: activeSession.exercises.length,
+        totalVolume,
+        duration: duration * 60,
+        personalRecords: newPRs.length,
+      }));
+    }
+  }, [activeSession?.status]);
+
   if (!activeSession || activeSession.status !== 'completed') {
     return (
       <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -33,40 +71,6 @@ export default function WorkoutSummaryScreen({ navigation }: any) {
       </View>
     );
   }
-
-  const duration = activeSession.completedAt && activeSession.startedAt
-    ? Math.floor((activeSession.completedAt - activeSession.startedAt) / 1000 / 60)
-    : 0;
-
-  const totalVolume = FormulaCalculator.calculateVolume(activeSession.exercises);
-  const totalSets = activeSession.exercises.reduce((sum, ex) => sum + (ex.sets?.length || 0), 0);
-  const totalReps = activeSession.exercises.reduce(
-    (sum, ex) => sum + (ex.sets || []).reduce((s, set) => s + set.reps, 0),
-    0
-  );
-
-  const newPRs = activeSession.exercises.filter(ex => {
-    if (!ex.sets || ex.sets.length === 0) return false;
-    const maxSet = ex.sets.reduce((best, current) =>
-      current.weight > (best?.weight || 0) ? current : best
-    , ex.sets[0]);
-    return maxSet && maxSet.weight > (ex.suggestedWeight * 1.05);
-  });
-
-  useEffect(() => {
-    setShowConfetti(true);
-    HapticService.workoutCompleted();
-  }, []);
-
-  useEffect(() => {
-    dispatch(addWorkoutCompletion({
-      setsCompleted: totalSets,
-      exercisesCompleted: activeSession.exercises.length,
-      totalVolume,
-      duration: duration * 60,
-      personalRecords: newPRs.length,
-    }));
-  }, []);
 
   const handleDone = () => {
     dispatch(clearActiveSession());

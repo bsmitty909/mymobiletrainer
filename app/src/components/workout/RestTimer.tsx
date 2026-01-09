@@ -1,9 +1,10 @@
 /**
- * Rest Timer Component
+ * Rest Timer Component - Enhanced with Intensity-Based Logic
  *
- * Countdown timer for rest periods between sets.
+ * Countdown timer for rest periods between sets with smart rest recommendations.
  * Features:
  * - Visual countdown display
+ * - Intensity-based rest guidance (warmup 30s, working 1-2min, max 1-5min)
  * - Progress circle
  * - Add time functionality
  * - Skip timer option
@@ -19,9 +20,12 @@ import useThemeColors from '../../utils/useThemeColors';
 
 interface RestTimerProps {
   onComplete?: () => void;
+  weight?: number;
+  fourRepMax?: number;
+  setType?: 'warmup' | 'working' | 'max' | 'downset';
 }
 
-export default function RestTimer({ onComplete }: RestTimerProps) {
+export default function RestTimer({ onComplete, weight, fourRepMax, setType }: RestTimerProps) {
   const colors = useThemeColors();
   const dispatch = useAppDispatch();
   const { isActive, remaining, target } = useAppSelector((state) => state.ui.restTimer);
@@ -47,6 +51,37 @@ export default function RestTimer({ onComplete }: RestTimerProps) {
   const minutes = Math.floor(remaining / 60);
   const seconds = remaining % 60;
 
+  const getRestExplanation = () => {
+    if (!weight || !fourRepMax) {
+      return '💡 Catch your breath, hydrate!';
+    }
+
+    const intensity = weight / fourRepMax;
+
+    if (setType === 'warmup' || intensity <= 0.35) {
+      return '🔥 Quick recovery - warmup set';
+    } else if (setType === 'downset' || intensity <= 0.65) {
+      return '💪 Standard recovery - volume work';
+    } else if (intensity <= 0.85) {
+      return '⚡ Moderate recovery - working sets';
+    } else if (setType === 'max' || intensity >= 0.90) {
+      return '🎯 Full recovery - max effort ahead! Take your time.';
+    }
+
+    return '💡 Catch your breath, hydrate!';
+  };
+
+  const getRestColor = () => {
+    if (!weight || !fourRepMax) return colors.primary;
+
+    const intensity = weight / fourRepMax;
+    
+    if (intensity <= 0.35) return '#10B981'; // Green
+    if (intensity <= 0.65) return '#3B82F6'; // Blue
+    if (intensity <= 0.85) return '#F59E0B'; // Orange
+    return '#EF4444'; // Red
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -54,18 +89,18 @@ export default function RestTimer({ onComplete }: RestTimerProps) {
           REST PERIOD
         </Text>
 
-        <Text variant="displayLarge" style={styles.time}>
+        <Text variant="displayLarge" style={[styles.time, { color: getRestColor() }]}>
           {minutes}:{seconds.toString().padStart(2, '0')}
         </Text>
 
         <ProgressBar
           progress={progress}
-          color={colors.primary}
+          color={getRestColor()}
           style={styles.progressBar}
         />
 
         <Text variant="bodyMedium" style={styles.hint}>
-          💡 Catch your breath, hydrate!
+          {getRestExplanation()}
         </Text>
 
         <View style={styles.buttons}>
@@ -73,6 +108,7 @@ export default function RestTimer({ onComplete }: RestTimerProps) {
             mode="outlined"
             onPress={() => dispatch(addRestTime(15))}
             style={styles.button}
+            textColor="#FFFFFF"
           >
             +15 Seconds
           </Button>
@@ -80,6 +116,7 @@ export default function RestTimer({ onComplete }: RestTimerProps) {
             mode="text"
             onPress={() => dispatch(stopRestTimer())}
             style={styles.button}
+            textColor="#9CA3AF"
           >
             Skip Timer
           </Button>

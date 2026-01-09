@@ -1,8 +1,8 @@
 /**
  * Exercise Library
- * 
+ *
  * Core exercises extracted from the Excel workout program.
- * Each exercise includes metadata, video links, and form tips.
+ * Each exercise includes metadata and video demonstrations from @30minutebody80.
  */
 
 import { Exercise, ExerciseVariant } from '../types';
@@ -17,7 +17,8 @@ export const exercises: Exercise[] = [
     muscleGroups: ['chest', 'triceps', 'shoulders'],
     primaryMuscle: 'chest',
     equipmentType: 'barbell',
-    videoUrl: 'https://www.youtube.com/watch?v=rT7DgCr-3pg', // Placeholder
+    incrementSize: 5,
+    videoUrl: 'https://www.youtube.com/watch?v=VKpW25ffj7Y',
     instructions: '1. Lie on bench with feet flat\n2. Grip bar slightly wider than shoulder width\n3. Lower bar to mid-chest\n4. Press bar up to lockout\n5. Control the descent',
     formTips: [
       'Keep shoulders retracted and pinned to bench',
@@ -33,7 +34,8 @@ export const exercises: Exercise[] = [
     muscleGroups: ['chest', 'shoulders', 'triceps'],
     primaryMuscle: 'chest',
     equipmentType: 'dumbbell',
-    videoUrl: 'https://www.youtube.com/watch?v=8iPEnn-ltC8',
+    incrementSize: 2.5,
+    videoUrl: 'https://www.youtube.com/watch?v=WgviBZvfoFo',
     instructions: '1. Set bench to 30-45 degree incline\n2. Hold dumbbells at shoulder level\n3. Press straight up\n4. Touch dumbbells at top\n5. Lower under control',
     formTips: [
       'Keep elbows at 45-degree angle',
@@ -49,7 +51,8 @@ export const exercises: Exercise[] = [
     muscleGroups: ['chest', 'triceps', 'shoulders'],
     primaryMuscle: 'chest',
     equipmentType: 'machine',
-    videoUrl: 'https://www.youtube.com/watch?v=xUm0BiZCWlQ',
+    incrementSize: 5,
+    videoUrl: 'https://www.youtube.com/watch?v=NozX8gJICPs',
     instructions: '1. Adjust seat height\n2. Grip handles at chest level\n3. Press forward to extension\n4. Return slowly to start\n5. Don\'t let plates crash',
     formTips: [
       'Keep back against pad',
@@ -64,7 +67,7 @@ export const exercises: Exercise[] = [
     muscleGroups: ['chest'],
     primaryMuscle: 'chest',
     equipmentType: 'dumbbell',
-    videoUrl: 'https://www.youtube.com/watch?v=eozdVDA78K0',
+    videoUrl: 'https://www.youtube.com/watch?v=8mC6rd_j5Lc',
     instructions: '1. Lie on bench with dumbbells above chest\n2. Slight bend in elbows\n3. Lower dumbbells out to sides\n4. Bring back to center\n5. Squeeze chest at top',
     formTips: [
       'Maintain elbow bend throughout',

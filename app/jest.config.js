@@ -17,6 +17,9 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!(react-native|@react-native|@react-native-community|expo|@expo|react-native-vector-icons|react-native-paper|react-native-safe-area-context)/)',
+  ],
   globals: {
     'ts-jest': {
       tsconfig: {

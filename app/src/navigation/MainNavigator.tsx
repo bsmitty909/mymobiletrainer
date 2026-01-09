@@ -18,12 +18,19 @@ import { RootStackParamList, MainTabsParamList } from '../types';
 
 // Import screens
 import WelcomeScreen from '../screens/onboarding/WelcomeScreen';
+import MaxDeterminationIntroScreen from '../screens/onboarding/MaxDeterminationIntroScreen';
+import MaxTestingScreen from '../screens/onboarding/MaxTestingScreen';
+import MaxSummaryScreen from '../screens/onboarding/MaxSummaryScreen';
 import WorkoutDashboardScreen from '../screens/workout/WorkoutDashboardScreen';
 import WarmupScreen from '../screens/workout/WarmupScreen';
 import WorkoutDetailScreen from '../screens/workout/WorkoutDetailScreen';
 import ActiveWorkoutScreen from '../screens/workout/ActiveWorkoutScreen';
 import WorkoutSummaryScreen from '../screens/workout/WorkoutSummaryScreen';
 import ProgressDashboardScreen from '../screens/progress/ProgressDashboardScreen';
+import WeeklyProgressScreen from '../screens/progress/WeeklyProgressScreen';
+import WorkoutDayDetailScreen from '../screens/progress/WorkoutDayDetailScreen';
+import ExerciseLibraryScreen from '../screens/exercises/ExerciseLibraryScreen';
+import ExerciseDetailScreen from '../screens/exercises/ExerciseDetailScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
 import SettingsScreen from '../screens/settings/SettingsScreen';
 import MaxLiftsScreen from '../screens/profile/MaxLiftsScreen';
@@ -35,6 +42,8 @@ import TermsOfServiceScreen from '../screens/settings/TermsOfServiceScreen';
 const RootStack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<MainTabsParamList>();
 const WorkoutStack = createStackNavigator();
+const ProgressStack = createStackNavigator();
+const ExercisesStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
 
 /**
@@ -45,11 +54,38 @@ function WorkoutStackNavigator() {
   return (
     <WorkoutStack.Navigator screenOptions={{ headerShown: false }}>
       <WorkoutStack.Screen name="WorkoutDashboard" component={WorkoutDashboardScreen} />
-      <WorkoutStack.Screen name="WorkoutDetail" component={WorkoutDetailScreen} />
+      <WorkoutStack.Screen name="WorkoutDetail" component={WorkoutDetailScreen as any} />
       <WorkoutStack.Screen name="Warmup" component={WarmupScreen} />
       <WorkoutStack.Screen name="ActiveWorkout" component={ActiveWorkoutScreen} />
       <WorkoutStack.Screen name="WorkoutSummary" component={WorkoutSummaryScreen} />
     </WorkoutStack.Navigator>
+  );
+}
+
+/**
+ * Progress tab stack navigator
+ * Allows navigation within progress tab: Dashboard → Weekly Progress
+ */
+function ProgressStackNavigator() {
+  return (
+    <ProgressStack.Navigator screenOptions={{ headerShown: false }}>
+      <ProgressStack.Screen name="ProgressDashboard" component={ProgressDashboardScreen} />
+      <ProgressStack.Screen name="WeeklyProgress" component={WeeklyProgressScreen} />
+      <ProgressStack.Screen name="WorkoutDayDetail" component={WorkoutDayDetailScreen} />
+    </ProgressStack.Navigator>
+  );
+}
+
+/**
+ * Exercises tab stack navigator
+ * Allows navigation within exercises tab: Library → Exercise Detail
+ */
+function ExercisesStackNavigator() {
+  return (
+    <ExercisesStack.Navigator screenOptions={{ headerShown: false }}>
+      <ExercisesStack.Screen name="ExerciseLibrary" component={ExerciseLibraryScreen} />
+      <ExercisesStack.Screen name="ExerciseDetail" component={ExerciseDetailScreen} />
+    </ExercisesStack.Navigator>
   );
 }
 
@@ -111,11 +147,21 @@ function MainTabs() {
       />
       <Tab.Screen
         name="Progress"
-        component={ProgressDashboardScreen}
+        component={ProgressStackNavigator}
         options={{
           tabBarLabel: 'Progress',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="chart-line" size={24} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Exercises"
+        component={ExercisesStackNavigator}
+        options={{
+          tabBarLabel: 'Exercises',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="book-open-variant" size={24} color={color} />
           ),
         }}
       />
@@ -143,7 +189,12 @@ export default function MainNavigator() {
     <NavigationContainer>
       <RootStack.Navigator screenOptions={{ headerShown: false }}>
         {!isOnboarded ? (
-          <RootStack.Screen name="Onboarding" component={WelcomeScreen} />
+          <>
+            <RootStack.Screen name="Onboarding" component={WelcomeScreen} />
+            <RootStack.Screen name="MaxDeterminationIntro" component={MaxDeterminationIntroScreen} />
+            <RootStack.Screen name="MaxTesting" component={MaxTestingScreen} />
+            <RootStack.Screen name="MaxSummary" component={MaxSummaryScreen} />
+          </>
         ) : (
           <RootStack.Screen name="MainTabs" component={MainTabs} />
         )}
