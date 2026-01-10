@@ -1,7 +1,7 @@
 /**
- * Warmup Screen
- * 
- * Pre-workout warmup checklist and timer before starting the actual workout
+ * Warmup Screen - Modern 2024 Design
+ *
+ * Pre-workout warmup checklist with clean, professional styling
  */
 
 import React, { useState } from 'react';
@@ -10,6 +10,7 @@ import { Text, Card, Checkbox } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import GameButton from '../../components/common/GameButton';
+import { spacing, typography, borderRadius, shadows, colors as designColors } from '../../theme/designTokens';
 import useThemeColors from '../../utils/useThemeColors';
 
 interface WarmupScreenProps {
@@ -56,110 +57,105 @@ export default function WarmupScreen({ navigation }: WarmupScreenProps) {
       flex: 1,
     },
     header: {
-      paddingHorizontal: 24,
+      paddingHorizontal: spacing.xl,
       paddingTop: 60,
       paddingBottom: 56,
     },
     title: {
-      fontSize: 32,
+      ...typography.display,
+      fontSize: 28,
       color: '#fff',
-      fontWeight: '900',
-      marginBottom: 8,
-      textTransform: 'uppercase',
-      letterSpacing: 1,
+      marginBottom: spacing.sm,
+      letterSpacing: -0.5,
     },
     subtitle: {
-      fontSize: 18,
-      color: 'rgba(255, 255, 255, 0.9)',
-      fontWeight: '600',
-    },
-    infoCard: {
-      margin: 16,
-      marginTop: -40,
-      borderRadius: 16,
-      backgroundColor: colors.card,
-      elevation: 8,
-    },
-    infoContent: {
-      padding: 24,
-    },
-    infoTitle: {
-      fontSize: 20,
-      fontWeight: '900',
-      color: colors.text,
-      marginBottom: 12,
-      textTransform: 'uppercase',
-    },
-    infoText: {
-      fontSize: 16,
-      color: colors.textSecondary,
-      lineHeight: 24,
+      ...typography.bodyLarge,
+      color: 'rgba(255, 255, 255, 0.95)',
       fontWeight: '500',
     },
+    infoCard: {
+      margin: spacing.base,
+      marginTop: -40,
+      borderRadius: borderRadius.xl,
+      backgroundColor: colors.card,
+      ...shadows.lg,
+    },
+    infoContent: {
+      padding: spacing.xl,
+    },
+    infoTitle: {
+      ...typography.h2,
+      color: colors.text,
+      marginBottom: spacing.md,
+      letterSpacing: -0.2,
+    },
+    infoText: {
+      ...typography.body,
+      color: colors.textSecondary,
+      lineHeight: 24,
+      fontWeight: '400',
+    },
     warmupList: {
-      margin: 16,
+      margin: spacing.base,
     },
     sectionTitle: {
-      fontSize: 22,
-      fontWeight: '900',
+      ...typography.h2,
       color: colors.text,
-      marginBottom: 16,
-      textTransform: 'uppercase',
-      letterSpacing: 0.5,
+      marginBottom: spacing.base,
+      letterSpacing: -0.3,
     },
     warmupCard: {
-      marginBottom: 12,
-      borderRadius: 12,
-      backgroundColor: colors.card,
-      elevation: 4,
+      marginBottom: spacing.md,
+      borderRadius: borderRadius.md,
+      backgroundColor: colors.surface,
+      ...shadows.sm,
     },
     warmupItem: {
       flexDirection: 'row',
       alignItems: 'center',
-      padding: 16,
+      padding: spacing.base,
     },
     checkboxContainer: {
-      marginRight: 16,
+      marginRight: spacing.base,
     },
     warmupContent: {
       flex: 1,
     },
     warmupTitle: {
-      fontSize: 18,
-      fontWeight: '700',
+      ...typography.h3,
+      fontSize: 16,
       color: colors.text,
-      marginBottom: 4,
+      marginBottom: spacing.xs,
     },
     warmupDescription: {
-      fontSize: 14,
+      ...typography.bodySmall,
       color: colors.textSecondary,
-      marginBottom: 4,
-      fontWeight: '500',
+      marginBottom: spacing.xs,
     },
     warmupDuration: {
-      fontSize: 13,
+      ...typography.bodySmall,
       color: colors.primary,
-      fontWeight: '700',
+      fontWeight: '600',
     },
     iconContainer: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-      backgroundColor: colors.primary + '20',
+      width: 44,
+      height: 44,
+      borderRadius: 22,
+      backgroundColor: colors.primary + '15',
       justifyContent: 'center',
       alignItems: 'center',
     },
     actions: {
-      padding: 16,
-      gap: 12,
-      marginBottom: 32,
+      padding: spacing.base,
+      gap: spacing.md,
+      marginBottom: spacing['2xl'],
     },
     progressText: {
-      fontSize: 16,
+      ...typography.body,
       textAlign: 'center',
-      color: colors.text,
-      fontWeight: '700',
-      marginBottom: 16,
+      color: colors.success,
+      fontWeight: '600',
+      marginBottom: spacing.base,
     },
   });
 
@@ -167,7 +163,7 @@ export default function WarmupScreen({ navigation }: WarmupScreenProps) {
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <LinearGradient
-          colors={['#ff6b6b', '#ee5a52']}
+          colors={[colors.warning, colors.warning + 'DD']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.header}

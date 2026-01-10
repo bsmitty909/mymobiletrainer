@@ -50,9 +50,7 @@ export default function VolumeTrendChart({ workoutHistory }: VolumeTrendChartPro
   if (!workoutHistory || workoutHistory.length === 0) {
     return (
       <View style={styles.placeholder}>
-        <Text variant="bodyLarge" style={styles.placeholderText}>
-          
-        </Text>
+        <Text variant="bodyLarge" style={styles.placeholderText}>📊</Text>
         <Text variant="bodyMedium" style={styles.placeholderText}>
           No workout data yet
         </Text>

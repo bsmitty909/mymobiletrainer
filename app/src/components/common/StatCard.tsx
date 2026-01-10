@@ -1,13 +1,14 @@
 /**
- * StatCard Component
+ * StatCard Component - Modern 2024 Design
  *
- * Displays a statistic with label, value, and optional icon/trend
+ * Clean stat display card with modern styling and proper hierarchy
  */
 
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, Card } from 'react-native-paper';
+import { View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { spacing, typography, borderRadius, shadows } from '../../theme/designTokens';
 import useThemeColors from '../../utils/useThemeColors';
 
 interface StatCardProps {
@@ -28,6 +29,29 @@ export default function StatCard({
   onPress
 }: StatCardProps) {
   const colors = useThemeColors();
+  const scaleAnim = React.useRef(new Animated.Value(1)).current;
+
+  const handlePressIn = () => {
+    if (onPress) {
+      Animated.spring(scaleAnim, {
+        toValue: 0.97,
+        useNativeDriver: true,
+        speed: 50,
+        bounciness: 4,
+      }).start();
+    }
+  };
+
+  const handlePressOut = () => {
+    if (onPress) {
+      Animated.spring(scaleAnim, {
+        toValue: 1,
+        useNativeDriver: true,
+        speed: 50,
+        bounciness: 4,
+      }).start();
+    }
+  };
   
   const getTrendColor = () => {
     switch (trend) {
@@ -54,68 +78,91 @@ export default function StatCard({
   const styles = StyleSheet.create({
     card: {
       flex: 1,
-      margin: 8,
-      backgroundColor: colors.card,
-      minHeight: 120,
-    },
-    content: {
-      flex: 1,
+      backgroundColor: colors.surface,
+      borderRadius: borderRadius.lg,
+      padding: spacing.lg,
+      minHeight: 110,
       justifyContent: 'space-between',
+      ...shadows.sm,
     },
     header: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginBottom: 8,
-    },
-    icon: {
-      fontSize: 20,
-      marginRight: 8,
+      marginBottom: spacing.sm,
     },
     label: {
+      ...typography.label,
+      fontSize: 11,
       color: colors.textSecondary,
-      textTransform: 'uppercase',
-      fontSize: 12,
-      fontWeight: '600',
     },
     value: {
+      ...typography.display,
+      fontSize: 32,
       color: colors.text,
-      fontWeight: 'bold',
-      marginVertical: 4,
+      marginVertical: spacing.xs,
     },
     trendContainer: {
-      marginTop: 4,
       flexDirection: 'row',
       alignItems: 'center',
+      marginTop: spacing.xs,
     },
     trendText: {
-      fontSize: 13,
+      ...typography.bodySmall,
+      fontSize: 12,
       fontWeight: '600',
+      marginLeft: spacing.xs,
     },
   });
 
-  return (
-    <Card style={styles.card} onPress={onPress}>
-      <Card.Content style={styles.content}>
-        <View style={styles.header}>
-          {icon && <MaterialCommunityIcons name={icon} size={20} color={colors.textSecondary} style={{marginRight: 8}} />}
-          <Text variant="bodyMedium" style={styles.label}>
-            {label}
+  const CardContent = (
+    <View style={styles.card}>
+      <View style={styles.header}>
+        {icon && (
+          <MaterialCommunityIcons
+            name={icon}
+            size={18}
+            color={colors.textSecondary}
+            style={{ marginRight: spacing.sm }}
+          />
+        )}
+        <Text style={styles.label}>
+          {label}
+        </Text>
+      </View>
+      
+      <Text style={styles.value}>
+        {value}
+      </Text>
+      
+      {trend && trendValue && (
+        <View style={styles.trendContainer}>
+          <MaterialCommunityIcons
+            name={getTrendIconName()}
+            size={14}
+            color={getTrendColor()}
+          />
+          <Text style={[styles.trendText, { color: getTrendColor() }]}>
+            {trendValue}
           </Text>
         </View>
-        
-        <Text variant="headlineMedium" style={styles.value}>
-          {value}
-        </Text>
-        
-        {trend && trendValue && (
-          <View style={styles.trendContainer}>
-            <MaterialCommunityIcons name={getTrendIconName()} size={16} color={getTrendColor()} />
-            <Text style={[styles.trendText, { color: getTrendColor(), marginLeft: 4 }]}>
-              {trendValue}
-            </Text>
-          </View>
-        )}
-      </Card.Content>
-    </Card>
+      )}
+    </View>
   );
+
+  if (onPress) {
+    return (
+      <Animated.View style={{ flex: 1, transform: [{ scale: scaleAnim }] }}>
+        <TouchableOpacity
+          onPress={onPress}
+          onPressIn={handlePressIn}
+          onPressOut={handlePressOut}
+          activeOpacity={0.95}
+        >
+          {CardContent}
+        </TouchableOpacity>
+      </Animated.View>
+    );
+  }
+
+  return CardContent;
 }

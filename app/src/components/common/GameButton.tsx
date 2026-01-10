@@ -1,14 +1,14 @@
 /**
- * GameButton Component
+ * GameButton Component - Modern 2024 Design
  *
- * Large, game-styled button with bold text and visual effects
- * Includes haptic feedback on press
+ * Enhanced button with modern styling, haptic feedback, and animations
+ * Matches new design system while keeping game-like feel
  */
 
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ViewStyle, TextStyle, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { TouchableOpacity, Text, StyleSheet, ViewStyle, Animated } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { colors as designColors, typography, spacing, components, shadows } from '../../theme/designTokens';
 import useThemeColors from '../../utils/useThemeColors';
 import HapticService from '../../services/HapticService';
 
@@ -34,6 +34,25 @@ export default function GameButton({
   hapticFeedback = true,
 }: GameButtonProps) {
   const colors = useThemeColors();
+  const scaleAnim = React.useRef(new Animated.Value(1)).current;
+
+  const handlePressIn = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 0.98,
+      useNativeDriver: true,
+      speed: 50,
+      bounciness: 4,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      useNativeDriver: true,
+      speed: 50,
+      bounciness: 4,
+    }).start();
+  };
 
   const handlePress = async () => {
     if (hapticFeedback) {
@@ -42,77 +61,119 @@ export default function GameButton({
     onPress();
   };
 
-  const gradientColors = {
-    primary: [colors.primary, colors.primary + 'DD'],
-    secondary: ['#6c5ce7', '#5f50d4'],
-    success: ['#00b894', '#00a085'],
-    danger: ['#d63031', '#c71f20'],
-  };
-
   const buttonHeight = {
-    large: 50,
-    medium: 44,
-    small: 38,
+    large: components.button.height.large,
+    medium: components.button.height.medium,
+    small: components.button.height.small,
   };
 
-  const fontSize = {
-    large: 15,
-    medium: 14,
-    small: 13,
+  const getButtonStyle = (): ViewStyle => {
+    const baseStyle: ViewStyle = {
+      height: buttonHeight[size],
+      borderRadius: components.button.borderRadius,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingHorizontal: components.button.paddingHorizontal,
+      marginVertical: spacing.sm,
+    };
+
+    if (disabled) {
+      return {
+        ...baseStyle,
+        backgroundColor: colors.textDisabled,
+        opacity: 0.5,
+      };
+    }
+
+    switch (variant) {
+      case 'primary':
+        return {
+          ...baseStyle,
+          backgroundColor: designColors.primary.main,
+          ...shadows.primary,
+        };
+      
+      case 'success':
+        return {
+          ...baseStyle,
+          backgroundColor: designColors.success.main,
+          shadowColor: designColors.success.main,
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.25,
+          shadowRadius: 12,
+          elevation: 6,
+        };
+      
+      case 'danger':
+        return {
+          ...baseStyle,
+          backgroundColor: designColors.error.main,
+          shadowColor: designColors.error.main,
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.25,
+          shadowRadius: 12,
+          elevation: 6,
+        };
+      
+      case 'secondary':
+        return {
+          ...baseStyle,
+          backgroundColor: colors.surface,
+          borderWidth: 2,
+          borderColor: colors.border,
+          ...shadows.sm,
+        };
+      
+      default:
+        return baseStyle;
+    }
   };
 
-  const getButtonColor = () => {
-    if (variant === 'primary') return colors.primary;
-    if (variant === 'success') return colors.success;
-    if (variant === 'danger') return colors.error || '#d63031';
-    return colors.textSecondary;
+  const getTextStyle = () => {
+    const baseTextStyle = {
+      ...typography.labelLarge,
+      fontSize: size === 'large' ? 15 : size === 'medium' ? 13 : 12,
+      fontWeight: '600' as const,
+      letterSpacing: 0.5,
+      textTransform: 'uppercase' as const,
+    };
+
+    if (variant === 'secondary') {
+      return { ...baseTextStyle, color: colors.text };
+    }
+
+    return { ...baseTextStyle, color: '#FFFFFF' };
   };
+
+  const iconSize = size === 'large' ? 20 : size === 'medium' ? 18 : 16;
+  const iconColor = variant === 'secondary' ? colors.text : '#FFFFFF';
 
   return (
-    <TouchableOpacity
-      onPress={handlePress}
-      disabled={disabled}
-      activeOpacity={0.7}
-      style={[
-        styles.container,
-        {
-          height: buttonHeight[size],
-          opacity: disabled ? 0.3 : 1,
-          backgroundColor: getButtonColor(),
-        },
-        style,
-      ]}
-    >
-      <View style={styles.content}>
+    <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+      <TouchableOpacity
+        onPress={handlePress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        disabled={disabled}
+        activeOpacity={0.9}
+        style={[getButtonStyle(), style]}
+      >
         {icon && (
           <MaterialCommunityIcons
             name={icon}
-            size={fontSize[size] + 4}
-            color="#fff"
+            size={iconSize}
+            color={iconColor}
+            style={styles.icon}
           />
         )}
-        <Text style={[styles.text, { fontSize: fontSize[size] }]}>{children}</Text>
-      </View>
-    </TouchableOpacity>
+        <Text style={getTextStyle()}>{children}</Text>
+      </TouchableOpacity>
+    </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 4,
-  },
-  content: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  text: {
-    color: '#fff',
-    fontWeight: '600',
-    letterSpacing: 0.3,
-    flexShrink: 1,
+  icon: {
+    marginRight: spacing.sm,
   },
 });

@@ -19,7 +19,7 @@ const lightTheme = {
   ...MD3LightTheme,
   colors: {
     ...MD3LightTheme.colors,
-    primary: '#0066FF',
+    primary: '#0066FF', // Modern Nike/Hevy-inspired blue
     secondary: '#00C853',
     tertiary: '#FF9100',
     error: '#FF3B30',

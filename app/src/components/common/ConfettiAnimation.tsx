@@ -65,10 +65,12 @@ export const ConfettiAnimation: React.FC<ConfettiAnimationProps> = ({
   };
 
   const animateConfetti = () => {
-    const animations = confettiPieces.current.map((piece) => {
+    const animations = confettiPieces.current.map((piece, index) => {
       const randomDuration = duration + Math.random() * 1000 - 500;
       const randomXMovement = (Math.random() - 0.5) * 100;
       const randomRotations = Math.random() * 5 + 3;
+      
+      const startX = (index / pieceCount) * SCREEN_WIDTH + Math.random() * 100 - 50;
 
       return Animated.parallel([
         Animated.timing(piece.y, {
@@ -77,7 +79,7 @@ export const ConfettiAnimation: React.FC<ConfettiAnimationProps> = ({
           useNativeDriver: true,
         }),
         Animated.timing(piece.x, {
-          toValue: piece.x._value + randomXMovement,
+          toValue: startX + randomXMovement,
           duration: randomDuration,
           useNativeDriver: true,
         }),

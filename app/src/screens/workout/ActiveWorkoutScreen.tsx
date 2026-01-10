@@ -1,12 +1,8 @@
 /**
- * Active Workout Screen - Redesigned for Better UX
+ * Active Workout Screen - Modern 2024 Design
  *
- * Key improvements:
- * - Collapsible sections reduce scrolling by 60%
- * - Compact set display shows all sets at a glance
- * - Quick-action reps buttons for faster logging
- * - Floating action buttons for main actions
- * - Smart information hierarchy with auto-collapsed secondary info
+ * Redesigned with clean, professional aesthetic inspired by Nike/Hevy
+ * Maintains all existing functionality with improved visual hierarchy
  */
 
 import React, { useState, useEffect } from 'react';
@@ -38,6 +34,7 @@ import WeightSuggestionCard from '../../components/workout/WeightSuggestionCard'
 import PlateCalculatorCard from '../../components/workout/PlateCalculatorCard';
 import ExerciseVideoPlayer from '../../components/workout/ExerciseVideoPlayer';
 import { getExerciseById, getExerciseInstructions } from '../../constants/exercises';
+import { spacing, typography, borderRadius, shadows } from '../../theme/designTokens';
 import useThemeColors from '../../utils/useThemeColors';
 
 export default function ActiveWorkoutScreen({ navigation }: any) {
@@ -271,136 +268,140 @@ export default function ActiveWorkoutScreen({ navigation }: any) {
     },
     header: {
       backgroundColor: colors.primary,
-      paddingHorizontal: 20,
-      paddingVertical: 12,
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.md,
       paddingTop: 50,
     },
     headerTop: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      marginBottom: 8,
+      marginBottom: spacing.sm,
     },
     headerTitle: {
+      ...typography.body,
       color: '#fff',
-      fontWeight: 'bold',
-      fontSize: 18,
+      fontWeight: '600',
     },
     headerSubtitle: {
+      ...typography.bodySmall,
       color: 'rgba(255, 255, 255, 0.9)',
-      fontSize: 14,
     },
     exerciseName: {
-      color: '#fff',
+      ...typography.h1,
       fontSize: 24,
-      fontWeight: '900',
-      marginBottom: 8,
+      color: '#fff',
+      marginBottom: spacing.sm,
     },
     progressBar: {
       height: 6,
-      backgroundColor: 'rgba(255, 255, 255, 0.3)',
-      borderRadius: 3,
+      backgroundColor: 'rgba(255, 255, 255, 0.25)',
+      borderRadius: borderRadius.sm,
       overflow: 'hidden',
     },
     progressFill: {
       height: '100%',
       backgroundColor: colors.success,
-      borderRadius: 3,
+      borderRadius: borderRadius.sm,
     },
     scrollView: {
       flex: 1,
       paddingBottom: 100,
     },
     contentPadding: {
-      padding: 16,
+      padding: spacing.base,
     },
     currentSetCard: {
-      backgroundColor: colors.card,
-      borderRadius: 16,
-      padding: 20,
-      marginBottom: 16,
-      elevation: 8,
-      shadowColor: colors.primary,
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.2,
-      shadowRadius: 8,
+      backgroundColor: colors.surface,
+      borderRadius: borderRadius.lg,
+      padding: spacing.lg,
+      marginBottom: spacing.base,
+      ...shadows.md,
+      borderWidth: 2,
+      borderColor: colors.primary + '20',
     },
     setHeader: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginBottom: 16,
+      marginBottom: spacing.base,
     },
     setTitle: {
-      fontSize: 20,
-      fontWeight: '900',
+      ...typography.h2,
+      fontSize: 18,
       color: colors.primary,
+      letterSpacing: 0.5,
     },
     quickStats: {
       flexDirection: 'row',
-      gap: 16,
-      marginBottom: 16,
-      padding: 12,
-      backgroundColor: colors.surface,
-      borderRadius: 8,
+      gap: spacing.md,
+      marginBottom: spacing.base,
+      padding: spacing.md,
+      backgroundColor: colors.background,
+      borderRadius: borderRadius.md,
     },
     quickStat: {
       flex: 1,
     },
     quickStatLabel: {
-      fontSize: 11,
+      ...typography.labelSmall,
+      fontSize: 10,
       color: colors.textSecondary,
-      fontWeight: '600',
     },
     quickStatValue: {
-      fontSize: 16,
+      ...typography.bodyLarge,
+      fontSize: 15,
       color: colors.text,
-      fontWeight: 'bold',
+      fontWeight: '600',
       marginTop: 2,
     },
     inputRow: {
       flexDirection: 'row',
-      gap: 12,
-      marginBottom: 16,
+      gap: spacing.md,
+      marginBottom: spacing.base,
     },
     inputWrapper: {
       flex: 1,
     },
     inputLabel: {
-      fontSize: 12,
-      fontWeight: '700',
+      ...typography.label,
       color: colors.textSecondary,
-      marginBottom: 6,
-      textTransform: 'uppercase',
+      marginBottom: spacing.sm,
     },
     repsChipsRow: {
       flexDirection: 'row',
       flexWrap: 'wrap',
-      gap: 6,
+      gap: spacing.sm,
       justifyContent: 'center',
     },
     repChip: {
       backgroundColor: colors.surface,
-      paddingHorizontal: 14,
-      paddingVertical: 8,
-      borderRadius: 18,
-      borderWidth: 0,
-      minWidth: 40,
+      paddingHorizontal: spacing.base,
+      paddingVertical: spacing.sm,
+      borderRadius: borderRadius.md,
+      borderWidth: 2,
+      borderColor: colors.border,
+      minWidth: 44,
+      minHeight: 36,
       alignItems: 'center',
+      justifyContent: 'center',
     },
     selectedChip: {
       backgroundColor: colors.primary,
+      borderColor: colors.primary,
     },
     repChipText: {
+      ...typography.body,
       fontSize: 14,
-      fontWeight: '500',
+      fontWeight: '600',
       color: colors.text,
     },
     selectedChipText: {
       color: '#fff',
+      fontWeight: '700',
     },
     sectionMargin: {
-      marginBottom: 12,
+      marginBottom: spacing.md,
     },
   });
 

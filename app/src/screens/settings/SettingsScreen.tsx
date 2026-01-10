@@ -1,7 +1,7 @@
 /**
- * Settings Screen
- * 
- * User preferences and app configuration
+ * Settings Screen - Modern 2024 Design
+ *
+ * Clean settings interface with modern styling
  */
 
 import React, { useState, useEffect } from 'react';
@@ -13,6 +13,7 @@ import { resetUser } from '../../store/slices/userSlice';
 import { clearProgress } from '../../store/slices/progressSlice';
 import { clearActiveSession } from '../../store/slices/workoutSliceEnhanced';
 import StorageService from '../../services/StorageService';
+import { spacing, typography, borderRadius } from '../../theme/designTokens';
 import useThemeColors from '../../utils/useThemeColors';
 
 export default function SettingsScreen({ navigation }: any) {

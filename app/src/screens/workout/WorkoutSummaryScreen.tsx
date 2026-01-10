@@ -1,8 +1,8 @@
 /**
- * Workout Summary Screen
+ * Workout Summary Screen - Modern 2024 Design
  *
- * Displays workout completion stats with gamified celebration UI
- * Includes confetti animation and haptic feedback
+ * Celebration screen with clean, professional styling
+ * Maintains confetti animation and haptic feedback
  */
 
 import React, { useState, useEffect } from 'react';
@@ -18,6 +18,7 @@ import GameButton from '../../components/common/GameButton';
 import AchievementCard from '../../components/common/AchievementCard';
 import ConfettiAnimation from '../../components/common/ConfettiAnimation';
 import HapticService from '../../services/HapticService';
+import { spacing, typography, borderRadius, shadows } from '../../theme/designTokens';
 import useThemeColors from '../../utils/useThemeColors';
 
 export default function WorkoutSummaryScreen({ navigation }: any) {
@@ -83,130 +84,127 @@ export default function WorkoutSummaryScreen({ navigation }: any) {
       backgroundColor: colors.background,
     },
     celebration: {
-      fontSize: 80,
-      marginBottom: 20,
+      fontSize: 72,
+      marginBottom: spacing.lg,
     },
     title: {
-      fontSize: 32,
+      ...typography.display,
+      fontSize: 28,
       color: '#FFFFFF',
-      fontWeight: '900',
-      marginBottom: 8,
-      textTransform: 'uppercase',
-      letterSpacing: 1,
-      textShadowColor: 'rgba(0, 0, 0, 0.3)',
-      textShadowOffset: { width: 0, height: 2 },
-      textShadowRadius: 4,
+      marginBottom: spacing.sm,
+      letterSpacing: -0.5,
+      textShadowColor: 'rgba(0, 0, 0, 0.2)',
+      textShadowOffset: { width: 0, height: 1 },
+      textShadowRadius: 3,
     },
     subtitle: {
-      fontSize: 18,
+      ...typography.bodyLarge,
       color: 'rgba(255, 255, 255, 0.95)',
-      fontWeight: '600',
+      fontWeight: '500',
     },
     achievementsSection: {
-      padding: 16,
+      padding: spacing.base,
     },
     sectionTitle: {
-      fontSize: 22,
-      fontWeight: '900',
+      ...typography.h2,
       color: colors.text,
-      marginBottom: 16,
-      textTransform: 'uppercase',
-      letterSpacing: 0.5,
+      marginBottom: spacing.base,
+      letterSpacing: -0.3,
     },
     achievementsGrid: {
-      gap: 12,
+      gap: spacing.md,
     },
     achievementRow: {
       flexDirection: 'row',
-      gap: 12,
+      gap: spacing.md,
     },
     achievementItem: {
       flex: 1,
     },
     card: {
-      margin: 16,
-      marginTop: 8,
-      borderRadius: 16,
-      backgroundColor: colors.card,
-      elevation: 8,
+      margin: spacing.base,
+      marginTop: spacing.sm,
+      borderRadius: borderRadius.lg,
+      backgroundColor: colors.surface,
+      ...shadows.md,
     },
     cardContent: {
-      padding: 20,
+      padding: spacing.lg,
     },
     cardTitle: {
-      fontSize: 20,
-      marginBottom: 16,
-      fontWeight: '900',
+      ...typography.h2,
+      fontSize: 18,
+      marginBottom: spacing.base,
       color: colors.text,
-      textTransform: 'uppercase',
+      letterSpacing: -0.2,
     },
     prItem: {
-      paddingVertical: 12,
-      borderBottomWidth: 2,
+      paddingVertical: spacing.md,
+      borderBottomWidth: 1,
       borderBottomColor: colors.border,
     },
     prName: {
-      fontSize: 18,
-      fontWeight: '700',
+      ...typography.h3,
+      fontSize: 16,
       color: colors.text,
     },
     prWeight: {
-      fontSize: 20,
+      ...typography.h2,
+      fontSize: 18,
       color: '#FFD700',
-      fontWeight: '900',
-      marginTop: 4,
+      marginTop: spacing.xs,
     },
     exerciseBreakdown: {
-      paddingVertical: 12,
+      paddingVertical: spacing.md,
     },
     exerciseName: {
-      fontSize: 18,
-      fontWeight: '700',
-      marginBottom: 8,
+      ...typography.h3,
+      fontSize: 16,
+      marginBottom: spacing.sm,
       color: colors.text,
     },
     setsBreakdown: {
-      gap: 6,
+      gap: spacing.xs,
     },
     setText: {
-      fontSize: 15,
+      ...typography.body,
       color: colors.textSecondary,
-      fontWeight: '500',
     },
     divider: {
-      marginVertical: 8,
+      marginVertical: spacing.sm,
       backgroundColor: colors.border,
-      height: 2,
+      height: 1,
     },
     actions: {
-      padding: 16,
-      gap: 12,
-      marginBottom: 32,
+      padding: spacing.base,
+      gap: spacing.md,
+      marginBottom: spacing['2xl'],
     },
     motivation: {
-      margin: 16,
-      marginBottom: 32,
-      borderRadius: 16,
+      margin: spacing.base,
+      marginBottom: spacing['2xl'],
+      borderRadius: borderRadius.lg,
       overflow: 'hidden',
-      elevation: 6,
+      ...shadows.sm,
     },
     motivationContent: {
-      padding: 24,
+      padding: spacing.xl,
       alignItems: 'center',
     },
     motivationText: {
-      fontSize: 18,
+      ...typography.bodyLarge,
+      fontSize: 16,
       textAlign: 'center',
       color: colors.text,
-      fontWeight: '700',
-      lineHeight: 26,
+      fontWeight: '500',
+      lineHeight: 24,
     },
   });
 
   return (
     <ScrollView style={dynamicStyles.container}>
       <LinearGradient
-        colors={['#00b894', '#00a085', '#008f6f']}
+        colors={[colors.success, colors.successLight, colors.success + 'CC']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={{ alignItems: 'center', padding: 32, paddingTop: 60 }}

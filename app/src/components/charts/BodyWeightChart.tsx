@@ -50,9 +50,7 @@ export default function BodyWeightChart({ bodyWeights }: BodyWeightChartProps) {
   if (!bodyWeights || bodyWeights.length === 0) {
     return (
       <View style={styles.placeholder}>
-        <Text variant="bodyLarge" style={styles.placeholderText}>
-          
-        </Text>
+        <Text variant="bodyLarge" style={styles.placeholderText}>📊</Text>
         <Text variant="bodyMedium" style={styles.placeholderText}>
           No body weight data yet
         </Text>

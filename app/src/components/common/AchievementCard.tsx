@@ -1,13 +1,14 @@
 /**
- * AchievementCard Component
+ * AchievementCard Component - Modern 2024 Design
  *
- * Game-styled achievement/accomplishment card for weekly progress
+ * Clean, modern achievement card with refined gradients and animations
  */
 
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Animated } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { spacing, typography, borderRadius, shadows } from '../../theme/designTokens';
 import useThemeColors from '../../utils/useThemeColors';
 
 interface AchievementCardProps {
@@ -21,72 +22,118 @@ interface AchievementCardProps {
 
 export default function AchievementCard({ title, value, icon, color, subtitle, onPress }: AchievementCardProps) {
   const colors = useThemeColors();
+  const scaleAnim = React.useRef(new Animated.Value(1)).current;
 
-  const gradientColors = {
+  const handlePressIn = () => {
+    if (onPress) {
+      Animated.spring(scaleAnim, {
+        toValue: 0.97,
+        useNativeDriver: true,
+        speed: 50,
+        bounciness: 4,
+      }).start();
+    }
+  };
+
+  const handlePressOut = () => {
+    if (onPress) {
+      Animated.spring(scaleAnim, {
+        toValue: 1,
+        useNativeDriver: true,
+        speed: 50,
+        bounciness: 4,
+      }).start();
+    }
+  };
+
+  const gradientColors: Record<string, [string, string]> = {
     gold: ['#FFD700', '#FFA500'],
-    silver: ['#C0C0C0', '#808080'],
-    bronze: ['#CD7F32', '#8B4513'],
-    blue: ['#4A90E2', '#357ABD'],
-    green: ['#00b894', '#00a085'],
+    silver: ['#E8E8E8', '#B8B8B8'],
+    bronze: ['#CD7F32', '#A0522D'],
+    blue: ['#0066FF', '#0052CC'],
+    green: ['#00C853', '#00A043'],
+  };
+
+  const shadowColors = {
+    gold: '#FFD700',
+    silver: '#C0C0C0',
+    bronze: '#CD7F32',
+    blue: '#0066FF',
+    green: '#00C853',
   };
 
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      disabled={!onPress}
-      activeOpacity={0.8}
-      style={styles.touchable}
-    >
-      <LinearGradient
-        colors={gradientColors[color]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.container}
+    <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+      <TouchableOpacity
+        onPress={onPress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        disabled={!onPress}
+        activeOpacity={0.95}
+        style={styles.touchable}
       >
-        <View style={styles.iconContainer}>
-          <MaterialCommunityIcons name={icon} size={32} color="#fff" />
-        </View>
-        <View style={styles.content}>
-          <Text style={styles.value}>{value}</Text>
-          <Text style={styles.title}>{title}</Text>
-          {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
-        </View>
-        <View style={styles.shine} />
-        {onPress && (
-          <View style={styles.tapIndicator}>
-            <MaterialCommunityIcons name="chevron-right" size={20} color="rgba(255, 255, 255, 0.6)" />
+        <LinearGradient
+          colors={gradientColors[color]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={[
+            styles.container,
+            {
+              shadowColor: shadowColors[color],
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.3,
+              shadowRadius: 12,
+              elevation: 8,
+            }
+          ]}
+        >
+          <View style={styles.iconContainer}>
+            <MaterialCommunityIcons name={icon} size={28} color="#fff" />
           </View>
-        )}
-      </LinearGradient>
-    </TouchableOpacity>
+          
+          <View style={styles.content}>
+            <Text style={styles.value}>{value}</Text>
+            <Text style={styles.title}>{title}</Text>
+            {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
+          </View>
+          
+          <View style={styles.shine} />
+          
+          {onPress && (
+            <View style={styles.tapIndicator}>
+              <MaterialCommunityIcons
+                name="chevron-right"
+                size={18}
+                color="rgba(255, 255, 255, 0.5)"
+              />
+            </View>
+          )}
+        </LinearGradient>
+      </TouchableOpacity>
+    </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
   touchable: {
-    borderRadius: 16,
+    borderRadius: borderRadius.lg,
   },
   container: {
-    borderRadius: 16,
-    padding: 16,
-    minHeight: 120,
+    borderRadius: borderRadius.lg,
+    padding: spacing.lg,
+    minHeight: 110,
     justifyContent: 'center',
     position: 'relative',
     overflow: 'hidden',
-    elevation: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
   },
   iconContainer: {
     position: 'absolute',
-    top: 12,
-    right: 12,
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    top: spacing.md,
+    right: spacing.md,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -94,25 +141,25 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   value: {
-    fontSize: 36,
-    fontWeight: '900',
+    ...typography.display,
+    fontSize: 32,
     color: '#fff',
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 4,
+    textShadowColor: 'rgba(0, 0, 0, 0.2)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   title: {
-    fontSize: 14,
-    fontWeight: '700',
+    ...typography.label,
+    fontSize: 12,
     color: '#fff',
-    textTransform: 'uppercase',
-    marginTop: 4,
+    marginTop: spacing.xs,
     opacity: 0.95,
   },
   subtitle: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: 'rgba(255, 255, 255, 0.8)',
+    ...typography.bodySmall,
+    fontSize: 11,
+    fontWeight: '500',
+    color: 'rgba(255, 255, 255, 0.85)',
     marginTop: 2,
   },
   shine: {
@@ -120,12 +167,12 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    height: '50%',
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    height: '40%',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
   tapIndicator: {
     position: 'absolute',
-    bottom: 8,
-    right: 8,
+    bottom: spacing.sm,
+    right: spacing.sm,
   },
 });

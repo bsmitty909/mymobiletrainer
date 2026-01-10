@@ -1,70 +1,64 @@
 /**
- * IntensityBadge Component
- * 
- * Visual indicator showing the intensity percentage of a set
+ * IntensityBadge Component - Modern 2024 Design
+ *
+ * Clean badge showing workout intensity with design system colors
  * Based on extracted formulas: 35% (warmup), 80% (working), 90% (heavy), 100% (max)
- * 
- * Color coding:
- * - Green: ≤35% (warmup)
- * - Blue: 50-65% (moderate)
- * - Orange: 70-85% (heavy)
- * - Red: ≥90% (max effort)
  */
 
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { colors as designColors, spacing, typography, borderRadius } from '../../theme/designTokens';
 
 interface IntensityBadgeProps {
-  percentage: number; // 0.35, 0.80, 0.90, 1.0, etc.
+  percentage: number;
   size?: 'small' | 'medium' | 'large';
   showLabel?: boolean;
 }
 
-export default function IntensityBadge({ 
-  percentage, 
+export default function IntensityBadge({
+  percentage,
   size = 'medium',
-  showLabel = true 
+  showLabel = true
 }: IntensityBadgeProps) {
   const pct = Math.round(percentage * 100);
   
-  // Determine color and label based on intensity
   const getIntensityConfig = () => {
     if (percentage <= 0.35) {
       return {
-        color: '#4CAF50',
+        color: designColors.intensity.warmup,
+        backgroundColor: designColors.intensity.warmup + '20',
         label: 'WARMUP',
-        emoji: '🔥',
-        textColor: '#fff'
+        emoji: '🟡',
       };
     } else if (percentage <= 0.65) {
       return {
-        color: '#2196F3',
-        label: 'MODERATE',
-        emoji: '💪',
-        textColor: '#fff'
+        color: designColors.intensity.light,
+        backgroundColor: designColors.intensity.light + '20',
+        label: 'LIGHT',
+        emoji: '🟢',
       };
     } else if (percentage <= 0.85) {
       return {
-        color: '#FF9800',
+        color: designColors.intensity.moderate,
+        backgroundColor: designColors.intensity.moderate + '20',
         label: 'HEAVY',
-        emoji: '⚡',
-        textColor: '#fff'
+        emoji: '🟠',
       };
     } else {
       return {
-        color: '#F44336',
+        color: designColors.intensity.heavy,
+        backgroundColor: designColors.intensity.heavy + '20',
         label: 'MAX',
-        emoji: '🔥',
-        textColor: '#fff'
+        emoji: '🔴',
       };
     }
   };
 
   const config = getIntensityConfig();
   const sizeConfig = {
-    small: { height: 24, fontSize: 12, padding: 6 },
-    medium: { height: 32, fontSize: 14, padding: 8 },
-    large: { height: 40, fontSize: 16, padding: 10 }
+    small: { height: 24, fontSize: 11, paddingHorizontal: spacing.sm },
+    medium: { height: 28, fontSize: 12, paddingHorizontal: spacing.md },
+    large: { height: 32, fontSize: 13, paddingHorizontal: spacing.base },
   };
 
   const dimensions = sizeConfig[size];
@@ -73,24 +67,25 @@ export default function IntensityBadge({
     <View style={[
       styles.badge,
       {
-        backgroundColor: config.color,
+        backgroundColor: config.backgroundColor,
+        borderColor: config.color,
         height: dimensions.height,
-        paddingHorizontal: dimensions.padding,
+        paddingHorizontal: dimensions.paddingHorizontal,
       }
     ]}>
       {showLabel && size !== 'small' && (
-        <Text style={[styles.emoji, { fontSize: dimensions.fontSize - 2 }]}>
+        <Text style={styles.emoji}>
           {config.emoji}
         </Text>
       )}
       <Text style={[
         styles.percentage,
-        { fontSize: dimensions.fontSize, color: config.textColor }
+        { fontSize: dimensions.fontSize, color: config.color }
       ]}>
         {pct}%
       </Text>
       {showLabel && size === 'large' && (
-        <Text style={[styles.label, { fontSize: dimensions.fontSize - 4, color: config.textColor }]}>
+        <Text style={[styles.label, { color: config.color }]}>
           {config.label}
         </Text>
       )}
@@ -103,23 +98,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 20,
-    gap: 4,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
+    borderRadius: borderRadius.md,
+    borderWidth: 1.5,
+    gap: spacing.xs,
   },
   emoji: {
-    fontWeight: '600',
+    fontSize: 10,
   },
   percentage: {
-    fontWeight: '900',
-    letterSpacing: 0.5,
+    ...typography.labelSmall,
+    fontWeight: '700',
   },
   label: {
-    fontWeight: '700',
-    letterSpacing: 0.8,
-  }
+    ...typography.labelSmall,
+    fontSize: 10,
+  },
 });

@@ -115,11 +115,11 @@ export default function BodyPartBalanceCard({
       borderLeftWidth: 3,
     },
     imbalanceHigh: {
-      backgroundColor: colors.errorBackground || '#FEE2E2',
+      backgroundColor: colors.error + '15',
       borderLeftColor: colors.error,
     },
     imbalanceModerate: {
-      backgroundColor: colors.warningBackground || '#FEF3C7',
+      backgroundColor: colors.warning + '15',
       borderLeftColor: colors.warning,
     },
     imbalanceLow: {
@@ -162,7 +162,7 @@ export default function BodyPartBalanceCard({
     noImbalances: {
       alignItems: 'center',
       padding: 16,
-      backgroundColor: colors.successBackground || '#D1FAE5',
+      backgroundColor: colors.success + '15',
       borderRadius: 8,
       marginTop: 8,
     },

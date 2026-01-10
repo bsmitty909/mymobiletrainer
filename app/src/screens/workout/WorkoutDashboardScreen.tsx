@@ -1,13 +1,14 @@
 /**
- * Workout Dashboard Screen
+ * Workout Dashboard Screen - Nike/Hevy Style Redesign
  * 
- * Main workout screen showing current week/day and workout overview with gamified UI
+ * DRAMATICALLY redesigned with large hero elements, generous white space, and bold typography
  */
 
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, Modal } from 'react-native';
-import { Text, Card, IconButton } from 'react-native-paper';
+import { View, StyleSheet, ScrollView, Modal, TouchableOpacity } from 'react-native';
+import { Text, IconButton } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppSelector, useAppDispatch } from '../../store/store';
 import { startSession } from '../../store/slices/workoutSliceEnhanced';
 import GameButton from '../../components/common/GameButton';
@@ -16,6 +17,7 @@ import WeeklyJourneyView from '../../components/workout/WeeklyJourneyView';
 import OfflineIndicator from '../../components/common/OfflineIndicator';
 import ResumeWorkoutCard from '../../components/workout/ResumeWorkoutCard';
 import QuickStartService, { ResumeWorkoutInfo } from '../../services/QuickStartService';
+import { spacing, typography, borderRadius, shadows } from '../../theme/designTokens';
 import useThemeColors from '../../utils/useThemeColors';
 
 type AchievementType = 'workouts' | 'streak' | 'volume' | 'prs' | null;
@@ -212,131 +214,160 @@ export default function WorkoutDashboardScreen({ navigation }: any) {
       flex: 1,
       backgroundColor: colors.background,
     },
-    header: {
-      paddingHorizontal: 24,
-      paddingTop: 60,
-      paddingBottom: 56,
+    // NIKE/HEVY STYLE: Large hero header with generous padding
+    heroHeader: {
+      paddingHorizontal: 32,
+      paddingTop: 80,
+      paddingBottom: 120,
     },
-    title: {
-      fontSize: 32,
-      color: '#fff',
-      fontWeight: '900',
+    // HUGE app title like Nike
+    appTitle: {
+      fontSize: 14,
+      color: 'rgba(255, 255, 255, 0.8)',
+      fontWeight: '600',
       marginBottom: 8,
+      letterSpacing: 2,
       textTransform: 'uppercase',
-      letterSpacing: 1,
     },
-    welcome: {
+    // MASSIVE welcome text
+    welcomeText: {
+      fontSize: 48,
+      color: '#FFFFFF',
+      fontWeight: '900',
+      marginBottom: 4,
+      letterSpacing: -1,
+    },
+    subtitle: {
       fontSize: 18,
       color: 'rgba(255, 255, 255, 0.9)',
-      fontWeight: '600',
+      fontWeight: '400',
     },
-    workoutCard: {
-      margin: 16,
-      marginTop: -40,
-      borderRadius: 20,
+    // Overlapping card - Nike style
+    workoutHeroCard: {
+      marginHorizontal: 24,
+      marginTop: -80,
+      borderRadius: 24,
       overflow: 'hidden',
-      elevation: 12,
+      backgroundColor: colors.surface,
+      ...shadows.lg,
     },
-    workoutCardContent: {
-      padding: 24,
+    heroCardContent: {
+      padding: 32,
     },
-    cardLabel: {
+    todayLabel: {
       fontSize: 12,
       color: colors.textSecondary,
-      marginBottom: 8,
       fontWeight: '700',
-      letterSpacing: 1,
+      letterSpacing: 1.5,
+      marginBottom: 12,
       textTransform: 'uppercase',
     },
-    workoutTitle: {
-      fontSize: 32,
+    // HUGE workout title
+    workoutHeroTitle: {
+      fontSize: 42,
       fontWeight: '900',
-      marginBottom: 8,
       color: colors.text,
+      marginBottom: 8,
+      letterSpacing: -1,
     },
-    workoutSubtitle: {
-      fontSize: 20,
+    workoutType: {
+      fontSize: 24,
       color: colors.textSecondary,
-      marginBottom: 20,
       fontWeight: '600',
-    },
-    workoutMeta: {
-      flexDirection: 'row',
-      gap: 20,
       marginBottom: 24,
     },
-    metaItem: {
+    // Meta info row
+    metaRow: {
       flexDirection: 'row',
+      gap: 24,
+      marginBottom: 32,
+      paddingVertical: 16,
+      borderTopWidth: 1,
+      borderBottomWidth: 1,
+      borderColor: colors.borderLight,
+    },
+    metaItem: {
       alignItems: 'center',
-      gap: 8,
+      flex: 1,
     },
-    metaText: {
-      fontSize: 16,
+    metaIcon: {
+      marginBottom: 8,
+    },
+    metaValue: {
+      fontSize: 20,
+      fontWeight: '700',
       color: colors.text,
-      fontWeight: '600',
+      marginBottom: 4,
     },
-    achievementsSection: {
-      padding: 16,
-    },
-    sectionTitle: {
-      fontSize: 24,
-      fontWeight: '900',
-      color: colors.text,
-      marginBottom: 16,
+    metaLabel: {
+      fontSize: 12,
+      color: colors.textSecondary,
       textTransform: 'uppercase',
       letterSpacing: 0.5,
     },
+    // MASSIVE start button like Nike
+    startButtonContainer: {
+      marginTop: 8,
+    },
+    section: {
+      paddingHorizontal: 24,
+      paddingVertical: 32,
+    },
+    // Larger section titles
+    sectionHeader: {
+      fontSize: 28,
+      fontWeight: '700',
+      color: colors.text,
+      marginBottom: 24,
+      letterSpacing: -0.5,
+    },
     achievementsGrid: {
-      gap: 12,
+      gap: 16,
     },
     achievementRow: {
       flexDirection: 'row',
-      gap: 12,
+      gap: 16,
     },
     achievementItem: {
       flex: 1,
     },
-    goalsCard: {
-      margin: 16,
+    motivationCard: {
+      marginHorizontal: 24,
       marginTop: 8,
-      marginBottom: 32,
-      borderRadius: 16,
+      marginBottom: 48,
+      borderRadius: 20,
       overflow: 'hidden',
-      elevation: 8,
+      backgroundColor: colors.primary + '10',
+      borderWidth: 2,
+      borderColor: colors.primary + '20',
     },
-    goalsContent: {
-      padding: 24,
+    motivationContent: {
+      padding: 28,
     },
-    goalsTitle: {
-      fontSize: 22,
-      marginBottom: 16,
+    motivationTitle: {
+      fontSize: 20,
+      fontWeight: '700',
       color: colors.text,
-      fontWeight: '900',
-      textTransform: 'uppercase',
+      marginBottom: 12,
     },
-    goalsText: {
+    motivationText: {
       fontSize: 16,
       lineHeight: 24,
       color: colors.textSecondary,
-      fontWeight: '500',
     },
   });
 
   const modalStyles = StyleSheet.create({
     overlay: {
       flex: 1,
-      backgroundColor: 'rgba(0, 0, 0, 0.7)',
+      backgroundColor: 'rgba(0, 0, 0, 0.75)',
       justifyContent: 'center',
-      padding: 20,
+      padding: 24,
     },
     modal: {
-      borderRadius: 20,
+      borderRadius: 24,
       maxHeight: '80%',
-      elevation: 16,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 8 },
-      shadowOpacity: 0.4,
-      shadowRadius: 16,
+      ...shadows.lg,
     },
     header: {
       flexDirection: 'row',
@@ -344,28 +375,29 @@ export default function WorkoutDashboardScreen({ navigation }: any) {
       alignItems: 'center',
       paddingLeft: 24,
       paddingRight: 8,
-      paddingTop: 16,
-      borderBottomWidth: 2,
+      paddingTop: 20,
+      paddingBottom: 16,
+      borderBottomWidth: 1,
       borderBottomColor: colors.border,
     },
     modalTitle: {
-      fontSize: 24,
-      fontWeight: '900',
-      textTransform: 'uppercase',
+      fontSize: 22,
+      fontWeight: '700',
+      color: colors.text,
     },
     content: {
       padding: 24,
       maxHeight: 400,
     },
     detailText: {
-      fontSize: 16,
-      lineHeight: 28,
-      fontWeight: '500',
-      marginBottom: 4,
+      fontSize: 15,
+      lineHeight: 24,
+      color: colors.text,
+      marginBottom: 8,
     },
     actions: {
-      padding: 16,
-      borderTopWidth: 2,
+      padding: 20,
+      borderTopWidth: 1,
       borderTopColor: colors.border,
     },
   });
@@ -373,7 +405,7 @@ export default function WorkoutDashboardScreen({ navigation }: any) {
   return (
     <View style={{ flex: 1 }}>
       <OfflineIndicator />
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {resumeInfo && resumeInfo.canResume && (
           <ResumeWorkoutCard
             resumeInfo={resumeInfo}
@@ -381,129 +413,161 @@ export default function WorkoutDashboardScreen({ navigation }: any) {
             onDiscard={handleDiscardWorkout}
           />
         )}
+        
+        {/* NIKE-STYLE HERO HEADER - Much Larger */}
         <LinearGradient
-        colors={[colors.primary, colors.primary + 'DD']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.header}
-      >
-        <Text style={styles.title}>
-          30 MIN PT
-        </Text>
-        <Text style={styles.welcome}>
-          Welcome back, {user?.name || 'Champion'}!
-        </Text>
-      </LinearGradient>
-
-      <Card style={styles.workoutCard}>
-        <View style={styles.workoutCardContent}>
-          <Text style={styles.cardLabel}>
-            TODAY'S WORKOUT
-          </Text>
-          <Text style={styles.workoutTitle}>
-            Week {currentWeek} • Day {currentDay}
-          </Text>
-          <Text style={styles.workoutSubtitle}>
-            {getWorkoutName(currentDay)}
-          </Text>
-          
-          <View style={styles.workoutMeta}>
-            <View style={styles.metaItem}>
-              <Text style={styles.metaText}>5 Exercises</Text>
-            </View>
-            <View style={styles.metaItem}>
-              <Text style={styles.metaText}>~30 min</Text>
-            </View>
-          </View>
-
-          <GameButton
-            onPress={handleStartWorkout}
-            icon="rocket-launch"
-            variant="success"
-          >
-            START WORKOUT
-          </GameButton>
-        </View>
-      </Card>
-
-      <WeeklyJourneyView
-        weeks={weeklyJourney}
-        onWeekPress={(weekNum) => {
-          console.log(`Week ${weekNum} pressed`);
-        }}
-      />
-
-      <View style={styles.achievementsSection}>
-        <Text style={styles.sectionTitle}>
-          Weekly Achievements
-        </Text>
-        <View style={styles.achievementsGrid}>
-          <View style={styles.achievementRow}>
-            <View style={styles.achievementItem}>
-              <AchievementCard
-                title="Workouts"
-                value="8"
-                icon="dumbbell"
-                color="gold"
-                subtitle="This Month"
-                onPress={() => setSelectedAchievement('workouts')}
-              />
-            </View>
-            <View style={styles.achievementItem}>
-              <AchievementCard
-                title="Day Streak"
-                value="5"
-                icon="fire"
-                color="blue"
-                subtitle="Keep Going!"
-                onPress={() => setSelectedAchievement('streak')}
-              />
-            </View>
-          </View>
-          
-          <View style={styles.achievementRow}>
-            <View style={styles.achievementItem}>
-              <AchievementCard
-                title="Total Volume"
-                value="12.5k"
-                icon="lightning-bolt"
-                color="green"
-                subtitle="lbs lifted"
-                onPress={() => setSelectedAchievement('volume')}
-              />
-            </View>
-            <View style={styles.achievementItem}>
-              <AchievementCard
-                title="PR's Set"
-                value="3"
-                icon="trophy"
-                color="bronze"
-                subtitle="New Records!"
-                onPress={() => setSelectedAchievement('prs')}
-              />
-            </View>
-          </View>
-        </View>
-      </View>
-
-      <Card style={styles.goalsCard}>
-        <LinearGradient
-          colors={[colors.primary + '20', colors.primary + '10']}
+          colors={[colors.primary, colors.primary + 'E6', colors.primary + 'CC']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
-          style={styles.goalsContent}
+          style={styles.heroHeader}
         >
-          <Text style={styles.goalsTitle}>
-            This Week's Mission
+          <Text style={styles.appTitle}>MY MOBILE TRAINER</Text>
+          <Text style={styles.welcomeText}>
+            {user?.name || 'Champion'}
           </Text>
-          <Text style={styles.goalsText}>
-            Continue to attempt new maxes and go for maximum repetitions.
-            Keep excellent form and push to your limits! Remember: progress over perfection.
+          <Text style={styles.subtitle}>
+            Ready to crush today's workout?
           </Text>
         </LinearGradient>
-      </Card>
 
-      {renderAchievementDetails()}
+        {/* OVERLAPPING HERO CARD - Nike Style */}
+        <View style={styles.workoutHeroCard}>
+          <View style={styles.heroCardContent}>
+            <Text style={styles.todayLabel}>TODAY'S WORKOUT</Text>
+            
+            {/* MASSIVE workout title */}
+            <Text style={styles.workoutHeroTitle}>
+              Week {currentWeek}
+            </Text>
+            
+            <Text style={styles.workoutType}>
+              {getWorkoutName(currentDay)}
+            </Text>
+
+            {/* Meta info with icons */}
+            <View style={styles.metaRow}>
+              <View style={styles.metaItem}>
+                <MaterialCommunityIcons 
+                  name="weight-lifter" 
+                  size={28} 
+                  color={colors.primary} 
+                  style={styles.metaIcon}
+                />
+                <Text style={styles.metaValue}>5</Text>
+                <Text style={styles.metaLabel}>Exercises</Text>
+              </View>
+              <View style={styles.metaItem}>
+                <MaterialCommunityIcons 
+                  name="clock-outline" 
+                  size={28} 
+                  color={colors.primary} 
+                  style={styles.metaIcon}
+                />
+                <Text style={styles.metaValue}>30</Text>
+                <Text style={styles.metaLabel}>Minutes</Text>
+              </View>
+              <View style={styles.metaItem}>
+                <MaterialCommunityIcons 
+                  name="fire" 
+                  size={28} 
+                  color={colors.primary} 
+                  style={styles.metaIcon}
+                />
+                <Text style={styles.metaValue}>High</Text>
+                <Text style={styles.metaLabel}>Intensity</Text>
+              </View>
+            </View>
+
+            {/* HUGE start button */}
+            <View style={styles.startButtonContainer}>
+              <GameButton
+                onPress={handleStartWorkout}
+                icon="play-circle"
+                variant="success"
+                size="large"
+              >
+                START WORKOUT
+              </GameButton>
+            </View>
+          </View>
+        </View>
+
+        {/* Weekly Journey with more space */}
+        <View style={{ marginTop: 32, marginBottom: 16 }}>
+          <WeeklyJourneyView
+            weeks={weeklyJourney}
+            onWeekPress={(weekNum) => {
+              console.log(`Week ${weekNum} pressed`);
+            }}
+          />
+        </View>
+
+        {/* CLEANER Achievements Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionHeader}>This Week</Text>
+          <View style={styles.achievementsGrid}>
+            <View style={styles.achievementRow}>
+              <View style={styles.achievementItem}>
+                <AchievementCard
+                  title="Workouts"
+                  value="8"
+                  icon="dumbbell"
+                  color="gold"
+                  subtitle="This Month"
+                  onPress={() => setSelectedAchievement('workouts')}
+                />
+              </View>
+              <View style={styles.achievementItem}>
+                <AchievementCard
+                  title="Streak"
+                  value="5"
+                  icon="fire"
+                  color="blue"
+                  subtitle="Days"
+                  onPress={() => setSelectedAchievement('streak')}
+                />
+              </View>
+            </View>
+            
+            <View style={styles.achievementRow}>
+              <View style={styles.achievementItem}>
+                <AchievementCard
+                  title="Volume"
+                  value="12.5k"
+                  icon="lightning-bolt"
+                  color="green"
+                  subtitle="lbs"
+                  onPress={() => setSelectedAchievement('volume')}
+                />
+              </View>
+              <View style={styles.achievementItem}>
+                <AchievementCard
+                  title="PR's"
+                  value="3"
+                  icon="trophy"
+                  color="bronze"
+                  subtitle="Records"
+                  onPress={() => setSelectedAchievement('prs')}
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* Cleaner motivation card */}
+        <View style={styles.motivationCard}>
+          <View style={styles.motivationContent}>
+            <Text style={styles.motivationTitle}>
+              This Week's Focus
+            </Text>
+            <Text style={styles.motivationText}>
+              Continue to attempt new maxes and go for maximum repetitions. 
+              Keep excellent form and push to your limits!
+            </Text>
+          </View>
+        </View>
+
+        {renderAchievementDetails()}
       </ScrollView>
     </View>
   );

@@ -1,11 +1,13 @@
 /**
- * GameInput Component
- * 
- * Large, game-styled input with bold styling
+ * GameInput Component - Modern 2024 Design
+ *
+ * Clean input with increment/decrement buttons for workout logging
  */
 
 import React from 'react';
 import { View, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { spacing, typography, borderRadius, components } from '../../theme/designTokens';
 import useThemeColors from '../../utils/useThemeColors';
 
 interface GameInputProps {
@@ -13,7 +15,7 @@ interface GameInputProps {
   onChangeText: (text: string) => void;
   placeholder?: string;
   label?: string;
-  keyboardType?: 'default' | 'numeric' | 'number-pad';
+  keyboardType?: 'default' | 'numeric' | 'number-pad' | 'decimal-pad';
   onIncrement?: () => void;
   onDecrement?: () => void;
   incrementAmount?: number;
@@ -25,7 +27,7 @@ export default function GameInput({
   onChangeText,
   placeholder,
   label,
-  keyboardType = 'default',
+  keyboardType = 'numeric',
   onIncrement,
   onDecrement,
   incrementAmount = 5,
@@ -36,42 +38,60 @@ export default function GameInput({
   return (
     <View style={styles.container}>
       {label && (
-        <Text style={[styles.label, { color: colors.text }]}>{label}</Text>
+        <Text style={[styles.label, { color: colors.textSecondary }]}>{label}</Text>
       )}
       <View style={styles.inputRow}>
         {onDecrement && (
           <TouchableOpacity
             onPress={onDecrement}
-            style={[styles.adjustButton, { backgroundColor: colors.primary + '20', borderColor: colors.primary }]}
+            style={[styles.adjustButton, {
+              backgroundColor: colors.surface,
+              borderColor: colors.border,
+            }]}
             activeOpacity={0.7}
           >
-            <Text style={[styles.adjustButtonText, { color: colors.primary }]}>
-              -{incrementAmount}
-            </Text>
+            <MaterialCommunityIcons
+              name="minus"
+              size={20}
+              color={colors.text}
+            />
           </TouchableOpacity>
         )}
-        <View style={[styles.inputWrapper, { backgroundColor: colors.card, borderColor: colors.primary }]}>
+        
+        <View style={[styles.inputWrapper, {
+          backgroundColor: colors.surface,
+          borderColor: colors.border,
+        }]}>
           <TextInput
             value={value}
             onChangeText={onChangeText}
             placeholder={placeholder}
-            placeholderTextColor={colors.textSecondary}
+            placeholderTextColor={colors.textTertiary}
             keyboardType={keyboardType}
             style={[styles.input, { color: colors.text }]}
+            selectionColor={colors.primary}
           />
           {unit && (
-            <Text style={[styles.unit, { color: colors.textSecondary }]}>{unit}</Text>
+            <Text style={[styles.unit, { color: colors.textSecondary }]}>
+              {unit}
+            </Text>
           )}
         </View>
+        
         {onIncrement && (
           <TouchableOpacity
             onPress={onIncrement}
-            style={[styles.adjustButton, { backgroundColor: colors.primary + '20', borderColor: colors.primary }]}
+            style={[styles.adjustButton, {
+              backgroundColor: colors.surface,
+              borderColor: colors.border,
+            }]}
             activeOpacity={0.7}
           >
-            <Text style={[styles.adjustButtonText, { color: colors.primary }]}>
-              +{incrementAmount}
-            </Text>
+            <MaterialCommunityIcons
+              name="plus"
+              size={20}
+              color={colors.text}
+            />
           </TouchableOpacity>
         )}
       </View>
@@ -81,55 +101,44 @@ export default function GameInput({
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 3,
+    marginVertical: spacing.sm,
   },
   label: {
-    fontSize: 9,
-    fontWeight: '400',
-    marginBottom: 4,
-    textTransform: 'uppercase',
-    letterSpacing: 2,
-    opacity: 0.4,
+    ...typography.label,
+    marginBottom: spacing.sm,
   },
   inputRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: spacing.sm,
   },
   adjustButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 44,
+    height: components.input.height,
+    borderRadius: borderRadius.md,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 0,
-  },
-  adjustButtonText: {
-    fontSize: 14,
-    fontWeight: '400',
+    borderWidth: 2,
   },
   inputWrapper: {
     flex: 1,
-    height: 40,
-    borderRadius: 20,
-    borderWidth: 0,
+    height: components.input.height,
+    borderRadius: borderRadius.md,
+    borderWidth: 2,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: spacing.base,
   },
   input: {
     flex: 1,
-    fontSize: 17,
-    fontWeight: '400',
+    ...typography.bodyLarge,
     textAlign: 'center',
     paddingVertical: 0,
+    fontWeight: '600',
   },
   unit: {
-    fontSize: 10,
-    fontWeight: '400',
-    flexShrink: 0,
-    marginLeft: 4,
-    width: 26,
-    opacity: 0.3,
+    ...typography.bodySmall,
+    fontWeight: '600',
+    marginLeft: spacing.sm,
   },
 });

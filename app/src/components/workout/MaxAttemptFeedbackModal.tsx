@@ -145,7 +145,7 @@ export default function MaxAttemptFeedbackModal({
       onRequestClose={onDismiss}
     >
       <View style={dynamicStyles.overlay}>
-        {isSuccess && <ConfettiAnimation />}
+        {isSuccess && <ConfettiAnimation active={true} duration={3000} pieceCount={50} />}
         
         <Card style={dynamicStyles.card}>
           <View style={dynamicStyles.cardContent}>
@@ -182,7 +182,7 @@ export default function MaxAttemptFeedbackModal({
                     size="large"
                     icon="trophy"
                   >
-                    TRY {result.nextWeight} LBS (+5)
+                    TRY {result.nextWeight || 0} LBS (+5)
                   </GameButton>
 
                   <GameButton
