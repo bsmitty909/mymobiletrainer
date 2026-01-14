@@ -13,11 +13,11 @@ import { useAppSelector, useAppDispatch } from '../../store/store';
 import { startSession } from '../../store/slices/workoutSliceEnhanced';
 import GameButton from '../../components/common/GameButton';
 import AchievementCard from '../../components/common/AchievementCard';
-import WeeklyJourneyView from '../../components/workout/WeeklyJourneyView';
+import DailyWorkoutView from '../../components/workout/DailyWorkoutView';
 import OfflineIndicator from '../../components/common/OfflineIndicator';
 import ResumeWorkoutCard from '../../components/workout/ResumeWorkoutCard';
 import QuickStartService, { ResumeWorkoutInfo } from '../../services/QuickStartService';
-import { spacing, typography, borderRadius, shadows } from '../../theme/designTokens';
+import { spacing, typography, borderRadius, shadows, colors as designColors } from '../../theme/designTokens';
 import useThemeColors from '../../utils/useThemeColors';
 
 type AchievementType = 'workouts' | 'streak' | 'volume' | 'prs' | null;
@@ -64,14 +64,71 @@ export default function WorkoutDashboardScreen({ navigation }: any) {
     ],
   };
 
-  const weeklyJourney = [1, 2, 3, 4, 5, 6, 0].map(weekNum => ({
-    weekNumber: weekNum,
-    completed: weekNum < currentWeek && weekNum !== 0,
-    current: weekNum === currentWeek,
-    workoutsCompleted: weekNum < currentWeek ? 3 : (weekNum === currentWeek ? 0 : 0),
-    totalWorkouts: weekNum === 0 ? 1 : 3,
-    totalVolume: weekNum < currentWeek ? 15000 + (weekNum * 500) : undefined,
-  }));
+  const dailyWorkouts = [
+    {
+      dayName: 'Monday',
+      dayNumber: 1,
+      workoutName: 'Chest & Back',
+      completed: currentDay > 1,
+      current: currentDay === 1,
+      exercises: 5,
+      duration: 30,
+    },
+    {
+      dayName: 'Tuesday',
+      dayNumber: 2,
+      workoutName: 'Legs',
+      completed: currentDay > 2,
+      current: currentDay === 2,
+      exercises: 5,
+      duration: 35,
+    },
+    {
+      dayName: 'Wednesday',
+      dayNumber: 3,
+      workoutName: 'Shoulders & Arms',
+      completed: currentDay > 3,
+      current: currentDay === 3,
+      exercises: 5,
+      duration: 30,
+    },
+    {
+      dayName: 'Thursday',
+      dayNumber: 4,
+      workoutName: 'Chest & Back',
+      completed: currentDay > 4,
+      current: currentDay === 4,
+      exercises: 5,
+      duration: 30,
+    },
+    {
+      dayName: 'Friday',
+      dayNumber: 5,
+      workoutName: 'Legs',
+      completed: currentDay > 5,
+      current: currentDay === 5,
+      exercises: 5,
+      duration: 35,
+    },
+    {
+      dayName: 'Saturday',
+      dayNumber: 6,
+      workoutName: 'Shoulders & Arms',
+      completed: currentDay > 6,
+      current: currentDay === 6,
+      exercises: 5,
+      duration: 30,
+    },
+    {
+      dayName: 'Sunday',
+      dayNumber: 7,
+      workoutName: 'Rest Day',
+      completed: currentDay > 7,
+      current: currentDay === 7,
+      exercises: 0,
+      duration: 0,
+    },
+  ];
 
   const achievementDetails = {
     workouts: {
@@ -492,12 +549,29 @@ export default function WorkoutDashboardScreen({ navigation }: any) {
           </View>
         </View>
 
-        {/* Weekly Journey with more space */}
+        {/* Daily Workout Journey with more space */}
         <View style={{ marginTop: 32, marginBottom: 16 }}>
-          <WeeklyJourneyView
-            weeks={weeklyJourney}
-            onWeekPress={(weekNum) => {
-              console.log(`Week ${weekNum} pressed`);
+          <DailyWorkoutView
+            days={dailyWorkouts}
+            onDayPress={(dayNum) => {
+              const mockSession = {
+                id: `session-${Date.now()}`,
+                userId: user?.id || 'test-user',
+                weekNumber: currentWeek,
+                dayNumber: dayNum,
+                startedAt: Date.now(),
+                status: 'not_started' as const,
+                exercises: mockWorkoutData.exercises.map((ex, idx) => ({
+                  id: `ex-${Date.now()}-${idx}`,
+                  sessionId: `session-${Date.now()}`,
+                  exerciseId: ex.exerciseId,
+                  order: idx + 1,
+                  suggestedWeight: ex.suggestedWeight,
+                  sets: [],
+                })),
+              };
+              dispatch(startSession(mockSession));
+              navigation.navigate('Warmup');
             }}
           />
         </View>
@@ -536,7 +610,6 @@ export default function WorkoutDashboardScreen({ navigation }: any) {
                   value="12.5k"
                   icon="lightning-bolt"
                   color="green"
-                  subtitle="lbs"
                   onPress={() => setSelectedAchievement('volume')}
                 />
               </View>
@@ -546,7 +619,6 @@ export default function WorkoutDashboardScreen({ navigation }: any) {
                   value="3"
                   icon="trophy"
                   color="bronze"
-                  subtitle="Records"
                   onPress={() => setSelectedAchievement('prs')}
                 />
               </View>

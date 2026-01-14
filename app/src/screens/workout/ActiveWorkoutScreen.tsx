@@ -7,7 +7,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, IconButton } from 'react-native-paper';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import {
   logEnhancedSet,
@@ -268,15 +268,15 @@ export default function ActiveWorkoutScreen({ navigation }: any) {
     },
     header: {
       backgroundColor: colors.primary,
-      paddingHorizontal: spacing.lg,
-      paddingVertical: spacing.md,
-      paddingTop: 50,
+      paddingHorizontal: spacing.base,
+      paddingVertical: spacing.comfortable,
+      paddingTop: spacing.huge,
     },
     headerTop: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      marginBottom: spacing.sm,
+      marginBottom: spacing.tight,
     },
     headerTitle: {
       ...typography.body,
@@ -289,12 +289,12 @@ export default function ActiveWorkoutScreen({ navigation }: any) {
     },
     exerciseName: {
       ...typography.h1,
-      fontSize: 24,
+      fontSize: 32,
       color: '#fff',
-      marginBottom: spacing.sm,
+      marginBottom: spacing.tight,
     },
     progressBar: {
-      height: 6,
+      height: 8,
       backgroundColor: 'rgba(255, 255, 255, 0.25)',
       borderRadius: borderRadius.sm,
       overflow: 'hidden',
@@ -313,10 +313,10 @@ export default function ActiveWorkoutScreen({ navigation }: any) {
     },
     currentSetCard: {
       backgroundColor: colors.surface,
-      borderRadius: borderRadius.lg,
-      padding: spacing.lg,
+      borderRadius: borderRadius.xl,
+      padding: spacing.generous,
       marginBottom: spacing.base,
-      ...shadows.md,
+      ...shadows.xl,
       borderWidth: 2,
       borderColor: colors.primary + '20',
     },
@@ -324,13 +324,12 @@ export default function ActiveWorkoutScreen({ navigation }: any) {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginBottom: spacing.base,
+      marginBottom: spacing.close,
     },
     setTitle: {
-      ...typography.h2,
-      fontSize: 18,
+      ...typography.display,
+      fontSize: 42,
       color: colors.primary,
-      letterSpacing: 0.5,
     },
     quickStats: {
       flexDirection: 'row',
@@ -430,9 +429,18 @@ export default function ActiveWorkoutScreen({ navigation }: any) {
       {/* Compact Header */}
       <View style={dynamicStyles.header}>
         <View style={dynamicStyles.headerTop}>
-          <Text style={dynamicStyles.headerTitle}>
-            {activeSession.weekNumber > 0 ? `Week ${activeSession.weekNumber}` : 'Max Week'} • Day {activeSession.dayNumber}
-          </Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+            <IconButton
+              icon="arrow-left"
+              iconColor="#fff"
+              size={24}
+              onPress={() => navigation.navigate('WorkoutDashboard')}
+              style={{ margin: 0, marginLeft: -8 }}
+            />
+            <Text style={dynamicStyles.headerTitle}>
+              {activeSession.weekNumber > 0 ? `Week ${activeSession.weekNumber}` : 'Max Week'} • Day {activeSession.dayNumber}
+            </Text>
+          </View>
           <Text style={dynamicStyles.headerSubtitle}>
             {currentExerciseIndex + 1}/{totalExercises}
           </Text>

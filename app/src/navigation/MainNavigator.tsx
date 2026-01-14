@@ -36,6 +36,7 @@ import SettingsScreen from '../screens/settings/SettingsScreen';
 import MaxLiftsScreen from '../screens/profile/MaxLiftsScreen';
 import EditProfileScreen from '../screens/profile/EditProfileScreen';
 import AboutScreen from '../screens/profile/AboutScreen';
+import XPProgressScreen from '../screens/profile/XPProgressScreen';
 import PrivacyPolicyScreen from '../screens/settings/PrivacyPolicyScreen';
 import TermsOfServiceScreen from '../screens/settings/TermsOfServiceScreen';
 
@@ -100,6 +101,7 @@ function ProfileStackNavigator() {
       <ProfileStack.Screen name="EditProfile" component={EditProfileScreen} />
       <ProfileStack.Screen name="Settings" component={SettingsScreen} />
       <ProfileStack.Screen name="MaxLifts" component={MaxLiftsScreen} />
+      <ProfileStack.Screen name="XPProgress" component={XPProgressScreen} />
       <ProfileStack.Screen name="About" component={AboutScreen} />
       <ProfileStack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
       <ProfileStack.Screen name="TermsOfService" component={TermsOfServiceScreen} />

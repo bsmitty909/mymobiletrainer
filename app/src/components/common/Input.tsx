@@ -4,8 +4,8 @@
  * Reusable text/number input field with consistent styling
  */
 
-import React from 'react';
-import { StyleSheet } from 'react-native';
+import React, { forwardRef } from 'react';
+import { StyleSheet, TextInput as RNTextInput } from 'react-native';
 import { TextInput, TextInputProps, HelperText } from 'react-native-paper';
 import useThemeColors from '../../utils/useThemeColors';
 
@@ -14,12 +14,12 @@ interface InputProps extends Omit<TextInputProps, 'mode'> {
   helperText?: string;
 }
 
-export default function Input({ 
-  error, 
-  helperText, 
+const Input = forwardRef<RNTextInput, InputProps>(({
+  error,
+  helperText,
   style,
-  ...props 
-}: InputProps) {
+  ...props
+}, ref) => {
   const colors = useThemeColors();
   
   const styles = StyleSheet.create({
@@ -32,6 +32,7 @@ export default function Input({
   return (
     <>
       <TextInput
+        ref={ref}
         mode="outlined"
         style={[styles.input, style]}
         error={error}
@@ -44,4 +45,8 @@ export default function Input({
       )}
     </>
   );
-}
+});
+
+Input.displayName = 'Input';
+
+export default Input;

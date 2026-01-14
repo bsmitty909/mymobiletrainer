@@ -144,7 +144,7 @@ export const WorkoutStreakCalendar: React.FC<WorkoutStreakCalendarProps> = ({
 
         <View style={styles.streakInfo}>
           <View style={styles.streakBadge}>
-            <MaterialCommunityIcons name="flame" size={32} color="#FF6B35" />
+            <MaterialCommunityIcons name="chart-timeline-variant" size={32} color="#FF6B35" />
             <Text style={[styles.streakValue, { color: colors.text }]}>
               {currentStreak}
             </Text>
@@ -153,7 +153,7 @@ export const WorkoutStreakCalendar: React.FC<WorkoutStreakCalendarProps> = ({
             </Text>
           </View>
           <View style={styles.streakBadge}>
-            <MaterialCommunityIcons name="trophy-variant" size={32} color="#FFD700" />
+            <MaterialCommunityIcons name="medal" size={32} color="#FFD700" />
             <Text style={[styles.streakValue, { color: colors.text }]}>
               {longestStreak}
             </Text>

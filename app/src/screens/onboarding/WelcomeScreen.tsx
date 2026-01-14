@@ -1,16 +1,19 @@
 /**
- * Welcome Screen
- * 
- * Enhanced onboarding that collects user info: age, weight, experience level
+ * Welcome Screen - Nike Style
+ *
+ * Bold onboarding with dramatic typography and generous spacing
  */
 
-import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
 import { Text, Button, SegmentedButtons } from 'react-native-paper';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useAppDispatch } from '../../store/store';
 import { createUser, completeOnboarding } from '../../store/slices/userSlice';
 import Input from '../../components/common/Input';
+import GameButton from '../../components/common/GameButton';
 import StorageService from '../../services/StorageService';
+import { spacing, typography, borderRadius, shadows, colors as designColors } from '../../theme/designTokens';
 import useThemeColors from '../../utils/useThemeColors';
 
 type OnboardingStep = 'welcome' | 'profile' | 'goals' | 'experience';
@@ -26,6 +29,9 @@ export default function WelcomeScreen() {
   const [weight, setWeight] = useState('');
   const [fitnessGoal, setFitnessGoal] = useState<FitnessGoal>('tone-up');
   const [experienceLevel, setExperienceLevel] = useState<'beginner' | 'moderate' | 'advanced'>('beginner');
+
+  const ageInputRef = useRef<TextInput>(null);
+  const weightInputRef = useRef<TextInput>(null);
 
   const handleGetStarted = () => {
     setStep('profile');
@@ -68,7 +74,7 @@ export default function WelcomeScreen() {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      padding: 24,
+      padding: spacing.comfortable,
     },
     logoContainer: {
       width: 200,
@@ -78,112 +84,114 @@ export default function WelcomeScreen() {
       borderColor: colors.primary,
       justifyContent: 'center',
       alignItems: 'center',
-      marginBottom: 24,
+      marginBottom: spacing.comfortable,
       backgroundColor: colors.surface,
-      elevation: 8,
-      shadowColor: colors.primary,
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.3,
-      shadowRadius: 8,
+      ...shadows.xl,
     },
     title: {
-      fontSize: 32,
-      fontWeight: '900',
+      ...typography.heroDisplay,
       textAlign: 'center',
       color: colors.primary,
-      letterSpacing: 1,
+      marginBottom: spacing.tight,
     },
     appName: {
-      fontWeight: 'bold',
+      ...typography.h1,
       textAlign: 'center',
-      marginBottom: 8,
+      marginBottom: spacing.tight,
       color: colors.text,
     },
     subtitle: {
+      ...typography.h3,
       textAlign: 'center',
       color: colors.textSecondary,
-      marginBottom: 24,
+      marginBottom: spacing.base,
     },
     description: {
+      ...typography.bodyLarge,
       textAlign: 'center',
       color: colors.textSecondary,
-      paddingHorizontal: 32,
-      lineHeight: 24,
-      marginBottom: 32,
+      paddingHorizontal: spacing.comfortable,
+      lineHeight: 28,
+      marginBottom: spacing.comfortable,
     },
     features: {
       alignItems: 'flex-start',
-      gap: 8,
+      gap: spacing.close,
     },
     feature: {
+      ...typography.body,
       color: colors.text,
     },
     footer: {
-      paddingBottom: 32,
-      paddingHorizontal: 24,
+      paddingBottom: spacing.huge,
+      paddingHorizontal: spacing.base,
     },
     button: {
-      marginBottom: 16,
+      marginBottom: spacing.close,
     },
     buttonContent: {
-      paddingVertical: 8,
+      paddingVertical: spacing.tight,
     },
     credit: {
+      ...typography.body,
       textAlign: 'center',
       color: colors.textSecondary,
     },
     formContainer: {
       flex: 1,
-      padding: 24,
-      paddingTop: 80,
+      padding: spacing.base,
+      paddingTop: spacing.massive,
     },
     formTitle: {
-      fontWeight: 'bold',
-      marginBottom: 8,
+      ...typography.display,
+      marginBottom: spacing.tight,
       textAlign: 'center',
       color: colors.text,
     },
     formSubtitle: {
+      ...typography.bodyLarge,
       textAlign: 'center',
       color: colors.textSecondary,
-      marginBottom: 32,
+      marginBottom: spacing.generous,
     },
     input: {
-      marginBottom: 16,
+      marginBottom: spacing.close,
     },
     nextButton: {
-      marginTop: 24,
+      marginTop: spacing.comfortable,
     },
     completeButton: {
-      marginTop: 32,
+      marginTop: spacing.generous,
     },
     backButton: {
-      marginTop: 12,
+      marginTop: spacing.close,
     },
     experienceSection: {
-      marginBottom: 32,
+      marginBottom: spacing.comfortable,
     },
     segmentedButtons: {
-      marginBottom: 24,
+      marginBottom: spacing.base,
     },
     experienceDescriptions: {
-      minHeight: 150,
+      minHeight: 180,
     },
     descriptionCard: {
       backgroundColor: colors.surface,
-      padding: 16,
-      borderRadius: 8,
-      borderLeftWidth: 4,
+      padding: spacing.comfortable,
+      borderRadius: borderRadius.xl,
+      borderLeftWidth: 6,
       borderLeftColor: colors.primary,
+      ...shadows.md,
     },
     descriptionTitle: {
-      fontWeight: 'bold',
-      marginBottom: 8,
+      ...typography.h2,
+      marginBottom: spacing.close,
       color: colors.primary,
     },
     descriptionText: {
+      ...typography.body,
       color: colors.text,
-      lineHeight: 20,
+      lineHeight: 24,
     },
   });
 

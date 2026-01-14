@@ -1,32 +1,36 @@
 /**
- * Design Tokens - Modern 2024 Design System
- * 
- * Centralized design tokens following Nike/Hevy-inspired system
- * Based on /plans/DESIGN-SYSTEM-2024.md
+ * Design Tokens - Nike/Hevy Style Design System
+ *
+ * Updated to Nike-inspired bold, confident aesthetic
+ * Based on /plans/NIKE-STYLE-REDESIGN-PLAN.md
  */
 
 export const colors = {
-  // Primary Palette
+  // Primary Palette - Bold & Saturated
   primary: {
     main: '#0066FF',
     light: '#3385FF',
     dark: '#0052CC',
+    darker: '#003D99',
   },
   
   success: {
-    main: '#00C853',
-    light: '#69F0AE',
-    dark: '#00A043',
+    main: '#00D96F',
+    light: '#00F47F',
+    dark: '#00C65A',
+    darker: '#00B34A',
   },
   
   warning: {
-    main: '#FF9100',
+    main: '#FF9500',
     light: '#FFAB40',
+    dark: '#FF8000',
   },
   
   error: {
     main: '#FF3B30',
     light: '#FF6B6B',
+    dark: '#FF1F13',
   },
   
   // Light Mode Neutrals
@@ -47,16 +51,16 @@ export const colors = {
   
   // Dark Mode Neutrals
   dark: {
-    background: '#0A0A0A',
+    background: '#000000',
     surface: '#1A1A1A',
     surfaceElevated: '#2A2A2A',
-    border: '#2A2A2A',
-    borderLight: '#1F1F1F',
+    border: 'rgba(255, 255, 255, 0.1)',
+    borderLight: 'rgba(255, 255, 255, 0.05)',
     
     text: {
       primary: '#FFFFFF',
-      secondary: '#A1A1A1',
-      tertiary: '#717171',
+      secondary: '#AAAAAA',
+      tertiary: '#888888',
       disabled: '#4A4A4A',
     },
   },
@@ -73,10 +77,17 @@ export const colors = {
   // Data Visualization
   chart: {
     blue: '#0066FF',
-    green: '#00C853',
-    orange: '#FF9100',
+    green: '#00D96F',
+    orange: '#FF9500',
     purple: '#7C4DFF',
     pink: '#FF4081',
+  },
+  
+  // Gradients
+  gradients: {
+    primary: ['#0066FF', '#0052CC', '#003D99'],
+    success: ['#00D96F', '#00C65A', '#00B34A'],
+    hero: ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.4)'],
   },
 };
 
@@ -90,69 +101,75 @@ export const typography = {
     black: '900' as const,
   },
   
-  // Type Scale
-  display: {
-    fontSize: 36,
-    lineHeight: 44,
+  // Nike-Inspired Type Scale - MASSIVE typography
+  heroDisplay: {
+    fontSize: 72,
+    lineHeight: 80,
     fontWeight: '900' as const,
-    letterSpacing: -0.5,
+    letterSpacing: -1.5,
+  },
+  
+  largeDisplay: {
+    fontSize: 56,
+    lineHeight: 64,
+    fontWeight: '900' as const,
+    letterSpacing: -1,
+  },
+  
+  display: {
+    fontSize: 48,
+    lineHeight: 56,
+    fontWeight: '900' as const,
+    letterSpacing: -0.8,
   },
   
   h1: {
+    fontSize: 36,
+    lineHeight: 44,
+    fontWeight: '700' as const,
+    letterSpacing: -0.5,
+  },
+  
+  h2: {
     fontSize: 28,
     lineHeight: 36,
     fontWeight: '700' as const,
     letterSpacing: -0.3,
   },
   
-  h2: {
+  h3: {
     fontSize: 22,
     lineHeight: 28,
-    fontWeight: '700' as const,
-    letterSpacing: -0.2,
-  },
-  
-  h3: {
-    fontSize: 18,
-    lineHeight: 24,
     fontWeight: '600' as const,
     letterSpacing: 0,
   },
   
   bodyLarge: {
-    fontSize: 17,
-    lineHeight: 24,
+    fontSize: 18,
+    lineHeight: 26,
     fontWeight: '400' as const,
     letterSpacing: 0,
   },
   
   body: {
-    fontSize: 15,
-    lineHeight: 22,
+    fontSize: 16,
+    lineHeight: 24,
     fontWeight: '400' as const,
     letterSpacing: 0,
   },
   
   bodySmall: {
-    fontSize: 13,
-    lineHeight: 18,
+    fontSize: 14,
+    lineHeight: 20,
     fontWeight: '400' as const,
     letterSpacing: 0,
-  },
-  
-  labelLarge: {
-    fontSize: 15,
-    lineHeight: 20,
-    fontWeight: '600' as const,
-    letterSpacing: 0.5,
-    textTransform: 'uppercase' as const,
   },
   
   label: {
     fontSize: 13,
     lineHeight: 18,
     fontWeight: '600' as const,
-    letterSpacing: 0.3,
+    letterSpacing: 0.5,
     textTransform: 'uppercase' as const,
   },
   
@@ -166,22 +183,22 @@ export const typography = {
 };
 
 export const spacing = {
-  xs: 4,
-  sm: 8,
-  md: 12,
-  base: 16,
-  lg: 20,
-  xl: 24,
-  '2xl': 32,
-  '3xl': 48,
-  '4xl': 64,
+  micro: 4,
+  tight: 8,
+  close: 16,
+  base: 24,
+  comfortable: 32,
+  generous: 48,
+  huge: 64,
+  massive: 80,
+  giant: 100,
 };
 
 export const borderRadius = {
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 20,
+  sm: 12,
+  md: 16,
+  lg: 24,
+  xl: 32,
   full: 9999,
 };
 

@@ -88,11 +88,11 @@ export default function AchievementCard({ title, value, icon, color, subtitle, o
           ]}
         >
           <View style={styles.iconContainer}>
-            <MaterialCommunityIcons name={icon} size={28} color="#fff" />
+            <MaterialCommunityIcons name={icon} size={32} color="#fff" />
           </View>
           
           <View style={styles.content}>
-            <Text style={styles.value}>{value}</Text>
+            <Text style={styles.value} numberOfLines={1}>{value}</Text>
             <Text style={styles.title}>{title}</Text>
             {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
           </View>
@@ -120,19 +120,19 @@ const styles = StyleSheet.create({
   },
   container: {
     borderRadius: borderRadius.lg,
-    padding: spacing.lg,
-    minHeight: 110,
-    justifyContent: 'center',
+    padding: spacing.comfortable,
+    height: 160,
+    justifyContent: 'flex-end',
     position: 'relative',
     overflow: 'hidden',
   },
   iconContainer: {
     position: 'absolute',
-    top: spacing.md,
-    right: spacing.md,
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    top: spacing.close,
+    right: spacing.close,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     backgroundColor: 'rgba(255, 255, 255, 0.25)',
     justifyContent: 'center',
     alignItems: 'center',
@@ -141,26 +141,25 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   value: {
-    ...typography.display,
     fontSize: 32,
+    fontWeight: '900',
+    letterSpacing: -1,
     color: '#fff',
-    textShadowColor: 'rgba(0, 0, 0, 0.2)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 3,
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
   },
   title: {
     ...typography.label,
-    fontSize: 12,
     color: '#fff',
-    marginTop: spacing.xs,
+    marginTop: spacing.tight,
     opacity: 0.95,
   },
   subtitle: {
-    ...typography.bodySmall,
-    fontSize: 11,
+    ...typography.label,
     fontWeight: '500',
     color: 'rgba(255, 255, 255, 0.85)',
-    marginTop: 2,
+    marginTop: spacing.micro,
   },
   shine: {
     position: 'absolute',
@@ -172,7 +171,7 @@ const styles = StyleSheet.create({
   },
   tapIndicator: {
     position: 'absolute',
-    bottom: spacing.sm,
-    right: spacing.sm,
+    bottom: spacing.tight,
+    right: spacing.tight,
   },
 });

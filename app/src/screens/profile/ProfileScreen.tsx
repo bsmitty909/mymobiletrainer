@@ -14,7 +14,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useAppSelector, useAppDispatch } from '../../store/store';
 import { updateProfileImage } from '../../store/slices/userSlice';
 import HapticService from '../../services/HapticService';
-import { spacing, typography, borderRadius, shadows } from '../../theme/designTokens';
+import { spacing, typography, borderRadius, shadows, colors as designColors } from '../../theme/designTokens';
 import useThemeColors from '../../utils/useThemeColors';
 
 export default function ProfileScreen({ navigation }: any) {
@@ -92,7 +92,7 @@ export default function ProfileScreen({ navigation }: any) {
       backgroundColor: colors.background,
     },
     gradientHeader: {
-      paddingBottom: spacing['2xl'],
+      paddingBottom: spacing.base,
     },
     headerContent: {
       padding: spacing.xl,
@@ -143,16 +143,18 @@ export default function ProfileScreen({ navigation }: any) {
       flexDirection: 'row',
       alignItems: 'center',
       backgroundColor: 'rgba(255, 255, 255, 0.2)',
-      paddingHorizontal: spacing.base,
-      paddingVertical: spacing.sm,
+      paddingHorizontal: spacing.comfortable,
+      paddingVertical: spacing.base,
       borderRadius: borderRadius.xl,
-      marginBottom: spacing.base,
+      marginBottom: 0,
+      gap: spacing.sm,
     },
     levelText: {
       ...typography.body,
+      fontSize: 17,
       color: '#FFFFFF',
-      fontWeight: '600',
-      marginLeft: spacing.sm,
+      fontWeight: '700',
+      flex: 1,
     },
     xpContainer: {
       width: '100%',
@@ -175,9 +177,9 @@ export default function ProfileScreen({ navigation }: any) {
     actionButtons: {
       flexDirection: 'row',
       paddingHorizontal: spacing.base,
-      paddingTop: spacing.xl,
-      paddingBottom: spacing.sm,
-      gap: spacing.md,
+      paddingTop: spacing.base,
+      paddingBottom: spacing.close,
+      gap: spacing.close,
     },
     actionButton: {
       flex: 1,
@@ -328,27 +330,17 @@ export default function ProfileScreen({ navigation }: any) {
           <Text variant="headlineMedium" style={styles.name}>
             {user?.name || 'User'}
           </Text>
-          <View style={styles.levelBadge}>
-            <MaterialCommunityIcons name="trophy" size={20} color="#FFFFFF" />
+          <TouchableOpacity
+            style={styles.levelBadge}
+            onPress={() => navigation.navigate('XPProgress')}
+            activeOpacity={0.8}
+          >
+            <MaterialCommunityIcons name="star" size={20} color="#FFFFFF" />
             <Text style={styles.levelText}>
-              Level {gamification.level.level} • {gamification.level.title}
+              Level {gamification.level.level} • {gamification.level.xp} XP
             </Text>
-          </View>
-          <View style={styles.xpContainer}>
-            <View style={styles.xpRow}>
-              <Text style={styles.xpText}>
-                {gamification.level.xp} XP
-              </Text>
-              <Text style={styles.xpText}>
-                {gamification.level.xpForNextLevel} XP
-              </Text>
-            </View>
-            <ProgressBar
-              progress={levelProgress}
-              color="#FFFFFF"
-              style={styles.progressBar}
-            />
-          </View>
+            <MaterialCommunityIcons name="chevron-right" size={20} color="rgba(255, 255, 255, 0.8)" />
+          </TouchableOpacity>
         </View>
       </LinearGradient>
 

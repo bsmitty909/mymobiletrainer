@@ -6,7 +6,7 @@
  */
 
 import React, { useState, useMemo } from 'react';
-import { View, StyleSheet, ScrollView, Modal, TextInput, Alert } from 'react-native';
+import { View, StyleSheet, ScrollView, Modal, TextInput, Alert, TouchableOpacity } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -20,7 +20,7 @@ import IntensityDistributionChart from '../../components/charts/IntensityDistrib
 import BodyPartBalanceCard from '../../components/common/BodyPartBalanceCard';
 import HapticService from '../../services/HapticService';
 import AnalyticsService from '../../services/AnalyticsService';
-import { spacing, typography, borderRadius, shadows, components } from '../../theme/designTokens';
+import { spacing, typography, borderRadius, shadows, components, colors as designColors } from '../../theme/designTokens';
 import useThemeColors from '../../utils/useThemeColors';
 
 export default function ProgressDashboardScreen({ navigation }: any) {
@@ -96,36 +96,111 @@ export default function ProgressDashboardScreen({ navigation }: any) {
 
   return (
     <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
-      {/* Header with Level */}
       <LinearGradient
-        colors={[colors.primary, colors.primary + 'DD', colors.primary + 'AA']}
+        colors={designColors.gradients.primary}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.header}
       >
-        <View style={styles.headerContent}>
-          <View>
-            <Text style={styles.greeting}>Your Progress</Text>
-            <Text style={styles.userName}>{user?.name || 'Athlete'}</Text>
-          </View>
-          <View style={styles.levelBadge}>
-            <Text style={styles.levelNumber}>{level.level}</Text>
-            <Text style={styles.levelLabel}>LEVEL</Text>
+        {/* Decorative Background Circles */}
+        <View style={styles.decorativeCircle1} />
+        <View style={styles.decorativeCircle2} />
+        <View style={styles.decorativeCircle3} />
+        
+        {/* Header Title Section */}
+        <View style={styles.headerTitleContainer}>
+          <View style={styles.titleAccentLine} />
+          <Text style={styles.greeting}>YOUR PROGRESS</Text>
+          <Text style={styles.userName}>{user?.name || 'Athlete'}</Text>
+        </View>
+        
+        {/* Stats Grid with Visual Enhancement */}
+        <View style={styles.statsGridContainer}>
+          <View style={styles.heroStatsRow}>
+            <View style={styles.heroStatCard}>
+              <View style={styles.statCardBackground} />
+              <LinearGradient
+                colors={['rgba(255, 215, 0, 0.15)', 'rgba(255, 215, 0, 0.05)']}
+                style={styles.statCardGradient}
+              >
+                <View style={styles.heroStatIconCircle}>
+                  <MaterialCommunityIcons name="star" size={32} color="#FFD700" />
+                </View>
+                <Text style={styles.heroStatValue}>{level.level}</Text>
+                <Text style={styles.heroStatLabel}>LEVEL</Text>
+              </LinearGradient>
+            </View>
+            
+            <View style={styles.heroStatCard}>
+              <View style={styles.statCardBackground} />
+              <LinearGradient
+                colors={['rgba(255, 255, 255, 0.12)', 'rgba(255, 255, 255, 0.04)']}
+                style={styles.statCardGradient}
+              >
+                <View style={styles.heroStatIconCircle}>
+                  <MaterialCommunityIcons name="dumbbell" size={32} color="#FFFFFF" />
+                </View>
+                <Text style={styles.heroStatValue}>{totalWorkouts}</Text>
+                <Text style={styles.heroStatLabel}>WORKOUTS</Text>
+              </LinearGradient>
+            </View>
+            
+            <View style={styles.heroStatCard}>
+              <View style={styles.statCardBackground} />
+              <LinearGradient
+                colors={['rgba(0, 217, 111, 0.15)', 'rgba(0, 217, 111, 0.05)']}
+                style={styles.statCardGradient}
+              >
+                <View style={styles.heroStatIconCircle}>
+                  <MaterialCommunityIcons name="calendar-check" size={32} color="#00D96F" />
+                </View>
+                <Text style={styles.heroStatValue}>{currentStreak}</Text>
+                <Text style={styles.heroStatLabel}>STREAK</Text>
+              </LinearGradient>
+            </View>
           </View>
         </View>
         
-        <View style={styles.xpContainer}>
-          <View style={styles.xpBar}>
-            <View style={[styles.xpFill, { width: `${xpPercentage}%` }]} />
+        {/* Enhanced XP Progress Card */}
+        <TouchableOpacity
+          style={styles.xpCard}
+          onPress={() => navigation.navigate('Profile', { screen: 'XPProgress' })}
+          activeOpacity={0.8}
+        >
+          <View style={styles.xpCardDecoration} />
+          <View style={styles.xpCardContent} pointerEvents="none">
+            <View style={styles.xpCardHeader}>
+              <View style={styles.xpTitleContainer}>
+                <View style={styles.levelIndicator}>
+                  <MaterialCommunityIcons name="trending-up" size={16} color="#FFD700" />
+                </View>
+                <Text style={styles.xpCardTitle}>{level.title}</Text>
+              </View>
+              <Text style={styles.xpCardValue}>{level.xp} / {level.xpForNextLevel}</Text>
+            </View>
+            <View style={styles.xpBarContainer}>
+              <View style={styles.xpBarOuter}>
+                <LinearGradient
+                  colors={['#FFD700', '#FFAA00', '#FF8C00']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={[styles.xpBarInner, { width: `${xpPercentage}%` }]}
+                />
+              </View>
+              <View style={styles.xpBarGlow} />
+            </View>
+            <View style={styles.xpFooter}>
+              <Text style={styles.xpPercentage}>{Math.round(xpPercentage)}% Complete</Text>
+              <Text style={styles.xpToNext}>
+                {level.xpForNextLevel - level.xp} XP to Level {level.level + 1}
+              </Text>
+            </View>
           </View>
-          <Text style={styles.xpText}>
-            {level.xp} / {level.xpForNextLevel} XP • {level.title}
-          </Text>
-        </View>
+        </TouchableOpacity>
       </LinearGradient>
 
       {/* Quick Action: Weekly Progress */}
-      <View style={styles.section}>
+      <View style={styles.weeklyProgressSection}>
         <GameButton
           onPress={() => navigation.navigate('WeeklyProgress')}
           variant="primary"
@@ -149,7 +224,6 @@ export default function ProgressDashboardScreen({ navigation }: any) {
                 value={totalWorkouts.toString()}
                 icon="arm-flex"
                 color="gold"
-                subtitle="Completed"
               />
             </View>
             <View style={styles.achievementItem}>
@@ -158,19 +232,17 @@ export default function ProgressDashboardScreen({ navigation }: any) {
                 value={currentStreak.toString()}
                 icon="fire"
                 color="blue"
-                subtitle={`Best: ${longestStreak}`}
               />
             </View>
           </View>
           
-          <View style={styles.achievementRow}>
+          <View style={[styles.achievementRow, { marginTop: spacing.tight }]}>
             <View style={styles.achievementItem}>
               <AchievementCard
                 title="Volume"
                 value={`${Math.round(totalVolume / 1000)}k`}
                 icon="lightning-bolt"
                 color="green"
-                subtitle="lbs lifted"
               />
             </View>
             <View style={styles.achievementItem}>
@@ -179,7 +251,6 @@ export default function ProgressDashboardScreen({ navigation }: any) {
                 value={totalPRs.toString()}
                 icon="trophy"
                 color="bronze"
-                subtitle="Personal Records"
               />
             </View>
           </View>
@@ -509,6 +580,45 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     paddingBottom: spacing.xl,
     paddingHorizontal: spacing.xl,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  decorativeCircle1: {
+    position: 'absolute',
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    top: -50,
+    right: -50,
+  },
+  decorativeCircle2: {
+    position: 'absolute',
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    backgroundColor: 'rgba(255, 215, 0, 0.12)',
+    top: 120,
+    left: -40,
+  },
+  decorativeCircle3: {
+    position: 'absolute',
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: 'rgba(0, 217, 111, 0.1)',
+    bottom: 40,
+    right: 30,
+  },
+  headerTitleContainer: {
+    marginBottom: spacing.xl,
+  },
+  titleAccentLine: {
+    width: 40,
+    height: 4,
+    backgroundColor: '#FFD700',
+    borderRadius: 2,
+    marginBottom: spacing.md,
   },
   headerContent: {
     flexDirection: 'row',
@@ -518,15 +628,163 @@ const styles = StyleSheet.create({
   },
   greeting: {
     ...typography.body,
-    color: 'rgba(255, 255, 255, 0.95)',
-    fontWeight: '500',
+    color: 'rgba(255, 255, 255, 0.85)',
+    fontWeight: '600',
     marginBottom: spacing.xs,
+    letterSpacing: 1.5,
   },
   userName: {
     ...typography.display,
-    fontSize: 28,
+    fontSize: 32,
     color: '#FFFFFF',
     letterSpacing: -0.5,
+    fontWeight: '700',
+  },
+  statsGridContainer: {
+    marginBottom: spacing.md,
+  },
+  heroStatsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: spacing.sm,
+  },
+  heroStatCard: {
+    flex: 1,
+    position: 'relative',
+    borderRadius: borderRadius.lg,
+    overflow: 'hidden',
+    minHeight: 120,
+  },
+  statCardBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: borderRadius.lg,
+  },
+  statCardGradient: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: spacing.base,
+    borderRadius: borderRadius.lg,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.15)',
+  },
+  heroStatIconCircle: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: 'rgba(0, 0, 0, 0.15)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: spacing.sm,
+  },
+  heroStatValue: {
+    ...typography.display,
+    fontSize: 28,
+    color: '#FFFFFF',
+    fontWeight: '700',
+    marginBottom: spacing.xs,
+  },
+  heroStatLabel: {
+    ...typography.labelSmall,
+    color: 'rgba(255, 255, 255, 0.85)',
+    fontWeight: '600',
+    letterSpacing: 1,
+  },
+  xpCard: {
+    position: 'relative',
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    borderRadius: borderRadius.lg,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.15)',
+    overflow: 'hidden',
+  },
+  xpCardDecoration: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: 'rgba(255, 215, 0, 0.08)',
+    transform: [{ translateX: 40 }, { translateY: -40 }],
+  },
+  xpCardContent: {
+    padding: spacing.base,
+  },
+  xpCardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.md,
+  },
+  xpTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  levelIndicator: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: 'rgba(255, 215, 0, 0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  xpCardTitle: {
+    ...typography.h3,
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  xpCardValue: {
+    ...typography.body,
+    color: 'rgba(255, 255, 255, 0.9)',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  xpBarContainer: {
+    position: 'relative',
+    marginBottom: spacing.md,
+  },
+  xpBarOuter: {
+    height: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    borderRadius: 5,
+    overflow: 'hidden',
+  },
+  xpBarInner: {
+    height: '100%',
+    borderRadius: 5,
+  },
+  xpBarGlow: {
+    position: 'absolute',
+    top: -2,
+    left: 0,
+    right: 0,
+    height: 14,
+    backgroundColor: 'rgba(255, 215, 0, 0.15)',
+    borderRadius: 7,
+    zIndex: -1,
+  },
+  xpFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  xpPercentage: {
+    ...typography.bodySmall,
+    color: 'rgba(255, 255, 255, 0.85)',
+    fontWeight: '600',
+  },
+  xpToNext: {
+    ...typography.bodySmall,
+    color: 'rgba(255, 255, 255, 0.7)',
+    fontWeight: '500',
   },
   levelBadge: {
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
@@ -566,21 +824,25 @@ const styles = StyleSheet.create({
   },
   statsSection: {
     padding: spacing.base,
+    paddingTop: spacing.comfortable,
   },
   sectionTitle: {
-    ...typography.h2,
-    marginBottom: spacing.base,
-    letterSpacing: -0.3,
+    ...typography.h1,
+    marginBottom: spacing.comfortable,
   },
   achievementsGrid: {
-    gap: spacing.md,
+    gap: spacing.close,
   },
   achievementRow: {
     flexDirection: 'row',
-    gap: spacing.md,
+    gap: spacing.close,
   },
   achievementItem: {
     flex: 1,
+  },
+  weeklyProgressSection: {
+    padding: spacing.base,
+    paddingTop: spacing.comfortable,
   },
   section: {
     padding: spacing.base,

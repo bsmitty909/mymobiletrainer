@@ -120,21 +120,23 @@ export default function SettingsScreen({ navigation }: any) {
     },
     section: {
       backgroundColor: colors.surface,
-      marginTop: 16,
-      paddingVertical: 8,
+      marginTop: spacing.close,
+      paddingVertical: spacing.tight,
+      borderRadius: borderRadius.xl,
+      marginHorizontal: spacing.base,
     },
     sectionTitle: {
-      paddingHorizontal: 16,
-      paddingVertical: 12,
+      ...typography.h2,
+      paddingHorizontal: spacing.close,
+      paddingVertical: spacing.close,
       color: colors.primary,
-      fontWeight: 'bold',
     },
     divider: {
       height: 1,
       backgroundColor: colors.border,
     },
     bottomSpacing: {
-      height: 32,
+      height: spacing.huge,
     },
   });
 

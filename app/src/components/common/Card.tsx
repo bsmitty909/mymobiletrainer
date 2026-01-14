@@ -24,7 +24,7 @@ export default function Card({
   elevated = false,
   variant = 'default',
   onPress,
-  padding = spacing.lg,
+  padding = spacing.comfortable,
 }: CardProps) {
   const colors = useThemeColors();
   const scaleAnim = React.useRef(new Animated.Value(1)).current;
@@ -53,9 +53,9 @@ export default function Card({
 
   const getCardStyle = (): ViewStyle => {
     const baseStyle: ViewStyle = {
-      borderRadius: borderRadius.lg,
+      borderRadius: borderRadius.xl,
       padding,
-      marginVertical: spacing.md,
+      marginVertical: spacing.close,
       marginHorizontal: spacing.base,
     };
 
@@ -72,14 +72,14 @@ export default function Card({
         return {
           ...baseStyle,
           backgroundColor: colors.surfaceElevated,
-          ...(elevated ? shadows.lg : shadows.sm),
+          ...(elevated ? shadows.xl : shadows.lg),
         };
       
       default:
         return {
           ...baseStyle,
           backgroundColor: colors.surface,
-          ...(elevated ? shadows.md : shadows.sm),
+          ...(elevated ? shadows.lg : shadows.md),
         };
     }
   };

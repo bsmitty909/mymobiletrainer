@@ -110,7 +110,7 @@ export default function IntensityDistributionChart({ intensityData }: IntensityD
   });
 
   // If no data, show placeholder
-  if (!intensityData || intensityData.intensityBuckets.every(bucket => bucket.setCount === 0)) {
+  if (!intensityData || !intensityData.intensityBuckets || intensityData.intensityBuckets.every(bucket => bucket.setCount === 0)) {
     return (
       <View style={styles.placeholder}>
         <Text variant="bodyLarge" style={styles.placeholderText}>

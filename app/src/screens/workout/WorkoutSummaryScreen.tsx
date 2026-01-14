@@ -12,13 +12,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useAppSelector, useAppDispatch } from '../../store/store';
 import { clearActiveSession } from '../../store/slices/workoutSliceEnhanced';
 import { addWorkoutCompletion } from '../../store/slices/gamificationSlice';
+import { addRecentWorkout } from '../../store/slices/progressSlice';
 import FormulaCalculator from '../../services/FormulaCalculator';
 import { getExerciseById } from '../../constants/exercises';
 import GameButton from '../../components/common/GameButton';
 import AchievementCard from '../../components/common/AchievementCard';
 import ConfettiAnimation from '../../components/common/ConfettiAnimation';
 import HapticService from '../../services/HapticService';
-import { spacing, typography, borderRadius, shadows } from '../../theme/designTokens';
+import { spacing, typography, borderRadius, shadows, colors as designColors } from '../../theme/designTokens';
 import useThemeColors from '../../utils/useThemeColors';
 
 export default function WorkoutSummaryScreen({ navigation }: any) {
@@ -62,6 +63,16 @@ export default function WorkoutSummaryScreen({ navigation }: any) {
         duration: duration * 60,
         personalRecords: newPRs.length,
       }));
+      
+      dispatch(addRecentWorkout({
+        ...activeSession,
+        completedAt: typeof activeSession.completedAt === 'number'
+          ? activeSession.completedAt
+          : activeSession.completedAt?.getTime() || Date.now(),
+        startedAt: typeof activeSession.startedAt === 'number'
+          ? activeSession.startedAt
+          : activeSession.startedAt?.getTime() || Date.now(),
+      }));
     }
   }, [activeSession?.status]);
 
@@ -84,120 +95,111 @@ export default function WorkoutSummaryScreen({ navigation }: any) {
       backgroundColor: colors.background,
     },
     celebration: {
-      fontSize: 72,
-      marginBottom: spacing.lg,
+      fontSize: 64,
+      marginBottom: spacing.base,
     },
     title: {
-      ...typography.display,
-      fontSize: 28,
+      ...typography.heroDisplay,
       color: '#FFFFFF',
-      marginBottom: spacing.sm,
-      letterSpacing: -0.5,
-      textShadowColor: 'rgba(0, 0, 0, 0.2)',
-      textShadowOffset: { width: 0, height: 1 },
-      textShadowRadius: 3,
+      marginBottom: spacing.tight,
+      textShadowColor: 'rgba(0, 0, 0, 0.3)',
+      textShadowOffset: { width: 0, height: 2 },
+      textShadowRadius: 4,
     },
     subtitle: {
-      ...typography.bodyLarge,
+      ...typography.h3,
       color: 'rgba(255, 255, 255, 0.95)',
-      fontWeight: '500',
     },
     achievementsSection: {
       padding: spacing.base,
+      paddingTop: spacing.comfortable,
     },
     sectionTitle: {
-      ...typography.h2,
+      ...typography.h1,
       color: colors.text,
-      marginBottom: spacing.base,
-      letterSpacing: -0.3,
+      marginBottom: spacing.comfortable,
     },
     achievementsGrid: {
-      gap: spacing.md,
+      gap: spacing.close,
     },
     achievementRow: {
       flexDirection: 'row',
-      gap: spacing.md,
+      gap: spacing.close,
     },
     achievementItem: {
       flex: 1,
     },
     card: {
       margin: spacing.base,
-      marginTop: spacing.sm,
-      borderRadius: borderRadius.lg,
+      marginTop: spacing.tight,
+      borderRadius: borderRadius.xl,
       backgroundColor: colors.surface,
-      ...shadows.md,
+      ...shadows.lg,
     },
     cardContent: {
-      padding: spacing.lg,
+      padding: spacing.generous,
     },
     cardTitle: {
       ...typography.h2,
-      fontSize: 18,
       marginBottom: spacing.base,
       color: colors.text,
-      letterSpacing: -0.2,
     },
     prItem: {
-      paddingVertical: spacing.md,
+      paddingVertical: spacing.close,
       borderBottomWidth: 1,
       borderBottomColor: colors.border,
     },
     prName: {
       ...typography.h3,
-      fontSize: 16,
       color: colors.text,
     },
     prWeight: {
-      ...typography.h2,
-      fontSize: 18,
+      ...typography.display,
+      fontSize: 32,
       color: '#FFD700',
-      marginTop: spacing.xs,
+      marginTop: spacing.tight,
     },
     exerciseBreakdown: {
-      paddingVertical: spacing.md,
+      paddingVertical: spacing.close,
     },
     exerciseName: {
       ...typography.h3,
-      fontSize: 16,
-      marginBottom: spacing.sm,
+      marginBottom: spacing.tight,
       color: colors.text,
     },
     setsBreakdown: {
-      gap: spacing.xs,
+      gap: spacing.tight,
     },
     setText: {
       ...typography.body,
       color: colors.textSecondary,
     },
     divider: {
-      marginVertical: spacing.sm,
+      marginVertical: spacing.close,
       backgroundColor: colors.border,
       height: 1,
     },
     actions: {
       padding: spacing.base,
-      gap: spacing.md,
-      marginBottom: spacing['2xl'],
+      gap: spacing.close,
+      marginBottom: spacing.huge,
     },
     motivation: {
       margin: spacing.base,
-      marginBottom: spacing['2xl'],
-      borderRadius: borderRadius.lg,
+      marginBottom: spacing.huge,
+      borderRadius: borderRadius.xl,
       overflow: 'hidden',
-      ...shadows.sm,
+      ...shadows.md,
     },
     motivationContent: {
-      padding: spacing.xl,
+      padding: spacing.generous,
       alignItems: 'center',
     },
     motivationText: {
-      ...typography.bodyLarge,
-      fontSize: 16,
+      ...typography.h3,
       textAlign: 'center',
       color: colors.text,
-      fontWeight: '500',
-      lineHeight: 24,
+      lineHeight: 32,
     },
   });
 

@@ -111,6 +111,14 @@ export class AnalyticsService {
     const exerciseVolumes: VolumeData['exerciseVolumes'] = [];
     const volumePerMuscleGroup: Partial<Record<MuscleGroup, number>> = {};
 
+    if (!session.exercises || !Array.isArray(session.exercises)) {
+      return {
+        totalVolume: 0,
+        exerciseVolumes: [],
+        volumePerMuscleGroup: {} as Record<MuscleGroup, number>,
+      };
+    }
+
     session.exercises.forEach(exerciseLog => {
       const exercise = getExerciseById(exerciseLog.exerciseId);
       if (!exercise) return;
@@ -155,7 +163,23 @@ export class AnalyticsService {
     let totalSets = 0;
     let totalIntensity = 0;
 
+    if (!session.exercises || !Array.isArray(session.exercises)) {
+      return {
+        intensityBuckets: [
+          { range: '<65%', percentage: 0, setCount: 0, label: 'Warmup' },
+          { range: '65-85%', percentage: 0, setCount: 0, label: 'Working' },
+          { range: '85-95%', percentage: 0, setCount: 0, label: 'Heavy' },
+          { range: '≥95%', percentage: 0, setCount: 0, label: 'Max' },
+        ],
+        averageIntensity: 0,
+        heavySetsCount: 0,
+        workingSetsCount: 0,
+        warmupSetsCount: 0,
+      };
+    }
+
     session.exercises.forEach(exerciseLog => {
+      if (!exerciseLog.sets || !Array.isArray(exerciseLog.sets)) return;
       exerciseLog.sets.forEach(set => {
         const enhancedSet = set as EnhancedSetLog;
         const intensity = enhancedSet.intensityPercentage || this.estimateIntensity(set, exerciseLog);
@@ -284,7 +308,18 @@ export class AnalyticsService {
   static analyzeBodyPartBalance(session: WorkoutSession): BodyPartBalance {
     const muscleGroupData: Map<MuscleGroup, { volume: number; setCount: number }> = new Map();
 
+    if (!session.exercises || !Array.isArray(session.exercises)) {
+      return {
+        muscleGroupVolumes: [],
+        mostWorked: 'chest',
+        leastWorked: 'chest',
+        imbalances: [],
+        recommendations: ['Complete workouts to see muscle balance analysis'],
+      };
+    }
+
     session.exercises.forEach(exerciseLog => {
+      if (!exerciseLog.sets || !Array.isArray(exerciseLog.sets)) return;
       const exercise = getExerciseById(exerciseLog.exerciseId);
       if (!exercise) return;
 
