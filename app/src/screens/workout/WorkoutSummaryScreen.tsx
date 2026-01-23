@@ -68,10 +68,10 @@ export default function WorkoutSummaryScreen({ navigation }: any) {
         ...activeSession,
         completedAt: typeof activeSession.completedAt === 'number'
           ? activeSession.completedAt
-          : activeSession.completedAt?.getTime() || Date.now(),
+          : activeSession.completedAt || Date.now(),
         startedAt: typeof activeSession.startedAt === 'number'
           ? activeSession.startedAt
-          : activeSession.startedAt?.getTime() || Date.now(),
+          : activeSession.startedAt || Date.now(),
       }));
     }
   }, [activeSession?.status]);

@@ -1,14 +1,12 @@
 /**
  * Form Check Service
- * 
+ *
  * Tracks workout performance to determine when form check prompts should be shown.
  * Monitors consecutive failures and significant weight increases to prevent injury
  * and ensure proper technique.
- * 
+ *
  * Phase 4.4 - Form & Technique Integration
  */
-
-import { WorkoutSet } from '../types';
 
 export interface FormCheckTrigger {
   shouldPrompt: boolean;

@@ -8,8 +8,10 @@ import React, { useState, useRef } from 'react';
 import { View, StyleSheet, ScrollView, TextInput } from 'react-native';
 import { Text, Button, SegmentedButtons } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useAppDispatch } from '../../store/store';
-import { createUser, completeOnboarding } from '../../store/slices/userSlice';
+import { createUser } from '../../store/slices/userSlice';
 import Input from '../../components/common/Input';
 import GameButton from '../../components/common/GameButton';
 import StorageService from '../../services/StorageService';
@@ -18,8 +20,10 @@ import useThemeColors from '../../utils/useThemeColors';
 
 type OnboardingStep = 'welcome' | 'profile' | 'goals' | 'experience';
 type FitnessGoal = 'lose-weight' | 'tone-up' | 'gain-muscle';
+type NavigationProp = NativeStackNavigationProp<any>;
 
 export default function WelcomeScreen() {
+  const navigation = useNavigation<NavigationProp>();
   const dispatch = useAppDispatch();
   const colors = useThemeColors();
   
@@ -62,7 +66,9 @@ export default function WelcomeScreen() {
     };
 
     await StorageService.saveUserProfile(profileData);
-    dispatch(completeOnboarding());
+    
+    // Navigate directly to Max Determination (protocol system is the only training method)
+    navigation.navigate('MaxDeterminationIntro');
   };
 
   const styles = StyleSheet.create({

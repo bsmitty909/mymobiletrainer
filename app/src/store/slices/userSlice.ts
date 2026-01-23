@@ -1,7 +1,8 @@
 /**
  * User Slice
- * 
+ *
  * Manages user profile state, onboarding status, and preferences.
+ * All users now use the protocol system (P1/P2/P3).
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
@@ -51,6 +52,11 @@ const userSlice = createSlice({
         preferredExercises: {},
         exerciseSubstitutions: [],
         permanentSubstitutions: {},
+        protocolPreferences: {
+          preferredP1Frequency: 2, // 2 weeks between P1 tests
+          autoSuggestP1: true,
+          showReadinessSignals: true,
+        },
       };
     },
 
@@ -128,6 +134,7 @@ const userSlice = createSlice({
 
 export const {
   createUser,
+  initializeProfile,
   updateProfile,
   completeOnboarding,
   updateWorkoutPosition,

@@ -208,6 +208,21 @@ export default function SettingsScreen({ navigation }: any) {
 
       <View style={styles.section}>
         <Text variant="titleMedium" style={styles.sectionTitle}>
+          Training
+        </Text>
+        
+        <List.Item
+          title="Protocol Analytics"
+          description="View your protocol performance"
+          left={props => <List.Icon {...props} icon="chart-line" />}
+          onPress={() => navigation.navigate('ProtocolAnalytics')}
+        />
+      </View>
+
+      <Divider style={styles.divider} />
+
+      <View style={styles.section}>
+        <Text variant="titleMedium" style={styles.sectionTitle}>
           Notifications
         </Text>
         

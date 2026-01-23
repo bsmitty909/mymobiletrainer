@@ -1,8 +1,8 @@
 /**
  * Max Determination Intro Screen
- * 
+ *
  * Introduces users to the Max Determination Week and explains the process
- * of establishing 4RM (one-rep max) for each primary exercise.
+ * of establishing 4RM (four-rep max) for each primary exercise.
  */
 
 import React from 'react';

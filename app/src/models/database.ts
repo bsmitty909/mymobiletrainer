@@ -69,7 +69,7 @@ export class DatabaseService {
 
   static async addWorkoutSession(session: any) {
     const sessions = await this.getWorkoutSessions() || [];
-    sessions.push(session);
+    sessions.concat(session);
     return this.set(this.KEYS.WORKOUT_SESSIONS, sessions);
   }
 

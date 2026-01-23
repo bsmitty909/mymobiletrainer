@@ -36,7 +36,8 @@ export interface ConditionalSet {
   isConditional: boolean;
   condition?: SetCondition;
   shouldDisplay: boolean;
-}
+
+  setType?: string;}
 
 // ============================================================================
 // MAX ATTEMPT RESULT TYPES

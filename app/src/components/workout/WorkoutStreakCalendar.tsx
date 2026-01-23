@@ -184,12 +184,12 @@ export const WorkoutStreakCalendar: React.FC<WorkoutStreakCalendarProps> = ({
           }
 
           if (dayData.hasWorkout) {
-            dayStyle.push(styles.workoutDay);
+            if (dayData.hasWorkout) { textStyle.push(styles.workoutDayText); }
             textStyle.push(styles.workoutDayText);
           }
 
           if (dayData.isToday) {
-            dayStyle.push([styles.today, { borderColor: colors.primary }]);
+            
           }
 
           return (

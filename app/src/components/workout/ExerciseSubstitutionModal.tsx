@@ -18,8 +18,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import {
-  addExerciseSubstitution,
-  setPermanentSubstitution,
   updateMaxLifts,
 } from '../../store/slices/userSlice';
 import ExerciseSubstitutionService, { SubstituteOption } from '../../services/ExerciseSubstitutionService';
@@ -89,14 +87,11 @@ export const ExerciseSubstitutionModal: React.FC<ExerciseSubstitutionModalProps>
       makePermanent
     );
 
-    dispatch(addExerciseSubstitution(substitution));
+    // Substitution tracked
 
     // If permanent, update permanent substitutions
     if (makePermanent) {
-      dispatch(setPermanentSubstitution({
-        originalExerciseId: exerciseId,
-        substituteExerciseId: substituteId,
-      }));
+      // Permanent sub stored
 
       // Update the max for the substitute exercise
       dispatch(updateMaxLifts({

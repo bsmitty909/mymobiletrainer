@@ -1,11 +1,17 @@
 /**
  * Gamification Service
- * 
+ *
  * Manages user levels, badges, and achievements.
  * Calculates XP, checks badge requirements, and manages progression.
+ *
+ * PROTOCOL INTEGRATION:
+ * - P1 testing XP bonuses
+ * - Protocol-specific badges (P1 PR, rehab, rep-out mastery)
+ * - ProtocolMilestoneService integration
  */
 
-import { Badge, BadgeCategory, BadgeRarity, UserLevel, WorkoutStreak } from '../types';
+import { Badge, BadgeCategory, BadgeRarity, UserLevel, WorkoutStreak, Protocol } from '../types';
+import ProtocolMilestoneService, { ProtocolMilestone } from './ProtocolMilestoneService';
 
 const LEVEL_TITLES = [
   'Beginner',
@@ -230,6 +236,80 @@ export const AVAILABLE_BADGES: Badge[] = [
     category: 'milestone',
     rarity: 'rare',
     requirement: 1,
+  },
+
+  // PROTOCOL-SPECIFIC BADGES (PRD Implementation)
+  {
+    id: 'first_p1_success',
+    name: 'Max Tested',
+    description: 'Successfully complete your first P1 max testing session',
+    icon: '🎯',
+    category: 'milestone',
+    rarity: 'rare',
+    requirement: 1,
+  },
+  {
+    id: 'p1_pr_earned',
+    name: 'Earned Progression',
+    description: 'Earn a new 4RM through P1 testing',
+    icon: '💪',
+    category: 'pr',
+    rarity: 'rare',
+    requirement: 1,
+  },
+  {
+    id: 'p1_5_prs',
+    name: 'Testing Champion',
+    description: 'Earn 5 PRs through P1 testing',
+    icon: '🏆',
+    category: 'pr',
+    rarity: 'epic',
+    requirement: 5,
+  },
+  {
+    id: 'protocol_consistency',
+    name: 'Protocol Warrior',
+    description: 'Complete 10 protocol-mode workouts',
+    icon: '⚡',
+    category: 'consistency',
+    rarity: 'rare',
+    requirement: 10,
+  },
+  {
+    id: 'rehab_completed',
+    name: 'Comeback Complete',
+    description: 'Successfully complete a rehab mode cycle',
+    icon: '🏥',
+    category: 'milestone',
+    rarity: 'epic',
+    requirement: 1,
+  },
+  {
+    id: 'strength_recovered',
+    name: 'Fully Recovered',
+    description: 'Recover 100% of pre-injury strength',
+    icon: '✨',
+    category: 'milestone',
+    rarity: 'epic',
+    requirement: 1,
+  },
+  {
+    id: 'rep_out_master',
+    name: 'Rep-Out Master',
+    description: 'Complete 25 rep-out sets in ideal range (7-9 reps)',
+    icon: '🔥',
+    category: 'consistency',
+    rarity: 'rare',
+    requirement: 25,
+  },
+  {
+    id: 'p2p3_volume_king',
+    name: 'Volume King',
+    description: 'Complete 50 P2/P3 volume sessions',
+    icon: '💎',
+    category: 'volume',
+    rarity: 'epic',
+    requirement: 50,
   },
 ];
 

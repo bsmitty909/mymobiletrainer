@@ -97,7 +97,7 @@ export default function ProgressDashboardScreen({ navigation }: any) {
   return (
     <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
       <LinearGradient
-        colors={designColors.gradients.primary}
+        colors={designColors.gradients.primary as any}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.header}

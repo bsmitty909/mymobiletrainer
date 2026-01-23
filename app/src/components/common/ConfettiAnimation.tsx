@@ -104,16 +104,16 @@ export const ConfettiAnimation: React.FC<ConfettiAnimationProps> = ({
       outputRange: ['0deg', '360deg'],
     });
 
-    const baseStyle = {
+    const animatedStyle = {
       position: 'absolute' as const,
       width: piece.size,
       height: piece.size,
       backgroundColor: piece.color,
       transform: [
-        { translateX: piece.x },
-        { translateY: piece.y },
-        { rotate },
-      ],
+        { translateX: piece.x as any },
+        { translateY: piece.y as any },
+        { rotate: rotate as any },
+      ] as any,
     };
 
     switch (piece.shape) {
@@ -121,7 +121,7 @@ export const ConfettiAnimation: React.FC<ConfettiAnimationProps> = ({
         return (
           <Animated.View
             key={piece.id}
-            style={[baseStyle, { borderRadius: piece.size / 2 }]}
+            style={[animatedStyle, { borderRadius: piece.size / 2 }]}
           />
         );
       case 'triangle':
@@ -129,7 +129,7 @@ export const ConfettiAnimation: React.FC<ConfettiAnimationProps> = ({
           <Animated.View
             key={piece.id}
             style={[
-              baseStyle,
+              animatedStyle,
               {
                 width: 0,
                 height: 0,
@@ -146,7 +146,7 @@ export const ConfettiAnimation: React.FC<ConfettiAnimationProps> = ({
           />
         );
       default:
-        return <Animated.View key={piece.id} style={baseStyle} />;
+        return <Animated.View key={piece.id} style={animatedStyle} />;
     }
   };
 

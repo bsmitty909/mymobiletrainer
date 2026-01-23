@@ -26,6 +26,7 @@ import WarmupScreen from '../screens/workout/WarmupScreen';
 import WorkoutDetailScreen from '../screens/workout/WorkoutDetailScreen';
 import ActiveWorkoutScreen from '../screens/workout/ActiveWorkoutScreen';
 import WorkoutSummaryScreen from '../screens/workout/WorkoutSummaryScreen';
+import MaxAttemptScreen from '../screens/workout/MaxAttemptScreen';
 import ProgressDashboardScreen from '../screens/progress/ProgressDashboardScreen';
 import WeeklyProgressScreen from '../screens/progress/WeeklyProgressScreen';
 import WorkoutDayDetailScreen from '../screens/progress/WorkoutDayDetailScreen';
@@ -39,6 +40,8 @@ import AboutScreen from '../screens/profile/AboutScreen';
 import XPProgressScreen from '../screens/profile/XPProgressScreen';
 import PrivacyPolicyScreen from '../screens/settings/PrivacyPolicyScreen';
 import TermsOfServiceScreen from '../screens/settings/TermsOfServiceScreen';
+import ProtocolAnalyticsScreen from '../screens/analytics/ProtocolAnalyticsScreen';
+import ProtocolTrainerDashboard from '../screens/trainer/ProtocolTrainerDashboard';
 
 const RootStack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<MainTabsParamList>();
@@ -53,12 +56,13 @@ const ProfileStack = createStackNavigator();
  */
 function WorkoutStackNavigator() {
   return (
-    <WorkoutStack.Navigator screenOptions={{ headerShown: false }}>
+    <WorkoutStack.Navigator id="main" screenOptions={{ headerShown: false }}>
       <WorkoutStack.Screen name="WorkoutDashboard" component={WorkoutDashboardScreen} />
       <WorkoutStack.Screen name="WorkoutDetail" component={WorkoutDetailScreen as any} />
       <WorkoutStack.Screen name="Warmup" component={WarmupScreen} />
       <WorkoutStack.Screen name="ActiveWorkout" component={ActiveWorkoutScreen} />
       <WorkoutStack.Screen name="WorkoutSummary" component={WorkoutSummaryScreen} />
+      <WorkoutStack.Screen name="MaxAttempt" component={MaxAttemptScreen} />
     </WorkoutStack.Navigator>
   );
 }
@@ -69,7 +73,7 @@ function WorkoutStackNavigator() {
  */
 function ProgressStackNavigator() {
   return (
-    <ProgressStack.Navigator screenOptions={{ headerShown: false }}>
+    <ProgressStack.Navigator id="main" screenOptions={{ headerShown: false }}>
       <ProgressStack.Screen name="ProgressDashboard" component={ProgressDashboardScreen} />
       <ProgressStack.Screen name="WeeklyProgress" component={WeeklyProgressScreen} />
       <ProgressStack.Screen name="WorkoutDayDetail" component={WorkoutDayDetailScreen} />
@@ -83,7 +87,7 @@ function ProgressStackNavigator() {
  */
 function ExercisesStackNavigator() {
   return (
-    <ExercisesStack.Navigator screenOptions={{ headerShown: false }}>
+    <ExercisesStack.Navigator id="main" screenOptions={{ headerShown: false }}>
       <ExercisesStack.Screen name="ExerciseLibrary" component={ExerciseLibraryScreen} />
       <ExercisesStack.Screen name="ExerciseDetail" component={ExerciseDetailScreen} />
     </ExercisesStack.Navigator>
@@ -92,16 +96,17 @@ function ExercisesStackNavigator() {
 
 /**
  * Profile tab stack navigator
- * Allows navigation within profile tab: Profile → Settings → Max Lifts
+ * Allows navigation within profile tab: Profile → Settings → Max Lifts → Analytics
  */
 function ProfileStackNavigator() {
   return (
-    <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
+    <ProfileStack.Navigator id="main" screenOptions={{ headerShown: false }}>
       <ProfileStack.Screen name="ProfileMain" component={ProfileScreen} />
       <ProfileStack.Screen name="EditProfile" component={EditProfileScreen} />
       <ProfileStack.Screen name="Settings" component={SettingsScreen} />
       <ProfileStack.Screen name="MaxLifts" component={MaxLiftsScreen} />
       <ProfileStack.Screen name="XPProgress" component={XPProgressScreen} />
+      <ProfileStack.Screen name="ProtocolAnalytics" component={ProtocolAnalyticsScreen} />
       <ProfileStack.Screen name="About" component={AboutScreen} />
       <ProfileStack.Screen name="PrivacyPolicy" component={PrivacyPolicyScreen} />
       <ProfileStack.Screen name="TermsOfService" component={TermsOfServiceScreen} />
@@ -118,7 +123,7 @@ function MainTabs() {
   const isDark = themeMode === 'dark';
   
   return (
-    <Tab.Navigator
+    <Tab.Navigator id="main"
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: '#2563EB',
@@ -189,7 +194,7 @@ export default function MainNavigator() {
 
   return (
     <NavigationContainer>
-      <RootStack.Navigator screenOptions={{ headerShown: false }}>
+      <RootStack.Navigator id="main" screenOptions={{ headerShown: false }}>
         {!isOnboarded ? (
           <>
             <RootStack.Screen name="Onboarding" component={WelcomeScreen} />
@@ -198,7 +203,14 @@ export default function MainNavigator() {
             <RootStack.Screen name="MaxSummary" component={MaxSummaryScreen} />
           </>
         ) : (
-          <RootStack.Screen name="MainTabs" component={MainTabs} />
+          <>
+            <RootStack.Screen name="MainTabs" component={MainTabs} />
+            <RootStack.Screen
+              name="ProtocolTrainerDashboard"
+              component={ProtocolTrainerDashboard}
+              options={{ presentation: 'modal' }}
+            />
+          </>
         )}
       </RootStack.Navigator>
     </NavigationContainer>

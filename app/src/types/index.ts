@@ -7,7 +7,7 @@
 // USER TYPES
 // ============================================================================
 
-export type ExperienceLevel = 'beginner' | 'moderate';
+export type ExperienceLevel = 'beginner' | 'moderate' | 'advanced';
 
 export interface User {
   id: string;
@@ -29,6 +29,11 @@ export interface UserProfile {
   preferredExercises: Record<string, string>; // exerciseId -> variantId
   exerciseSubstitutions: ExerciseSubstitution[]; // History of substitutions
   permanentSubstitutions: Record<string, string>; // originalId -> substituteId
+  protocolPreferences: {
+    preferredP1Frequency: number; // weeks between P1 tests
+    autoSuggestP1: boolean;
+    showReadinessSignals: boolean;
+  };
 }
 
 export interface BodyWeightEntry {
@@ -327,6 +332,7 @@ export type RootStackParamList = {
   MaxTesting: undefined;
   MaxSummary: undefined;
   MainTabs: undefined;
+  ProtocolTrainerDashboard: undefined;
 };
 
 export type OnboardingStackParamList = {
@@ -598,4 +604,249 @@ export interface StreakReminder {
   scheduledFor: number; // timestamp
   sent: boolean;
   streakValue: number;
+}
+
+// ============================================================================
+// PROTOCOL SYSTEM TYPES (PRD Implementation)
+// ============================================================================
+
+// Training mode selection
+export type TrainingMode = 'percentage' | 'protocol';
+
+// Protocol types
+export type Protocol = 'P1' | 'P2' | 'P3';
+
+// Protocol exercise template - assigns protocol to exercise
+export interface ProtocolExerciseTemplate {
+  exerciseId: string;
+  protocol: Protocol;
+  protocolOrder: number; // P1 first, then P2, then P3
+  alternatives?: string[]; // Exercise variant IDs
+  notes?: string;
+}
+
+// Protocol definition - defines how each protocol works
+export interface ProtocolDefinition {
+  protocol: Protocol;
+  name: string;
+  description: string;
+  warmupStrategy: 'adaptive' | 'fixed';
+  sets: ProtocolSet[];
+  downSetsOnFailure: boolean; // P1 specific
+}
+
+// Protocol set specification
+export interface ProtocolSet {
+  setNumber: number;
+  percentageOf4RM: number; // Percentage of 4-rep max
+  instruction: 'rep-out' | 'max-attempt' | 'controlled';
+  minReps?: number;
+  maxReps?: number;
+  restSeconds: number;
+}
+
+// ============================================================================
+// 4RM TRACKING TYPES
+// ============================================================================
+
+// 4-Rep Max tracking (different from 1RM)
+export interface FourRepMax {
+  id: string;
+  userId: string;
+  exerciseId: string;
+  weight: number;
+  dateAchieved: number; // timestamp
+  verified: boolean; // True only if earned via P1
+  testingSessionId?: string;
+}
+
+// Max testing attempt history
+export interface MaxTestingAttempt {
+  id: string;
+  userId: string;
+  exerciseId: string;
+  fourRepMax: number; // Current 4RM at time of attempt
+  attemptedWeight: number;
+  repsCompleted: number;
+  successful: boolean;
+  timestamp: number;
+  sessionId: string;
+}
+
+// ============================================================================
+// INJURY & RECOVERY TYPES
+// ============================================================================
+
+// Injury severity levels
+export type InjurySeverity = 'mild' | 'moderate' | 'severe';
+
+// Missed workout reasons
+export type MissedWorkoutReason = 'injury' | 'no_gym_access' | 'time_constraints' | 'other';
+
+// Injury report
+export interface InjuryReport {
+  id: string;
+  userId: string;
+  muscleGroup: MuscleGroup;
+  severity: InjurySeverity;
+  description: string;
+  reportedAt: number; // timestamp
+}
+
+// Injury hold - pauses muscle groups or movement patterns
+export interface InjuryHold {
+  id: string;
+  userId: string;
+  muscleGroups: MuscleGroup[];
+  movementPatterns: string[]; // e.g., 'push', 'pull', 'squat'
+  startDate: number; // timestamp
+  endDate: number; // timestamp
+  active: boolean;
+  reason: string;
+}
+
+// Rehab session tracking
+export interface RehabSession {
+  id: string;
+  userId: string;
+  exerciseId: string;
+  preInjuryMax: number; // Store last known strength
+  currentWeight: number;
+  loadReduction: number; // Percentage reduced
+  painLevel?: number; // 0-10 scale
+  sessionId: string;
+  timestamp: number;
+}
+
+// Missed workout tracking
+export interface MissedWorkout {
+  id: string;
+  userId: string;
+  scheduledDate: number; // timestamp
+  reason: MissedWorkoutReason;
+  notes?: string;
+  timestamp: number;
+}
+
+// Detraining response calculation
+export interface DetrainingResponse {
+  daysMissed: number;
+  loadReductionPercentage: number;
+  disableMaxTesting: boolean;
+  recommendation: string;
+}
+
+// ============================================================================
+// REP-OUT INTERPRETATION TYPES
+// ============================================================================
+
+// Rep band classifications
+export type RepBand = 'too_heavy' | 'overloaded' | 'ideal' | 'reserve' | 'light';
+
+// Rep band analysis for rep-out sets
+export interface RepBandAnalysis {
+  reps: number;
+  band: RepBand;
+  meaning: string;
+  actionRequired: boolean;
+}
+
+// Readiness signal for P1 testing
+export interface ReadinessSignal {
+  exerciseId: string;
+  readyForP1: boolean;
+  confidence: number; // 0-1
+  reasoning: string[];
+  recommendedP1Date?: number; // timestamp
+}
+
+// Safety guard triggers
+export type SafetyGuardType = 'rep_drop' | 'multiple_failures' | 'form_concern' | 'overtraining';
+export type SafetyGuardSeverity = 'warning' | 'critical';
+
+// Safety guard notification
+export interface SafetyGuard {
+  type: SafetyGuardType;
+  severity: SafetyGuardSeverity;
+  message: string;
+  actionTaken: string;
+}
+
+// ============================================================================
+// TRAINER FEATURE TYPES
+// ============================================================================
+
+// Trainer override types
+export type TrainerOverrideType =
+  | 'protocol_change'
+  | 'force_rehab'
+  | 'adjust_intensity'
+  | 'exercise_swap'
+  | 'reorder_exercises'
+  | 'reorder_protocols';
+
+// Trainer override tracking
+export interface TrainerOverride {
+  id: string;
+  trainerId: string;
+  userId: string;
+  exerciseId?: string;
+  overrideType: TrainerOverrideType;
+  details: any; // Flexible for different override types
+  reason: string;
+  timestamp: number;
+}
+
+// Workout flag types
+export type WorkoutFlagType = 'plateau' | 'risk' | 'fatigue' | 'injury_concern';
+export type WorkoutFlagSeverity = 'low' | 'medium' | 'high';
+
+// Workout flag for trainer awareness
+export interface WorkoutFlag {
+  id: string;
+  userId: string;
+  flagType: WorkoutFlagType;
+  severity: WorkoutFlagSeverity;
+  message: string;
+  generatedAt: number; // timestamp
+  acknowledged: boolean;
+}
+
+// Analytics metric for trainer dashboard
+export interface AnalyticsMetric {
+  metricType: string;
+  value: number;
+  trend: 'up' | 'down' | 'stable';
+  periodStart: number; // timestamp
+  periodEnd: number; // timestamp
+}
+
+// ============================================================================
+// PROTOCOL STATE TYPES
+// ============================================================================
+
+// Protocol-specific workout state
+export interface ProtocolWorkoutState {
+  currentProtocol: Protocol | null;
+  p1TestingStatus: 'idle' | 'in_progress' | 'completed' | 'failed';
+  fourRepMaxHistory: FourRepMax[];
+  lastP1TestDate: Record<string, number>; // exerciseId -> timestamp
+  readinessSignals: ReadinessSignal[];
+}
+
+// Rehab mode state
+export interface RehabModeState {
+  active: boolean;
+  activeHolds: InjuryHold[];
+  rehabSessions: RehabSession[];
+  painReports: Record<string, number>; // exerciseId -> pain level
+  disclaimerAccepted: boolean;
+  acceptedAt?: number; // timestamp
+}
+
+// Protocol preferences for user
+export interface ProtocolPreferences {
+  preferredP1Frequency: number; // weeks between P1 tests
+  autoSuggestP1: boolean;
+  showReadinessSignals: boolean;
 }

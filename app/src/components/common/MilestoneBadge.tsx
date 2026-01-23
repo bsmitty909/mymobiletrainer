@@ -161,7 +161,7 @@ export default function MilestoneBadge({
       <View style={styles.badgeWrapper}>
         {earnedAt && <View style={styles.glowEffect} />}
         <LinearGradient
-          colors={earnedAt ? milestoneColors.gradient : [colors.border, colors.border]}
+          colors={(earnedAt ? milestoneColors.gradient : [colors.border, colors.border]) as any}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.badge}

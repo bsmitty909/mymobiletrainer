@@ -101,12 +101,12 @@ export default function XPProgressScreen() {
 
   const getRarityColor = (rarity: string) => {
     const rarityColors: Record<string, string> = {
-      common: colors.text.tertiary,
+      common: colors.textSecondary,
       rare: colors.primary,
       epic: '#9C27B0',
       legendary: '#FF9500',
     };
-    return rarityColors[rarity] || colors.text.secondary;
+    return rarityColors[rarity] || colors.textSecondary;
   };
 
   return (
@@ -120,10 +120,10 @@ export default function XPProgressScreen() {
           <MaterialCommunityIcons
             name="arrow-left"
             size={24}
-            color={colors.text.primary}
+            color={colors.text}
           />
         </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.text.primary }]}>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>
           XP Progress
         </Text>
         <View style={styles.backButton} />
@@ -183,10 +183,10 @@ export default function XPProgressScreen() {
               size={24}
               color={colors.primary}
             />
-            <Text style={[styles.statValue, { color: colors.text.primary }]}>
+            <Text style={[styles.statValue, { color: colors.text }]}>
               {gamification.totalWorkouts}
             </Text>
-            <Text style={[styles.statLabel, { color: colors.text.secondary }]}>
+            <Text style={[styles.statLabel, { color: colors.textSecondary }]}>
               Workouts
             </Text>
           </View>
@@ -197,10 +197,10 @@ export default function XPProgressScreen() {
               size={24}
               color="#FF9500"
             />
-            <Text style={[styles.statValue, { color: colors.text.primary }]}>
+            <Text style={[styles.statValue, { color: colors.text }]}>
               {gamification.streak.currentStreak}
             </Text>
-            <Text style={[styles.statLabel, { color: colors.text.secondary }]}>
+            <Text style={[styles.statLabel, { color: colors.textSecondary }]}>
               Day Streak
             </Text>
           </View>
@@ -211,10 +211,10 @@ export default function XPProgressScreen() {
               size={24}
               color="#00D96F"
             />
-            <Text style={[styles.statValue, { color: colors.text.primary }]}>
+            <Text style={[styles.statValue, { color: colors.text }]}>
               {gamification.totalPRs}
             </Text>
-            <Text style={[styles.statLabel, { color: colors.text.secondary }]}>
+            <Text style={[styles.statLabel, { color: colors.textSecondary }]}>
               PRs Set
             </Text>
           </View>
@@ -225,10 +225,10 @@ export default function XPProgressScreen() {
               size={24}
               color="#9C27B0"
             />
-            <Text style={[styles.statValue, { color: colors.text.primary }]}>
+            <Text style={[styles.statValue, { color: colors.text }]}>
               {gamification.badges.length}
             </Text>
-            <Text style={[styles.statLabel, { color: colors.text.secondary }]}>
+            <Text style={[styles.statLabel, { color: colors.textSecondary }]}>
               Badges
             </Text>
           </View>
@@ -236,7 +236,7 @@ export default function XPProgressScreen() {
 
         {/* Next Badges Section */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>
             Next Badges
           </Text>
           {categories.map((category) => {
@@ -253,13 +253,13 @@ export default function XPProgressScreen() {
                     <Text style={styles.badgeEmoji}>{progress.badge.icon}</Text>
                   </View>
                   <View style={styles.badgeProgressInfo}>
-                    <Text style={[styles.badgeName, { color: colors.text.primary }]}>
+                    <Text style={[styles.badgeName, { color: colors.text }]}>
                       {progress.badge.name}
                     </Text>
                     <Text
                       style={[
                         styles.badgeDescription,
-                        { color: colors.text.secondary },
+                        { color: colors.textSecondary },
                       ]}
                     >
                       {progress.badge.description}
@@ -288,7 +288,7 @@ export default function XPProgressScreen() {
                     />
                   </View>
                   <Text
-                    style={[styles.badgeProgressText, { color: colors.text.secondary }]}
+                    style={[styles.badgeProgressText, { color: colors.textSecondary }]}
                   >
                     {progress.remaining} more to unlock
                   </Text>
@@ -301,7 +301,7 @@ export default function XPProgressScreen() {
         {/* Unlocked Badges Section */}
         {gamification.badges.length > 0 && (
           <View style={styles.section}>
-            <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
+            <Text style={[styles.sectionTitle, { color: colors.text }]}>
               Unlocked Badges ({gamification.badges.length})
             </Text>
             <View style={styles.badgesGrid}>
@@ -314,7 +314,7 @@ export default function XPProgressScreen() {
                   <Text
                     style={[
                       styles.unlockedBadgeName,
-                      { color: colors.text.secondary },
+                      { color: colors.textSecondary },
                     ]}
                     numberOfLines={1}
                   >
@@ -328,7 +328,7 @@ export default function XPProgressScreen() {
 
         {/* How to Earn XP Section */}
         <View style={[styles.section, styles.infoSection]}>
-          <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>
             How to Earn XP
           </Text>
           <View style={[styles.infoCard, { backgroundColor: colors.surface }]}>
@@ -338,8 +338,8 @@ export default function XPProgressScreen() {
                 size={20}
                 color={colors.primary}
               />
-              <Text style={[styles.infoText, { color: colors.text.secondary }]}>
-                <Text style={{ color: colors.text.primary, fontWeight: '600' }}>
+              <Text style={[styles.infoText, { color: colors.textSecondary }]}>
+                <Text style={{ color: colors.text, fontWeight: '600' }}>
                   5 XP
                 </Text>{' '}
                 per set completed
@@ -351,8 +351,8 @@ export default function XPProgressScreen() {
                 size={20}
                 color={colors.primary}
               />
-              <Text style={[styles.infoText, { color: colors.text.secondary }]}>
-                <Text style={{ color: colors.text.primary, fontWeight: '600' }}>
+              <Text style={[styles.infoText, { color: colors.textSecondary }]}>
+                <Text style={{ color: colors.text, fontWeight: '600' }}>
                   10 XP
                 </Text>{' '}
                 per exercise completed
@@ -364,8 +364,8 @@ export default function XPProgressScreen() {
                 size={20}
                 color={colors.primary}
               />
-              <Text style={[styles.infoText, { color: colors.text.secondary }]}>
-                <Text style={{ color: colors.text.primary, fontWeight: '600' }}>
+              <Text style={[styles.infoText, { color: colors.textSecondary }]}>
+                <Text style={{ color: colors.text, fontWeight: '600' }}>
                   2 XP
                 </Text>{' '}
                 per 100 lbs lifted
@@ -377,8 +377,8 @@ export default function XPProgressScreen() {
                 size={20}
                 color={colors.primary}
               />
-              <Text style={[styles.infoText, { color: colors.text.secondary }]}>
-                <Text style={{ color: colors.text.primary, fontWeight: '600' }}>
+              <Text style={[styles.infoText, { color: colors.textSecondary }]}>
+                <Text style={{ color: colors.text, fontWeight: '600' }}>
                   3 XP
                 </Text>{' '}
                 per minute of workout
@@ -390,8 +390,8 @@ export default function XPProgressScreen() {
                 size={20}
                 color="#00D96F"
               />
-              <Text style={[styles.infoText, { color: colors.text.secondary }]}>
-                <Text style={{ color: colors.text.primary, fontWeight: '600' }}>
+              <Text style={[styles.infoText, { color: colors.textSecondary }]}>
+                <Text style={{ color: colors.text, fontWeight: '600' }}>
                   50 XP
                 </Text>{' '}
                 for each personal record!

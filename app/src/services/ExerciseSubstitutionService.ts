@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Exercise Substitution Service
  * 

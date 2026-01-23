@@ -242,9 +242,9 @@ export class ProgressionService {
   /**
    * Get recommended rest days before next workout
    */
-  static getRecommendedRestDays(lastWorkoutDate: Date): number {
+  static getRecommendedRestDays(lastWorkoutDate: number): number {
     const daysSinceLastWorkout = Math.floor(
-      (Date.now() - lastWorkoutDate.getTime()) / (1000 * 60 * 60 * 24)
+      (Date.now() - lastWorkoutDate) / (1000 * 60 * 60 * 24)
     );
 
     // Recommend at least 1 rest day, max 2
@@ -269,7 +269,7 @@ export class ProgressionService {
   } {
     const cutoffDate = Date.now() - (periodDays * 24 * 60 * 60 * 1000);
     const recentSessions = sessions.filter(
-      s => s.startedAt.getTime() > cutoffDate
+      s => s.startedAt > cutoffDate
     );
 
     const completedSessions = recentSessions.filter(
@@ -301,12 +301,12 @@ export class ProgressionService {
   } {
     const completed = sessions
       .filter(s => s.status === 'completed')
-      .sort((a, b) => b.startedAt.getTime() - a.startedAt.getTime());
+      .sort((a, b) => b.startedAt - a.startedAt);
 
     let current = 0;
     let longest = 0;
     let tempStreak = 0;
-    let lastDate: Date | null = null;
+    let lastDate: number | null = null;
 
     for (const session of completed) {
       if (!lastDate) {
@@ -316,7 +316,7 @@ export class ProgressionService {
       }
 
       const daysDiff = Math.floor(
-        (lastDate.getTime() - session.startedAt.getTime()) / (1000 * 60 * 60 * 24)
+        (lastDate - session.startedAt) / (1000 * 60 * 60 * 24)
       );
 
       // Within 2 days = continuous streak

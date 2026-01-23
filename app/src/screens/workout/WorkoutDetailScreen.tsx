@@ -167,7 +167,7 @@ export default function WorkoutDetailScreen({ navigation, route }: WorkoutDetail
       userId: currentUser?.id || 'user-1',
       weekNumber,
       dayNumber,
-      startedAt: new Date(),
+      startedAt: Date.now(),
       status: 'in_progress' as const,
       exercises: exercises.map((ex: any) => ({
         id: `exercise-${Date.now()}-${ex.exerciseId}`,
@@ -470,7 +470,7 @@ export default function WorkoutDetailScreen({ navigation, route }: WorkoutDetail
                         weight={set.weight}
                         reps={set.targetReps}
                         intensityPercentage={set.intensityPercentage}
-                        label={set.label}
+                        label={set.setNumber}
                       />
                     ))}
                     
@@ -499,7 +499,7 @@ export default function WorkoutDetailScreen({ navigation, route }: WorkoutDetail
                             weight={set.weight}
                             reps={set.targetReps}
                             intensityPercentage={set.intensityPercentage}
-                            label={set.label}
+                            label={set.setNumber}
                             isLocked
                           />
                         ))}

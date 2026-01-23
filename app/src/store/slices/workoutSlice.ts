@@ -25,7 +25,7 @@ const workoutSlice = createSlice({
     startSession: (state, action: PayloadAction<WorkoutSession>) => {
       state.activeSession = action.payload;
       state.activeSession.status = 'in_progress';
-      state.activeSession.startedAt = new Date();
+      state.activeSession.startedAt = Date.now();
       state.error = null;
     },
 
@@ -82,7 +82,7 @@ const workoutSlice = createSlice({
     completeWorkout: (state) => {
       if (state.activeSession) {
         state.activeSession.status = 'completed';
-        state.activeSession.completedAt = new Date();
+        state.activeSession.completedAt = Date.now();
       }
     },
 
@@ -90,7 +90,7 @@ const workoutSlice = createSlice({
     abandonWorkout: (state) => {
       if (state.activeSession) {
         state.activeSession.status = 'abandoned';
-        state.activeSession.completedAt = new Date();
+        state.activeSession.completedAt = Date.now();
       }
     },
 

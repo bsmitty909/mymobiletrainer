@@ -1,11 +1,11 @@
 /**
  * Max Testing Screen
- * 
- * Progressive weight testing interface for determining 4RM (one-rep max)
+ *
+ * Progressive weight testing interface for determining 4RM (four-rep max)
  * for each exercise. Users progressively increase weight until they reach failure.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Text, Button, IconButton, ProgressBar, Chip, Divider } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -34,104 +34,7 @@ export default function MaxTestingScreen() {
   const [selectedReps, setSelectedReps] = useState<number | null>(null);
   const [showTips, setShowTips] = useState(false);
 
-  useEffect(() => {
-    if (currentExercise && currentExercise.attempts.length > 0) {
-      const lastAttempt = currentExercise.attempts[currentExercise.attempts.length - 1];
-      if (lastAttempt.success) {
-        const suggested = MaxDeterminationService.suggestNextWeight(lastAttempt);
-        setCurrentWeight(suggested);
-      }
-    }
-  }, [currentExercise?.attempts.length]);
-
-  if (!currentExercise) {
-    return (
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
-        <View style={[styles.errorContainer, { backgroundColor: colors.surface }]}>
-          <Text variant="titleLarge" style={{ color: colors.text }}>
-            No exercises to test
-          </Text>
-          <Button mode="contained" onPress={() => navigation.goBack()}>
-            Go Back
-          </Button>
-        </View>
-      </View>
-    );
-  }
-
-  const adjustWeight = (amount: number) => {
-    setCurrentWeight(Math.max(45, currentWeight + amount));
-    setSelectedReps(null);
-  };
-
-  const handleSuccess = () => {
-    if (selectedReps === null) return;
-
-    const attempt: MaxAttempt = {
-      weight: currentWeight,
-      reps: selectedReps,
-      timestamp: Date.now(),
-      success: true,
-    };
-
-    dispatch(addMaxAttempt({
-      exerciseId: currentExercise.exerciseId,
-      attempt,
-    }));
-
-    setSelectedReps(null);
-  };
-
-  const handleFailure = () => {
-    const determined4RM = MaxDeterminationService.determine4RMFromAttempts(
-      currentExercise.attempts
-    );
-
-    if (determined4RM) {
-      dispatch(completeExerciseMaxTest({
-        exerciseId: currentExercise.exerciseId,
-        determined4RM,
-      }));
-
-      // Move to next exercise or summary
-      if (maxTestingProgress.currentExerciseIndex < maxTestingProgress.exercises.length - 1) {
-        dispatch(moveToNextExercise());
-        setCurrentWeight(45);
-        setSelectedReps(null);
-      } else {
-        navigation.navigate('MaxSummary');
-      }
-    }
-  };
-
-  const handleSkipExercise = () => {
-    // Use default max based on body weight
-    const defaultMax = 135; // Conservative default
-    dispatch(completeExerciseMaxTest({
-      exerciseId: currentExercise.exerciseId,
-      determined4RM: defaultMax,
-    }));
-
-    if (maxTestingProgress.currentExerciseIndex < maxTestingProgress.exercises.length - 1) {
-      dispatch(moveToNextExercise());
-      setCurrentWeight(45);
-      setSelectedReps(null);
-    } else {
-      navigation.navigate('MaxSummary');
-    }
-  };
-
-  const completedCount = maxTestingProgress.exercises.filter(e => e.completed).length;
-  const totalCount = maxTestingProgress.exercises.length;
-  const progress = completedCount / totalCount;
-
-  const estimated4RM = selectedReps
-    ? MaxDeterminationService.calculate4RM(currentWeight, selectedReps)
-    : null;
-
-  const tips = MaxDeterminationService.getExerciseTips(currentExercise.exerciseId);
-
-  const styles = StyleSheet.create({
+  const styles = useMemo(() => StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: colors.background,
@@ -348,7 +251,104 @@ export default function MaxTestingScreen() {
       alignItems: 'center',
       padding: 24,
     },
-  });
+  }), [colors]);
+
+  useEffect(() => {
+    if (currentExercise && currentExercise.attempts.length > 0) {
+      const lastAttempt = currentExercise.attempts[currentExercise.attempts.length - 1];
+      if (lastAttempt.success) {
+        const suggested = MaxDeterminationService.suggestNextWeight(lastAttempt);
+        setCurrentWeight(suggested);
+      }
+    }
+  }, [currentExercise?.attempts.length]);
+
+  if (!currentExercise) {
+    return (
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <View style={[styles.errorContainer, { backgroundColor: colors.surface }]}>
+          <Text variant="titleLarge" style={{ color: colors.text }}>
+            No exercises to test
+          </Text>
+          <Button mode="contained" onPress={() => navigation.goBack()}>
+            Go Back
+          </Button>
+        </View>
+      </View>
+    );
+  }
+
+  const adjustWeight = (amount: number) => {
+    setCurrentWeight(Math.max(45, currentWeight + amount));
+    setSelectedReps(null);
+  };
+
+  const handleSuccess = () => {
+    if (selectedReps === null) return;
+
+    const attempt: MaxAttempt = {
+      weight: currentWeight,
+      reps: selectedReps,
+      timestamp: Date.now(),
+      success: true,
+    };
+
+    dispatch(addMaxAttempt({
+      exerciseId: currentExercise.exerciseId,
+      attempt,
+    }));
+
+    setSelectedReps(null);
+  };
+
+  const handleFailure = () => {
+    const determined4RM = MaxDeterminationService.determine4RMFromAttempts(
+      currentExercise.attempts
+    );
+
+    if (determined4RM) {
+      dispatch(completeExerciseMaxTest({
+        exerciseId: currentExercise.exerciseId,
+        determined4RM,
+      }));
+
+      // Move to next exercise or summary
+      if (maxTestingProgress.currentExerciseIndex < maxTestingProgress.exercises.length - 1) {
+        dispatch(moveToNextExercise());
+        setCurrentWeight(45);
+        setSelectedReps(null);
+      } else {
+        navigation.navigate('MaxSummary');
+      }
+    }
+  };
+
+  const handleSkipExercise = () => {
+    // Use default max based on body weight
+    const defaultMax = 135; // Conservative default
+    dispatch(completeExerciseMaxTest({
+      exerciseId: currentExercise.exerciseId,
+      determined4RM: defaultMax,
+    }));
+
+    if (maxTestingProgress.currentExerciseIndex < maxTestingProgress.exercises.length - 1) {
+      dispatch(moveToNextExercise());
+      setCurrentWeight(45);
+      setSelectedReps(null);
+    } else {
+      navigation.navigate('MaxSummary');
+    }
+  };
+
+  const completedCount = maxTestingProgress.exercises.filter(e => e.completed).length;
+  const totalCount = maxTestingProgress.exercises.length;
+  const progress = completedCount / totalCount;
+
+  const estimated4RM = selectedReps
+    ? MaxDeterminationService.calculate4RM(currentWeight, selectedReps)
+    : null;
+
+  const tips = MaxDeterminationService.getExerciseTips(currentExercise.exerciseId);
 
   return (
     <View style={styles.container}>

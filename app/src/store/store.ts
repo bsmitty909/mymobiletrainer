@@ -1,8 +1,10 @@
 /**
  * Redux Store Configuration
- * 
+ *
  * Central state management for My Mobile Trainer app.
- * Manages user, workout, progress, and UI state.
+ * Manages user, workout, progress, protocol, rehab, and UI state.
+ *
+ * PROTOCOL SYSTEM: Added protocol and rehab slices for PRD implementation
  */
 
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
@@ -14,6 +16,8 @@ import workoutReducer from './slices/workoutSliceEnhanced'; // Enhanced for form
 import progressReducer from './slices/progressSlice';
 import uiReducer from './slices/uiSlice';
 import gamificationReducer from './slices/gamificationSlice';
+import protocolReducer from './slices/protocolSlice'; // NEW: Protocol system state
+import rehabReducer from './slices/rehabSlice'; // NEW: Rehab and injury state
 
 // Combine reducers
 const rootReducer = combineReducers({
@@ -22,6 +26,8 @@ const rootReducer = combineReducers({
   progress: progressReducer,
   ui: uiReducer,
   gamification: gamificationReducer,
+  protocol: protocolReducer, // NEW
+  rehab: rehabReducer, // NEW
 });
 
 // Configure store

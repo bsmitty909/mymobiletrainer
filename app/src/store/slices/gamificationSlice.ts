@@ -1,12 +1,19 @@
 /**
  * Gamification Slice
- * 
+ *
  * Manages gamification state including levels, badges, streaks, and achievements.
+ *
+ * PROTOCOL INTEGRATION:
+ * - Protocol milestone tracking
+ * - P1 PR achievements
+ * - Rehab completion rewards
+ * - Rep-out mastery badges
  */
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Badge, GamificationState, UserLevel, WorkoutStreak } from '../../types';
 import GamificationService from '../../services/GamificationService';
+import { ProtocolMilestone } from '../../services/ProtocolMilestoneService';
 
 const initialState: GamificationState = {
   level: {

@@ -165,6 +165,14 @@ export const typography = {
     letterSpacing: 0,
   },
   
+  labelLarge: {
+    fontSize: 15,
+    lineHeight: 20,
+    fontWeight: '600' as const,
+    letterSpacing: 0.5,
+    textTransform: 'uppercase' as const,
+  },
+  
   label: {
     fontSize: 13,
     lineHeight: 18,
@@ -184,10 +192,15 @@ export const typography = {
 
 export const spacing = {
   micro: 4,
+  xs: 8,
   tight: 8,
+  sm: 12,
   close: 16,
+  md: 20,
   base: 24,
+  lg: 32,
   comfortable: 32,
+  xl: 40,
   generous: 48,
   huge: 64,
   massive: 80,
@@ -223,6 +236,13 @@ export const shadows = {
     shadowOpacity: 0.16,
     shadowRadius: 24,
     elevation: 8,
+  },
+  xl: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.2,
+    shadowRadius: 32,
+    elevation: 12,
   },
   
   // Primary colored shadow for CTAs

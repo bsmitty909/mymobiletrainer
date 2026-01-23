@@ -163,7 +163,7 @@ export default function WeeklyProgressScreen({ navigation }: any) {
                 ]}
               >
                 <MaterialCommunityIcons
-                  name={exercise.icon}
+                  name={(exercise.icon || "dumbbell") as any}
                   size={32}
                   color={isSelected ? '#FFF' : colors.text}
                   style={styles.exerciseIconStyle}
@@ -372,7 +372,7 @@ export default function WeeklyProgressScreen({ navigation }: any) {
                 return (
                   <View key={lift.exerciseId} style={[styles.bestLiftRow, { borderBottomColor: colors.border }]}>
                     <MaterialCommunityIcons
-                      name={exercise?.icon || 'arm-flex'}
+                      name={(exercise?.icon || "arm-flex") as any}
                       size={28}
                       color={colors.text}
                       style={styles.bestLiftIconStyle}
@@ -420,7 +420,7 @@ export default function WeeklyProgressScreen({ navigation }: any) {
                   style={[styles.summaryRow, { borderBottomColor: colors.border }]}
                 >
                   <MaterialCommunityIcons
-                    name={exerciseInfo?.icon || 'arm-flex'}
+                    name={"dumbbell" as any}
                     size={24}
                     color={colors.text}
                     style={styles.summaryIconStyle}

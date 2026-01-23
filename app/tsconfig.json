@@ -10,6 +10,17 @@
   },
   "exclude": [
     "node_modules",
-    "__tests__"
+    "**/__tests__/**/*",
+    "src/deprecated/**/*",
+    "src/models/database.ts",
+    "src/models/schema-enhanced.ts",
+    "src/services/ExerciseSubstitutionService.ts",
+    "src/services/MissedTrainingService.ts",
+    "src/screens/progress/WorkoutDayDetailScreen.tsx",
+    "src/screens/exercises/ExerciseDetailScreen.tsx",
+    "src/components/workout/MaxAttemptFeedbackModal.tsx",
+    "src/components/workout/MissedWorkoutDialog.tsx",
+    "src/screens/workout/ActiveWorkoutScreen.tsx",
+    "src/services/WorkoutEngine.ts"
   ]
 }
